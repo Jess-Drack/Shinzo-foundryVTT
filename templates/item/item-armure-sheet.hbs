@@ -1,0 +1,91 @@
+<form class='{{cssClass}}' autocomplete='off'>
+  <header class='sheet-header'>
+    <img
+      class='profile-img'
+      src='{{item.img}}'
+      data-edit='img'
+      title='{{item.name}}'
+    />
+    <div class='header-fields'>
+      <h1 class='charname'><input
+          name='name'
+          type='text'
+          value='{{item.name}}'
+          placeholder='Name'
+        /></h1>
+      <div class='grid grid-2col'>
+        <div class='resource'>
+          <label class='resource-label'>Qualité</label>
+          <select
+            name='system.quality'
+            data-dtype='Number'
+          >
+          {{#select system.quality}}
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          {{/select}}
+          </select>
+        </div>
+        <div class='resource'>
+          <label class='resource-label'>Poids</label>
+          <select
+            name='system.poids'
+            data-dtype='text'
+          >
+          {{#select system.poids}}
+            <option value="Négligeable" title="Aucun malus">Négligeable</option>
+            <option value="Léger" title="-5 vitesse & discretion">Léger</option>
+            <option value="Moyen" title="-15 vitesse & discretion, -5 esquive">Moyen</option>
+            <option value="Lourd" title="-25 vitesse & discretion, -10 esquive">Lourd</option>
+          {{/select}}
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {{! Sheet Tab Navigation }}
+  <nav class='sheet-tabs tabs' data-group='primary'>
+    <a class='item' data-tab='effect'>Effet</a>
+    <a class='item' data-tab='description'>Description</a>
+  </nav>
+
+  {{! Sheet Body }}
+  <section class='sheet-body'>
+
+    {{! Effect Tab }}
+    <div class='tab' data-group='primary' data-tab='effect'>
+      <label class='resource-label'>Résistance Physique</label>
+        <input
+          type='number'
+          name='system.resPhysique'
+          value='{{system.resPhysique}}'
+          data-dtype='Number'
+        />
+        <label class='resource-label'>Résistance Magique</label>
+        <input
+          type='number'
+          name='system.resMagique'
+          value='{{system.resMagique}}'
+          data-dtype='Number'
+        />
+      <label class='resource-label'>Effet additionel</label>
+        <textarea name='system.effect'data-dtype='text-area'>{{system.effect}}</textarea>
+    </div>
+
+    {{! Description Tab }}
+    <div class='tab' data-group='primary' data-tab='description'>
+      {{! Editors must receive enriched text data from getData to properly handle rolls }}
+      {{editor
+        enrichedDescription
+        target='system.description'
+        engine='prosemirror'
+        button=true
+        editable=editable
+      }}
+    </div>
+  </section>
+</form>

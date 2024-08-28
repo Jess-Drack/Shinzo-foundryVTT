@@ -180,24 +180,32 @@
     }
   },
   "Item": {
-    "types": ["item", "feature", "spell"],
+    "types": ["arme", "armure", "objet"],
     "templates": {
       "base": {
         "description": ""
       }
     },
-    "item": {
+    "arme": {
       "templates": ["base"],
-      "quantity": 1,
-      "weight": 0,
-      "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+      "type" : "",
+      "polyvalence": "",
+      "damage": "",
+      "effect": "",
+      "quality": ""
     },
-    "feature": {
-      "templates": ["base"]
-    },
-    "spell": {
+    "armure": {
       "templates": ["base"],
-      "spellLevel": 1
+      "poids": "",
+      "resPhysique": "",
+      "resMagique": "",
+      "effect": "",
+      "quality": ""
+    },
+    "objet": {
+      "templates": ["base"],
+      "quality": "",
+      "effect":""
     }
   }
 }
