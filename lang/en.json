@@ -1,0 +1,70 @@
+{
+  "SHINZO": {
+    "Caracteristique": {
+      "Con": { "long": "Constitution", "abbr": "con" },
+      "Agi": { "long": "Agilité", "abbr": "agi" },
+      "Cha": { "long": "Charisme", "abbr": "cha" },
+      "Sav": { "long": "Savoir", "abbr": "sav" },
+      "Mag": { "long": "Magie", "abbr": "mag" },
+      "Men": { "long": "Mental", "abbr": "men" },
+      
+      "Cor": { "long": "Corps", "abbr": "cor" },
+      "Esp": { "long": "Esprit", "abbr": "esp" },
+      "Soc": { "long": "Social", "abbr": "soc" },
+
+      "Pug": { "long": "Pugilat", "abbr": "pug" },
+      "Cac": { "long": "Arme Cac", "abbr": "cac" },
+      "Pre": { "long": "Précision", "abbr": "pré" },
+      "Esq": { "long": "Esquive", "abbr": "esq" },
+      "Par": { "long": "Parade", "abbr": "par" },
+      "Dis": { "long": "Discrétion", "abbr": "dis" },
+      "Obs": { "long": "Observation", "abbr": "obs" },
+      "Per": { "long": "Perception", "abbr": "per" },
+      "Psy": { "long": "Psyché", "abbr": "psy" },
+      "Int": { "long": "Intimidation", "abbr": "int" },
+      "Com": { "long": "Communication", "abbr": "com" },
+      "Aut": { "long": "Autorité", "abbr": "aut" },
+      "Med": { "long": "Médecine", "abbr": "med" },
+      "Pil": { "long": "Pilotage", "abbr": "pil" },
+      "Art": { "long": "Artisanat", "abbr": "art" },
+      "Vit": { "long": "Vitesse", "abbr": "vit" },
+      "Ins": { "long": "Instinct", "abbr": "ins" },
+      "S_f": { "long": "Sang-Froid", "abbr": "s-f" },
+      "Reg": { "long": "Régénération pv", "abbr": "reg" },
+      "Rec": { "long": "Récupération pe", "abbr": "rec" },
+      "Dep": { "long": "Dégâts physique", "abbr": "dégâts P" },
+      "Rep": { "long": "Résistance physique", "abbr": "res P" },
+      "Dem": { "long": "Dégâts magique", "abbr": "dégâts M" },
+      "Rem": { "long": "Résistance magique", "abbr": "res M" }
+    },
+    "SheetLabels": {
+      "Actor": "Shinzo Actor Sheet",
+      "Item": "Shinzo Item Sheet"
+    },
+    "Item": {
+      "Spell": {
+        "SpellLVL": "Level {level} Spells",
+        "AddLVL": "Add LVL {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Toggle Effect",
+      "Temporary": "Temporary Effects",
+      "Passive": "Passive Effects",
+      "Inactive": "Inactive Effects"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "character": "Personnage",
+      "npc": "PNJ"
+    },
+    "Item": {
+      "item": "Item",
+      "feature": "Feature",
+      "spell": "Spell"
+    }
+  }
+}
