@@ -158,7 +158,7 @@
               {{#each system.ss_stats2 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.ss_stats2.{{key}}.b_m" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats2.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats2.{{key}}.value" value="{{ss_stat.b_m}}" data-dtype="Number"/>
+                <input type="text" name="system.ss_stats2.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
