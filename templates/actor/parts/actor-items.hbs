@@ -3,17 +3,14 @@
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-formula'>{{localize 'Roll Formula'}}</div>
     <div class='item-controls'>
-      <a
-        class='item-control item-create'
-        title='{{localize "DOCUMENT.Create" type='Item'}}'
-        data-type='item'
-      >
-        <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type='item'}}
+      <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
+      data-type="objet">
+      <i class='fas fa-plus'></i>
+      {{localize 'DOCUMENT.New' type='objet'}}
       </a>
     </div>
   </li>
-  {{#each gear as |item id|}}
+  {{#each objet as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>

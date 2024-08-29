@@ -46,12 +46,12 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="item" data-tab="stat">Statistiques</a>
     <a class="item" data-tab="resume">Résumé</a>
     <a class="item" data-tab="description">Description</a>
     <a class="item" data-tab="items">Items</a>
     <a class="item" data-tab="spells">Spells</a>
     <a class="item" data-tab="effects">Effects</a>
-    <a class="item" data-tab="caract">Caractérisques</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -97,7 +97,7 @@
       {{> "systems/shinzo/templates/actor/parts/actor-effects.hbs"}}
     </div>
 
-    <div class="tab features" data-group="primary" data-tab="caract">
+    <div class="tab features" data-group="primary" data-tab="stat">
         <aside class="sidebar">
 
           {{!-- The grid classes are defined in scss/global/_grid.scss. To use,

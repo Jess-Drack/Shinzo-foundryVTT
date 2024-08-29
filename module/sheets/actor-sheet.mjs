@@ -103,7 +103,7 @@ export class ShinzoActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
-    const gear = [];
+    const objet = [];
     const features = [];
     const spells = {
       0: [],
@@ -121,9 +121,9 @@ export class ShinzoActorSheet extends ActorSheet {
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || Item.DEFAULT_ICON;
-      // Append to gear.
-      if (i.type === 'item') {
-        gear.push(i);
+      // Append to objet.
+      if (i.type === 'objet') {
+        objet.push(i);
       }
       // Append to features.
       else if (i.type === 'feature') {
@@ -138,7 +138,7 @@ export class ShinzoActorSheet extends ActorSheet {
     }
 
     // Assign and return
-    context.gear = gear;
+    context.objet = objet;
     context.features = features;
     context.spells = spells;
   }
@@ -206,7 +206,7 @@ export class ShinzoActorSheet extends ActorSheet {
     // Get the type of item to create.
     const type = header.dataset.type;
     // Grab any data associated with this control.
-    const data = duplicate(header.dataset);
+    const data = foundry.utils.duplicate(header.dataset);
     // Initialize a default name.
     const name = `New ${type.capitalize()}`;
     // Prepare the item object.
@@ -215,11 +215,15 @@ export class ShinzoActorSheet extends ActorSheet {
       type: type,
       system: data,
     };
+
+    console.log(itemData);
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.system['type'];
 
-    // Finally, create the item!
-    return await Item.create(itemData, { parent: this.actor });
+    const createdItem = await Item.create(itemData, { parent: this.actor });
+    console.log("Objet créé : ", createdItem);
+
+    return createdItem;
   }
 
   /**

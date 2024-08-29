@@ -62,7 +62,7 @@
       "npc": "PNJ"
     },
     "Item": {
-      "item": "Item",
+      "objet": "Objet",
       "feature": "Feature",
       "spell": "Spell"
     }
