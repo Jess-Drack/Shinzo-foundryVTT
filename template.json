@@ -172,6 +172,17 @@
           "value": 0,
           "b_m": 0
         }
+      },
+      "devise": {
+          "or": {
+            "value": 0
+          },
+          "argent": {
+            "value": 0
+          },
+          "cuivre": {
+            "value": 0
+          }
       }
     },
     "npc": {

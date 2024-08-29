@@ -104,6 +104,8 @@ export class ShinzoActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     const objet = [];
+    const arme = [];
+    const armure = [];
     const features = [];
     const sort = [];
 
@@ -113,6 +115,12 @@ export class ShinzoActorSheet extends ActorSheet {
       // Append to objet.
       if (i.type === 'objet') {
         objet.push(i);
+      }
+      else if (i.type === 'arme') {
+        arme.push(i);
+      }
+      else if (i.type === 'armure') {
+        armure.push(i);
       }
       // Append to features.
       else if (i.type === 'feature') {
@@ -126,6 +134,8 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Assign and return
     context.objet = objet;
+    context.arme = arme;
+    context.armure = armure;
     context.features = features;
     context.sort = sort;
   }
