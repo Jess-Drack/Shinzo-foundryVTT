@@ -74,6 +74,20 @@ export class ShinzoItemSheet extends ItemSheet {
       }
     );
 
+    context.enrichedNote = await TextEditor.enrichHTML(
+      this.item.system.note,
+      {
+        // Whether to show secret blocks in the finished html
+        secrets: this.document.isOwner,
+        // Necessary in v11, can be removed in v12
+        async: true,
+        // Data to fill in for inline rolls
+        rollData: this.item.getRollData(),
+        // Relative UUID resolution
+        relativeTo: this.item,
+      }
+    );
+
     // Add the item's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     context.flags = itemData.flags;

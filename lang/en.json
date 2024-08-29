@@ -63,8 +63,9 @@
     },
     "Item": {
       "objet": "Objet",
-      "feature": "Feature",
-      "spell": "Spell"
+      "arme": "Arme",
+      "armure": "Armure",
+      "sort": "Compétence"
     }
   }
 }

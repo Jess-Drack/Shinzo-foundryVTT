@@ -1,0 +1,99 @@
+<form class='{{cssClass}}' autocomplete='off'>
+  <header class='sheet-header'>
+    <img
+      class='profile-img'
+      src='{{item.img}}'
+      data-edit='img'
+      title='{{item.name}}'
+    />
+    <div class='header-fields'>
+      <h1 class='charname'><input
+          name='name'
+          type='text'
+          value='{{item.name}}'
+          placeholder='Name'
+        /></h1>
+        <div class='grid grid-2col'>
+          <div class='resource spellCost'>
+            <label class='resource-label labelSpellCost'>Coût</label>
+            <select
+              name='system.cost'
+              data-dtype='Number'
+            >
+            {{#select system.cost}}
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="998">∞</option>
+              <option value="0">Variable</option>
+            {{/select}}
+            </select>
+            <select
+              name='system.unit'
+              data-dtype='Text'
+            >
+            {{#select system.unit}}
+              <option value="PE">PE</option>
+              <option value="PV">PV</option>
+              <option value="Corruption">Corruption</option>
+            {{/select}}
+            </select>
+        </div>
+    </div>
+  </header>
+
+  {{! Sheet Tab Navigation }}
+  <nav class='sheet-tabs tabs' data-group='primary'>
+    <a class='item' data-tab='effect'>Effet</a>
+    <a class="item" data-tab='description'>Description</a>
+    <a class='item' data-tab='note'>Note</a>
+  </nav>
+
+  {{! Sheet Body }}
+  <section class='sheet-body'>
+
+    {{! effect Tab }}
+    <div class='tab' data-group='primary' data-tab='effect'>
+      {{! Editors must receive enriched text data from getData to properly handle rolls }}
+      {{editor
+        enrichedEffect
+        target='system.effect'
+        engine='prosemirror'
+        button=true
+        editable=editable
+      }}
+    </div>
+
+    {{! description Tab }}
+    <div class='tab' data-group='primary' data-tab='description'>
+      {{! Editors must receive enriched text data from getData to properly handle rolls }}
+      {{editor
+        enrichedDescription
+        target='system.description'
+        engine='prosemirror'
+        button=true
+        editable=editable
+      }}
+    </div>
+
+    {{! note Tab }}
+    <div class='tab' data-group='primary' data-tab='note'>
+      {{! Editors must receive enriched text data from getData to properly handle rolls }}
+      {{editor
+        enrichedNote
+        target='system.note'
+        engine='prosemirror'
+        button=true
+        editable=editable
+      }}
+    </div>
+    </div>
+  </section>
+</form>

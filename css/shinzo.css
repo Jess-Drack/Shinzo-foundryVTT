@@ -364,3 +364,13 @@
 .shinzo .effects .item .effect-controls {
   border: none;
 }
+
+
+.spellCost{
+  display: flex;
+  align-items: center;
+}
+
+.labelSpellCost{
+  padding-right: 2%;
+}

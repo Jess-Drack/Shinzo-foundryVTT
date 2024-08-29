@@ -180,7 +180,7 @@
     }
   },
   "Item": {
-    "types": ["arme", "armure", "objet"],
+    "types": ["arme", "armure", "objet", "sort"],
     "templates": {
       "base": {
         "description": ""
@@ -206,6 +206,13 @@
       "templates": ["base"],
       "quality": "",
       "effect":""
+    },
+    "sort": {
+      "templates": ["base"],
+      "effect": "",
+      "cost": "",
+      "note": "",
+      "unit": ""
     }
   }
 }
