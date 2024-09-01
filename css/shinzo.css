@@ -374,3 +374,29 @@
 .labelSpellCost{
   padding-right: 2%;
 }
+
+
+
+
+.items-and-money{
+  display: flex;
+  justify-content: space-between;
+  gap: 5%;
+}
+
+.bagageList{
+  flex: 1 1;
+}
+
+.devises{
+  height: 100px;
+}
+
+.titleActorPages{
+  display: flex;
+  justify-content: center;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: underline;
+}

@@ -1,4 +1,5 @@
 <ol class='items-list'>
+  <h2 class="titleActorPages">Armes</h2>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-formula'>{{localize 'Roll Formula'}}</div>
@@ -45,6 +46,7 @@
 </ol>
 
 <ol class='items-list'>
+  <h2 class="titleActorPages">Armure / Tenue</h2>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-formula'>{{localize 'Roll Formula'}}</div>
@@ -90,8 +92,9 @@
   {{/each}}
 </ol>
 
-<div>
-  <ol class='items-list'>
+<div class=" items-and-money">
+  <ol class='items-list bagageList'>
+    <h2 class="titleActorPages">Bagages</h2>
     <li class='item flexrow items-header'>
       <div class='item-name'>{{localize 'Name'}}</div>
       <div class='item-controls'>
@@ -134,12 +137,16 @@
       </li>
     {{/each}}
   </ol>
-  <div class="abilities flexcol">
+
+  <div class="abilities flexcol devises">
+    <h2 class="titleActorPages">Devises</h2>
     {{#each system.devise as |devise key|}}
-    <div class="ability flexrow flex-group-center">
-      <label for="system.devise.{{key}}.value" class="resource-label rollable flexlarge align-left">{{key}}</label>
-      <input type="text" name="system.devise.{{key}}.value" value="{{devise.value}}" data-dtype="Number"/>
-    </div>
+      {{#if (or (eq key "or") (eq key "argent") (eq key "cuivre"))}}
+        <div class="ability flexrow flex-group-center">
+          <label for="system.devise.{{key}}.value" class="resource-label rollable flexlarge align-left">{{key}}</label>
+          <input type="text" name="system.devise.{{key}}.value" value="{{devise.value}}" data-dtype="Number"/>
+        </div>
+      {{/if}}
     {{/each}}
   </div>
 </div>
