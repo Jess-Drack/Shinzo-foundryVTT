@@ -86,6 +86,28 @@ export class ShinzoActor extends Actor {
       ss_stat2.reg.value = Math.floor((gds_stats.con.value + maitrise.esp.value) / 2 + ss_stat2.reg.mod + ss_stat2.reg.b_m);
       ss_stat2.rec.value = Math.floor((gds_stats.mag.value + maitrise.esp.value) / 2 + ss_stat2.rec.mod + ss_stat2.rec.b_m);
 
+      if(gds_stats.con.value >= 70){
+        systemData.rdp.deg_physique.value = 1;
+        systemData.rdp.res_physique.value = 1;
+      }else if(gds_stats.con.value <= 30){
+        systemData.rdp.deg_physique.value = -1;
+        systemData.rdp.res_physique.value = -1;
+      }else{
+        systemData.rdp.deg_physique.value = 0;
+        systemData.rdp.res_physique.value = 0;
+      };
+
+      if(gds_stats.mag.value >= 70){
+        systemData.rdm.deg_magique.value = 1;
+        systemData.rdm.res_magique.value = 1;
+      }else if(gds_stats.mag.value <= 30){
+        systemData.rdm.deg_magique.value = -1;
+        systemData.rdm.res_magique.value = -1;
+      }else{
+        systemData.rdm.deg_magique.value = 0;
+        systemData.rdm.res_magique.value = 0;
+      };
+
       valuation.value = Math.floor(ss_stat1.pug.value + ss_stat1.cac.value + ss_stat1.pre.value + ss_stat1.esq.value + ss_stat1.par.value + ss_stat1.dis.value + ss_stat1.obs.value + ss_stat1.per.value + ss_stat1.psy.value + ss_stat1.int.value + ss_stat2.com.value + ss_stat2.aut.value + ss_stat2.med.value + ss_stat2.pil.value + ss_stat2.art.value + ss_stat2.vit.value + ss_stat2.ins.value + ss_stat2.s_f.value + ss_stat2.reg.value + ss_stat2.rec.value - 900);
       ss_stats.totalmod.value = Math.floor(ss_stat1.pug.mod + ss_stat1.cac.mod + ss_stat1.pre.mod + ss_stat1.esq.mod + ss_stat1.par.mod + ss_stat1.dis.mod + ss_stat1.obs.mod + ss_stat1.per.mod + ss_stat1.psy.mod + ss_stat1.int.mod + ss_stat2.com.mod + ss_stat2.aut.mod + ss_stat2.med.mod + ss_stat2.pil.mod + ss_stat2.art.mod + ss_stat2.vit.mod + ss_stat2.ins.mod + ss_stat2.s_f.mod + ss_stat2.reg.mod + ss_stat2.rec.mod);
       // Loop through ability scores, and add their modifiers to our sheet output.

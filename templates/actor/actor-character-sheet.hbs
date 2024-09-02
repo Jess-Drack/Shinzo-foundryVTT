@@ -77,7 +77,7 @@
               {{#each system.rdp as |rd key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.rdp.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.rdp.{{key}}.value" value="{{rd.value}}" data-dtype="Number"/>
+                <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
               </div>
               {{/each}}
             </div>
@@ -95,7 +95,7 @@
               {{#each system.rdm as |rd key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.rdm.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.rdm.{{key}}.value" value="{{rd.value}}" data-dtype="Number"/>
+                <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
               </div>
               {{/each}}
             </div>
