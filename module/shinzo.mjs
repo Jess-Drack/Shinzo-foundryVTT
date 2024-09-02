@@ -31,7 +31,7 @@ Hooks.once('init', function () {
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: '1d100 + @ss_stats2.vit.value',
+    formula: '1d100 + @ss_stats.ss_stats2.vit.value',
     decimals: 2,
   };
 
