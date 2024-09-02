@@ -39,7 +39,8 @@
     },
     "SheetLabels": {
       "Actor": "Shinzo Actor Sheet",
-      "Item": "Shinzo Item Sheet"
+      "Item": "Shinzo Item Sheet",
+      "ActiveEffectConfig": "Shinzo ActiveEffectConfig Sheet"
     },
     "Item": {
       "Spell": {
@@ -65,7 +66,8 @@
       "objet": "Objet",
       "arme": "Arme",
       "armure": "Armure",
-      "sort": "Compétence"
+      "competence": "Compétence",
+      "trait": "Trait"
     }
   }
 }

@@ -75,3 +75,7 @@ SHINZO.caracteristiquesAbbreviations = {
   deg_magique: 'SHINZO.Caracteristique.Dem.abbr',
   res_magique: 'SHINZO.Caracteristique.Rem.abbr',
 };
+
+SHINZO.EffectChanges = {
+  "data.magie": "SHINZO.Caracteristique.Mag.long",
+}

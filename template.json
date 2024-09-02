@@ -29,9 +29,7 @@
         "loisir": ""
       },
       "valuation": {
-        "rating": {
-          "value": 100
-        }
+          "value": 0
       },
       "rdp": {
         "deg_physique": {
@@ -89,88 +87,93 @@
           "b_m": 0
         }
       },
-      "ss_stats1": {
-        "pug": {
-          "value": 0,
-          "b_m": 0
+      "ss_stats": {
+        "ss_stats1": {
+          "pug": {
+            "value": 0,
+            "b_m": 0
+          },
+          "cac": {
+            "value": 0,
+            "b_m": 0
+          },
+          "pre": {
+            "value": 0,
+            "b_m": 0
+          },
+          "esq": {
+            "value": 0,
+            "b_m": 0
+          },
+          "par": {
+            "value": 0,
+            "b_m": 0
+          },
+          "dis": {
+            "value": 0,
+            "b_m": 0
+          },
+          "obs": {
+            "value": 0,
+            "b_m": 0
+          },
+          "per": {
+            "value": 0,
+            "b_m": 0
+          },
+          "psy": {
+            "value": 0,
+            "b_m": 0
+          },
+          "int": {
+            "value": 0,
+            "b_m": 0
+          }
         },
-        "cac": {
-          "value": 0,
-          "b_m": 0
+        "ss_stats2": {
+          "com": {
+            "value": 0,
+            "b_m": 0
+          },
+          "aut": {
+            "value": 0,
+            "b_m": 0
+          },
+          "med": {
+            "value": 0,
+            "b_m": 0
+          },
+          "pil": {
+            "value": 0,
+            "b_m": 0
+          },
+          "art": {
+            "value": 0,
+            "b_m": 0
+          },
+          "vit": {
+            "value": 0,
+            "b_m": 0
+          },
+          "ins": {
+            "value": 0,
+            "b_m": 0
+          },
+          "s_f": {
+            "value": 0,
+            "b_m": 0
+          },
+          "reg": {
+            "value": 0,
+            "b_m": 0
+          },
+          "rec": {
+            "value": 0,
+            "b_m": 0
+          }
         },
-        "pre": {
-          "value": 0,
-          "b_m": 0
-        },
-        "esq": {
-          "value": 0,
-          "b_m": 0
-        },
-        "par": {
-          "value": 0,
-          "b_m": 0
-        },
-        "dis": {
-          "value": 0,
-          "b_m": 0
-        },
-        "obs": {
-          "value": 0,
-          "b_m": 0
-        },
-        "per": {
-          "value": 0,
-          "b_m": 0
-        },
-        "psy": {
-          "value": 0,
-          "b_m": 0
-        },
-        "int": {
-          "value": 0,
-          "b_m": 0
-        }
-      },
-      "ss_stats2": {
-        "com": {
-          "value": 0,
-          "b_m": 0
-        },
-        "aut": {
-          "value": 0,
-          "b_m": 0
-        },
-        "med": {
-          "value": 0,
-          "b_m": 0
-        },
-        "pil": {
-          "value": 0,
-          "b_m": 0
-        },
-        "art": {
-          "value": 0,
-          "b_m": 0
-        },
-        "vit": {
-          "value": 0,
-          "b_m": 0
-        },
-        "ins": {
-          "value": 0,
-          "b_m": 0
-        },
-        "s_f": {
-          "value": 0,
-          "b_m": 0
-        },
-        "reg": {
-          "value": 0,
-          "b_m": 0
-        },
-        "rec": {
-          "value": 0,
-          "b_m": 0
+        "totalb_m": {
+          "value": 0
         }
       }
     },
@@ -180,7 +183,7 @@
     }
   },
   "Item": {
-    "types": ["arme", "armure", "objet", "sort"],
+    "types": ["arme", "armure", "objet", "competence", "trait"],
     "templates": {
       "base": {
         "description": ""
@@ -207,10 +210,16 @@
       "quality": "",
       "effect":""
     },
-    "sort": {
+    "competence": {
       "templates": ["base"],
       "effect": "",
       "cost": "",
+      "note": "",
+      "unit": ""
+    },
+    "trait": {
+      "templates": ["base"],
+      "effect": "",
       "note": "",
       "unit": ""
     }

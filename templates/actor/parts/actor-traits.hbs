@@ -1,18 +1,19 @@
 <ol class='items-list'>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
+    <div class='item-formula'>{{localize 'Roll Formula'}}</div>
     <div class='item-controls'>
       <a
         class='item-control item-create'
         title='Create item'
-        data-type='feature'
+        data-type='trait'
       >
         <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type='feature'}}
+        {{localize 'DOCUMENT.New' type='trait'}}
       </a>
     </div>
   </li>
-  {{#each features as |item id|}}
+  {{#each trait as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>
@@ -25,18 +26,18 @@
             />
           </a>
         </div>
-        <h4>{{item.name}}</h4>
-      </div>
-      <div class='item-controls'>
         <a
           class='item-control item-edit'
-          title='{{localize "DOCUMENT.Edit" type='feature'}}'
+          title='{{localize "DOCUMENT.Edit" type='Item'}}'
         >
-          <i class='fas fa-edit'></i>
+          <h4>{{item.name}}</h4>
         </a>
+      </div>
+      <div class='item-formula item-prop'>{{item.system.formula}}</div>
+      <div class='item-controls'>
         <a
           class='item-control item-delete'
-          title='{{localize "DOCUMENT.Delete" type='feature'}}'
+          title='{{localize "DOCUMENT.Delete" type='Item'}}'
         >
           <i class='fas fa-trash'></i>
         </a>
