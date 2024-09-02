@@ -47,10 +47,12 @@ export class ShinzoActor extends Actor {
     // Make modifications to data here. For example:
     const systemData = actorData.system;
 
+      let valuation = systemData.valuation;
       let gds_stats = systemData.gds_stats;
       let maitrise = systemData.maitrises;
-      let ss_stat1 = systemData.ss_stats1;
-      let ss_stat2 = systemData.ss_stats2;
+      let ss_stats = systemData.ss_stats;
+      let ss_stat1 = ss_stats.ss_stats1;
+      let ss_stat2 = ss_stats.ss_stats2;
       
       maitrise.cor.value = Math.floor((2*gds_stats.con.value + 2*gds_stats.agi.value + gds_stats.sav.value) / 5 + maitrise.cor.b_m);
       maitrise.esp.value = Math.floor((2*gds_stats.mag.value + 2*gds_stats.men.value + gds_stats.sav.value) / 5 + maitrise.esp.b_m);
@@ -77,6 +79,8 @@ export class ShinzoActor extends Actor {
       ss_stat2.reg.value = Math.floor((gds_stats.con.value + maitrise.esp.value) / 2 + ss_stat2.reg.b_m);
       ss_stat2.rec.value = Math.floor((gds_stats.mag.value + maitrise.esp.value) / 2 + ss_stat2.rec.b_m);
 
+      valuation.value = Math.floor(ss_stat1.pug.value + ss_stat1.cac.value + ss_stat1.pre.value + ss_stat1.esq.value + ss_stat1.par.value + ss_stat1.dis.value + ss_stat1.obs.value + ss_stat1.per.value + ss_stat1.psy.value + ss_stat1.int.value + ss_stat2.com.value + ss_stat2.aut.value + ss_stat2.med.value + ss_stat2.pil.value + ss_stat2.art.value + ss_stat2.vit.value + ss_stat2.ins.value + ss_stat2.s_f.value + ss_stat2.reg.value + ss_stat2.rec.value - 900);
+      ss_stats.totalb_m.value = Math.floor(ss_stat1.pug.b_m + ss_stat1.cac.b_m + ss_stat1.pre.b_m + ss_stat1.esq.b_m + ss_stat1.par.b_m + ss_stat1.dis.b_m + ss_stat1.obs.b_m + ss_stat1.per.b_m + ss_stat1.psy.b_m + ss_stat1.int.b_m + ss_stat2.com.b_m + ss_stat2.aut.b_m + ss_stat2.med.b_m + ss_stat2.pil.b_m + ss_stat2.art.b_m + ss_stat2.vit.b_m + ss_stat2.ins.b_m + ss_stat2.s_f.b_m + ss_stat2.reg.b_m + ss_stat2.rec.b_m);
       // Loop through ability scores, and add their modifiers to our sheet output.
     /*for (let [key, maitrise] of Object.entries(systemData.maitrises)) {
       // Calculate the modifier using d20 rules.
@@ -127,9 +131,9 @@ export class ShinzoActor extends Actor {
     }
 
     // Add level for easier access, or fall back to 0.
-    if (data.valuation.rating) {
+    /*if (data.valuation.rating) {
       data.lvl = data.valuation.rating.value ?? 0;
-    }
+    }*/
   }
 
   /**

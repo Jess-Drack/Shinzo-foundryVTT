@@ -32,10 +32,10 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.valuation.rating.value" class="resource-label">Evaluation</label>
+          <label for="system.valuation.value" class="resource-label">Evaluation</label>
           <div class="resource-content flexrow flex-center flex-between">
           {{!--<input type="text" name="system.valuation.rating.value" value="{{system.valuation.rating.value}}" data-dtype="Number"/>--}}
-          <span name="system.valuation.rating.value" data-dtype="Number">{{system.valuation.rating.value}}</span>
+          <span name="system.valuation.value" data-dtype="Number">{{system.valuation.value}}</span>
           </div>
         </div>
 
@@ -47,55 +47,15 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
     <a class="item" data-tab="stat">Statistiques</a>
-    <a class="item" data-tab="resume">Résumé</a>
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="items">Items</a>
-    <a class="item" data-tab="spells">Spells</a>
+    <a class="item" data-tab="spells">Capacités</a>
+    <a class="item" data-tab="equipements">Equipements</a>
+    <a class="item" data-tab="items">Bagages</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-
-    {{!-- Owned Features Tab --}}
-    <div class="tab features" data-group="primary" data-tab="resume">
-      <section class="grid grid-3col">
-        <aside class="sidebar">
-
-          {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-          use both the "grid" and "grid-Ncol" class where "N" can be any number
-          from 1 to 12 and will create that number of columns.  --}}
-        </aside>
-
-        {{!-- For the main features list, span the right two columns --}}
-        <section class="main grid-span-2">
-          {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
-          {{> "systems/shinzo/templates/actor/parts/actor-features.hbs"}}
-        </section>
-
-      </section>
-    </div>
-
-    {{!-- Biography Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="description">
-      {{!-- Editors must receive enriched text data from getData to properly handle rolls --}}
-      {{editor enrichedBiography target="system.biography" engine="prosemirror" button=true editable=editable}}
-    </div>
-
-    {{!-- Owned Items Tab --}}
-    <div class="tab items" data-group="primary" data-tab="items">
-       {{> "systems/shinzo/templates/actor/parts/actor-items.hbs"}}
-    </div>
-
-    {{!-- Owned Spells Tab --}}
-    <div class="tab spells" data-group="primary" data-tab="spells">
-      {{> "systems/shinzo/templates/actor/parts/actor-spells.hbs"}}
-    </div>
-
-    {{!-- Active Effects Tab --}}
-    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-      {{> "systems/shinzo/templates/actor/parts/actor-effects.hbs"}}
-    </div>
 
     <div class="tab features" data-group="primary" data-tab="stat">
         <aside class="sidebar">
@@ -145,27 +105,52 @@
 
           <section class="grid grid-2col">
             <div class="abilities flexcol">
-              {{#each system.ss_stats1 as |ss_stat key|}}
+              {{#each system.ss_stats.ss_stats1 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats1.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats1.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats1.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
+                <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats1.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                <input type="text" name="system.ss_stats.ss_stats1.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
             </div>
 
             <div class="abilities flexcol">
-              {{#each system.ss_stats2 as |ss_stat key|}}
+              {{#each system.ss_stats.ss_stats2 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats2.{{key}}.b_m" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats2.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats2.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
+                <label for="system.ss_stats.ss_stats2.{{key}}.b_m" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats2.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                <input type="text" name="system.ss_stats.ss_stats2.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
             </div>
+            <p>{{system.ss_stats.totalb_m.value}}</p>
           </section>
         </aside>
 
+    </div>
+
+    {{!-- Biography Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      {{!-- Editors must receive enriched text data from getData to properly handle rolls --}}
+      {{editor enrichedBiography target="system.biography" engine="prosemirror" button=true editable=editable}}
+    </div>
+
+    {{!-- Owned Items Tab --}}
+    <div class="tab items" data-group="primary" data-tab="items">
+       {{> "systems/shinzo/templates/actor/parts/actor-items.hbs"}}
+    </div>
+
+    {{!-- Owned Spells Tab & Owned Features Tab --}}
+    <div class="tab spells" data-group="primary" data-tab="spells">
+      <p>Traits</p>
+      {{> "systems/shinzo/templates/actor/parts/actor-traits.hbs"}}
+      <p>Compétences</p>
+      {{> "systems/shinzo/templates/actor/parts/actor-competences.hbs"}}
+    </div>
+
+    {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/shinzo/templates/actor/parts/actor-effects.hbs"}}
     </div>
 
   </section>

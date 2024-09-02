@@ -18,7 +18,7 @@ export class ShinzoActorSheet extends ActorSheet {
         {
           navSelector: '.sheet-tabs',
           contentSelector: '.sheet-body',
-          initial: 'features',
+          initial: 'stat',
         },
       ],
     });
@@ -103,41 +103,41 @@ export class ShinzoActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
-    const objet = [];
-    const arme = [];
-    const armure = [];
-    const features = [];
-    const sort = [];
+    const objets = [];
+    const armes = [];
+    const armures = [];
+    const traits = [];
+    const competences = [];
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || Item.DEFAULT_ICON;
       // Append to objet.
       if (i.type === 'objet') {
-        objet.push(i);
+        objets.push(i);
       }
       else if (i.type === 'arme') {
-        arme.push(i);
+        armes.push(i);
       }
       else if (i.type === 'armure') {
-        armure.push(i);
+        armures.push(i);
       }
       // Append to features.
-      else if (i.type === 'feature') {
-        features.push(i);
+      else if (i.type === 'trait') {
+        traits.push(i);
       }
       // Append to spells.
-      else if (i.type === 'sort') {
-        sort.push(i);
+      else if (i.type === 'competence') {
+        competences.push(i);
       }
     }
 
     // Assign and return
-    context.objet = objet;
-    context.arme = arme;
-    context.armure = armure;
-    context.features = features;
-    context.sort = sort;
+    context.objet = objets;
+    context.arme = armes;
+    context.armure = armures;
+    context.trait = traits;
+    context.competence = competences;
   }
 
   /* -------------------------------------------- */
