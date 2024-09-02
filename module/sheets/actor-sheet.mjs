@@ -180,6 +180,7 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.on('click', '.rollable', this._onRoll.bind(this));
+    html.on('click', '.deSsStat', this._onRoll2.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -252,6 +253,50 @@ export class ShinzoActorSheet extends ActorSheet {
         rollMode: game.settings.get('core', 'rollMode'),
       });
       return roll;
+    }
+  }
+
+  async _onRoll2(event){
+    const valueStat = event.target.dataset["dice"];
+    const statName = event.target.dataset["statname"];
+    const jetFormule = "1d100";
+  
+    let roll = new Roll(jetFormule);
+    await roll.evaluate();
+
+    if(roll.total <= 5) {
+      const text = "C'est une réussite critique !!!!"
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: text,
+      });
+    } else if(roll.total >= 96) {
+      const text = "C'est un échec critique !!!!"
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: text,
+      });
+    } else if( roll.total < valueStat) {
+      if(statName === "pug" || statName === "cac" || statName === "pre" || statName === "esq"){
+        const rollDiff = valueStat - roll.total;
+        const text = `C'est une réussite ! La différence est de ${rollDiff} !`;
+        roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: text,
+        });
+      } else {
+        const text = "C'est une réussite !";
+        roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: text,
+        });
+      }
+    } else if( roll.total > valueStat) {
+      const text = "C'est un echec"
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: text,
+      });
     }
   }
 }

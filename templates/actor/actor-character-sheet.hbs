@@ -105,9 +105,9 @@
             <div class="abilities flexcol">
               {{#each system.ss_stats.ss_stats1 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats1.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label deSsStat flexlarge align-left" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                 <input type="text" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
-                <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
+                <span class="ability-mod deSsStat" data-dice="{{ss_stat.value}}" data-statName="ababab" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
             </div>
@@ -115,9 +115,9 @@
             <div class="abilities flexcol">
               {{#each system.ss_stats.ss_stats2 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats2.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label deSsStat flexlarge align-left" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                 <input type="text" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
-                <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
+                <span class="ability-mod deSsStat" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
             </div>
