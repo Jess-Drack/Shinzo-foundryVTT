@@ -62,9 +62,9 @@
           {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
           use both the "grid" and "grid-Ncol" class where "N" can be any number
           from 1 to 12 and will create that number of columns.  --}}
-          <div class="abilities flexcol">
+          <div class="abilities flexcol gdsStatsGroup">
             {{#each system.gds_stats as |gd_stat key|}}
-            <div class="ability flexrow flex-group-center">
+            <div class="ability flexrow flex-group-center gdsStatsGroupInput">
               <label for="system.gds_stats.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
               <input type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
               <span class="ability-mod rollable" data-roll="d100+@abilities.{{key}}.mod" data-label="{{localize (lookup @root.config.abilities key)}}">{{gd_stat.brut}}</span>
@@ -82,9 +82,9 @@
               {{/each}}
             </div>
 
-            <div class="abilities flexcol">
+            <div class="abilities flexcol gdsStatsGroup">
               {{#each system.maitrises as |maitrise key|}}
-              <div class="ability flexrow flex-group-center">
+              <div class="ability flexrow flex-group-center gdsStatsGroupInput">
                 <label for="system.maitrises.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{maitrise.value}}</span>
               </div>
@@ -121,8 +121,8 @@
               </div>
               {{/each}}
             </div>
-            <p>{{system.ss_stats.totalmod.value}}</p>
           </section>
+          <h4 class="titleActorPages">Total des bonus et malus : {{system.ss_stats.totalmod.value}}</h4>
         </aside>
 
     </div>
@@ -140,9 +140,9 @@
 
     {{!-- Owned Spells Tab & Owned Features Tab --}}
     <div class="tab spells" data-group="primary" data-tab="spells">
-      <p>Traits</p>
+      <h4 class="titleActorPages">Traits</h4>
       {{> "systems/shinzo/templates/actor/parts/actor-traits.hbs"}}
-      <p>Compétences</p>
+      <h4 class="titleActorPages">Compétences</h4>
       {{> "systems/shinzo/templates/actor/parts/actor-competences.hbs"}}
     </div>
 

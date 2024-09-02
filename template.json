@@ -58,12 +58,7 @@
           "brut": 0,
           "b_m": 0
         },
-        "cha": {
-          "value": 50,
-          "brut": 0,
-          "b_m": 0
-        },
-        "sav": {
+        "men": {
           "value": 50,
           "brut": 0,
           "b_m": 0
@@ -73,7 +68,12 @@
           "brut": 0,
           "b_m": 0
         },
-        "men": {
+        "cha": {
+          "value": 50,
+          "brut": 0,
+          "b_m": 0
+        },
+        "sav": {
           "value": 50,
           "brut": 0,
           "b_m": 0
