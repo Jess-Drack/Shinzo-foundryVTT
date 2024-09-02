@@ -49,7 +49,6 @@
     <a class="item" data-tab="stat">Statistiques</a>
     <a class="item" data-tab="description">Description</a>
     <a class="item" data-tab="spells">Capacités</a>
-    <a class="item" data-tab="equipements">Equipements</a>
     <a class="item" data-tab="items">Bagages</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
@@ -87,7 +86,6 @@
               {{#each system.maitrises as |maitrise key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.maitrises.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.maitrises.{{key}}.b_m" value="{{maitrise.b_m}}" data-dtype="Number"/>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{maitrise.value}}</span>
               </div>
               {{/each}}
