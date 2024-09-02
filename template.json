@@ -50,26 +50,32 @@
       "gds_stats": {
         "con": {
           "value": 50,
+          "brut": 0,
           "b_m": 0
         },
         "agi": {
           "value": 50,
+          "brut": 0,
           "b_m": 0
         },
         "cha": {
           "value": 50,
+          "brut": 0,
           "b_m": 0
         },
         "sav": {
           "value": 50,
+          "brut": 0,
           "b_m": 0
         },
         "mag": {
           "value": 50,
+          "brut": 0,
           "b_m": 0
         },
         "men": {
           "value": 50,
+          "brut": 0,
           "b_m": 0
         }
       },
@@ -91,88 +97,108 @@
         "ss_stats1": {
           "pug": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "cac": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "pre": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "esq": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "par": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "dis": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "obs": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "per": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "psy": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "int": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           }
         },
         "ss_stats2": {
           "com": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "aut": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "med": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "pil": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "art": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "vit": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "ins": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "s_f": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "reg": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           },
           "rec": {
             "value": 0,
+            "mod": 0,
             "b_m": 0
           }
         },
-        "totalb_m": {
+        "totalmod": {
           "value": 0
         }
       },

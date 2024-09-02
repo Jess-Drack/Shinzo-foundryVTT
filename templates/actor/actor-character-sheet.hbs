@@ -67,7 +67,7 @@
             <div class="ability flexrow flex-group-center">
               <label for="system.gds_stats.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
               <input type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
-              {{!--<span class="ability-mod rollable" data-roll="d100+@abilities.{{key}}.mod" data-label="{{localize (lookup @root.config.abilities key)}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>--}}
+              <span class="ability-mod rollable" data-roll="d100+@abilities.{{key}}.mod" data-label="{{localize (lookup @root.config.abilities key)}}">{{gd_stat.brut}}</span>
             </div>
             {{/each}}
           </div>
@@ -106,7 +106,7 @@
               {{#each system.ss_stats.ss_stats1 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats1.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats.ss_stats1.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
+                <input type="text" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
@@ -115,13 +115,13 @@
             <div class="abilities flexcol">
               {{#each system.ss_stats.ss_stats2 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats.ss_stats2.{{key}}.b_m" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats2.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats.ss_stats2.{{key}}.b_m" value="{{ss_stat.b_m}}" data-dtype="Number"/>
+                <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d100+@ss_stats.ss_stats2.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                <input type="text" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
                 <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
               </div>
               {{/each}}
             </div>
-            <p>{{system.ss_stats.totalb_m.value}}</p>
+            <p>{{system.ss_stats.totalmod.value}}</p>
           </section>
         </aside>
 
