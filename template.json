@@ -18,11 +18,13 @@
     },
     "character": {
       "templates": ["base"],
-      "description": {
+      "description1": {
         "age": "",
         "genre": "",
         "taille": "",
-        "poids": "",
+        "poids": ""
+      },
+      "description2": {
         "race": "",
         "classe": "",
         "metier": "",

@@ -76,6 +76,17 @@ SHINZO.caracteristiquesAbbreviations = {
   res_magique: 'SHINZO.Caracteristique.Rem.abbr',
 };
 
+SHINZO.description = {
+  age: "SHINZO.Description.Age",
+  genre: "SHINZO.Description.Genre",
+  taille: "SHINZO.Description.Taille",
+  poids: "SHINZO.Description.Poids",
+  race: "SHINZO.Description.Race",
+  classe: "SHINZO.Description.Classe",
+  metier: "SHINZO.Description.Metier",
+  loisir: "SHINZO.Description.Loisir"
+}
+
 SHINZO.EffectChanges = {
   "data.magie": "SHINZO.Caracteristique.Mag.long",
 }

@@ -57,79 +57,14 @@
   <section class="sheet-body">
 
     <div class="tab features" data-group="primary" data-tab="stat">
-        <aside class="sidebar">
-
-          {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-          use both the "grid" and "grid-Ncol" class where "N" can be any number
-          from 1 to 12 and will create that number of columns.  --}}
-          <div class="abilities flexcol gdsStatsGroup">
-            {{#each system.gds_stats as |gd_stat key|}}
-            <div class="ability flexrow flex-group-center gdsStatsGroupInput">
-              <label for="system.gds_stats.{{key}}.value" class="resource-label deStat flexlarge align-left" data-dice="{{gd_stat.brut}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-              <input type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
-              <span class="ability-mod deStat" data-dice="{{gd_stat.brut}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.abilities key)}}">{{gd_stat.brut}}</span>
-            </div>
-            {{/each}}
-          </div>
-
-          <section class="grid grid-3col">
-            <div class="abilities flexcol">
-              {{#each system.rdp as |rd key|}}
-              <div class="ability flexrow flex-group-center">
-                <label for="system.rdp.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
-              </div>
-              {{/each}}
-            </div>
-
-            <div class="abilities flexcol gdsStatsGroup">
-              {{#each system.maitrises as |maitrise key|}}
-              <div class="ability flexrow flex-group-center gdsStatsGroupInput">
-                <label for="system.maitrises.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <span class="ability-mod rollable" data-roll="d100+@gds_stats.{{key}}.mod" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{maitrise.value}}</span>
-              </div>
-              {{/each}}
-            </div>
-
-            <div class="abilities flexcol">
-              {{#each system.rdm as |rd key|}}
-              <div class="ability flexrow flex-group-center">
-                <label for="system.rdm.{{key}}.value" class="resource-label rollable flexlarge align-left" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
-              </div>
-              {{/each}}
-            </div>
-          </section>
-
-          <section class="grid grid-2col">
-            <div class="abilities flexcol">
-              {{#each system.ss_stats.ss_stats1 as |ss_stat key|}}
-              <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label deStat flexlarge align-left" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
-                <span class="ability-mod deStat" data-dice="{{ss_stat.value}}" data-statName="ababab" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
-              </div>
-              {{/each}}
-            </div>
-
-            <div class="abilities flexcol">
-              {{#each system.ss_stats.ss_stats2 as |ss_stat key|}}
-              <div class="ability flexrow flex-group-center">
-                <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label deStat flexlarge align-left" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
-                <input type="text" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
-                <span class="ability-mod deStat" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
-              </div>
-              {{/each}}
-            </div>
-          </section>
-          <h4 class="titleActorPages">Total des bonus et malus : {{system.ss_stats.totalmod.value}}</h4>
-        </aside>
-
+      {{> "systems/shinzo/templates/actor/parts/actor-stats.hbs"}}
     </div>
 
     {{!-- Biography Tab --}}
     <div class="tab biography" data-group="primary" data-tab="description">
       {{!-- Editors must receive enriched text data from getData to properly handle rolls --}}
+      {{> "systems/shinzo/templates/actor/parts/actor-description.hbs"}}
+      <h4 class="titleActorPages">Histoire</h4>
       {{editor enrichedBiography target="system.biography" engine="prosemirror" button=true editable=editable}}
     </div>
 

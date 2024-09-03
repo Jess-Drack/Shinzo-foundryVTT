@@ -37,6 +37,16 @@
       "Dem": { "long": "Dégâts magique", "abbr": "dégâts M" },
       "Rem": { "long": "Résistance magique", "abbr": "res M" }
     },
+    "Description": {
+      "Age": "Age",
+      "Genre": "Genre",
+      "Taille": "Taille",
+      "Poids": "Poids",
+      "Race": "Race",
+      "Classe": "Classe",
+      "Metier": "Metier",
+      "Loisir": "Loisir"
+    },
     "SheetLabels": {
       "Actor": "Shinzo Actor Sheet",
       "Item": "Shinzo Item Sheet",
