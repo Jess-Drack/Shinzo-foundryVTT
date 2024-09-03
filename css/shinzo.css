@@ -353,6 +353,10 @@
   flex: 0 0 200px;
   padding: 0 8px;
 }
+.shinzo .item-res {
+  flex: 0 0 130px;
+  padding: 0 8px;
+}
 .shinzo .effects .item .effect-source,
 .shinzo .effects .item .effect-duration,
 .shinzo .effects .item .effect-controls {

@@ -180,7 +180,8 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.on('click', '.rollable', this._onRoll.bind(this));
-    html.on('click', '.deStat', this._onRoll2.bind(this));
+    html.on('click', '.deStat', this._onRollStats.bind(this));
+    html.on('click', '.deArme', this._onRollArmes.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -256,7 +257,7 @@ export class ShinzoActorSheet extends ActorSheet {
     }
   }
 
-  async _onRoll2(event){
+  async _onRollStats(event){
     const valueStat = event.target.dataset["dice"];
     const statName = event.target.dataset["label"];
     const statNameAbridged = event.target.dataset["statname"];
@@ -300,5 +301,19 @@ export class ShinzoActorSheet extends ActorSheet {
         flavor: text,
       });
     }
+  }
+
+  async _onRollArmes(event){
+    const jetFormule = event.currentTarget.dataset["formule"];
+    const nomArme = event.currentTarget.dataset["nom"];
+    const actor = this.actor;
+
+    let roll = new Roll(jetFormule);
+    
+    const text = `${actor.name} inflige ses dégâts avec ${nomArme} :`
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: text,
+    });
   }
 }

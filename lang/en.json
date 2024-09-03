@@ -70,7 +70,8 @@
   "TYPES": {
     "Actor": {
       "character": "Personnage",
-      "npc": "PNJ"
+      "npc": "PNJ",
+      "illu": "Illustration"
     },
     "Item": {
       "objet": "Objet",

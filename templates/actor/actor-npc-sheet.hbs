@@ -47,7 +47,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
     <a class="item" data-tab="stat">Statistiques</a>
-    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="note">Note</a>
     <a class="item" data-tab="spells">Capacités</a>
     <a class="item" data-tab="items">Bagages</a>
   </nav>
@@ -60,8 +60,8 @@
     </div>
 
     {{!-- Biography Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="description">
-      <h4 class="titleActorPages">Histoire</h4>
+    <div class="tab biography" data-group="primary" data-tab="note">
+      <h4 class="titleActorPages">Note</h4>
       {{editor enrichedBiography target="system.biography" engine="prosemirror" button=true editable=editable}}
     </div>
 
