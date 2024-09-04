@@ -1,4 +1,3 @@
-{{log this}} <!-- Ajoute ceci en haut du template -->
 <form class='{{cssClass}}' autocomplete="off">
 
     <!-- Effect Header -->
@@ -93,7 +92,6 @@
 
     <!-- Effects Tab -->
     <section class="tab" data-tab="effects">
-        <p>{{log options.changes.label}}</p>
         <header class="effect-change effects-header flexrow">
             <div class="key">{{ localize "EFFECT.ChangeKey" }}</div>
             <div class="mode">{{ localize "EFFECT.ChangeMode" }}</div>
@@ -106,10 +104,8 @@
             {{#each data.changes as |change i|}}
             <li class="effect-change flexrow" data-index="{{i}}">
                 <div class="key">
-                    <select name="changes.{{i}}.key">
-                        {{#each options.changes as |option|}}
-                            <option value="{{option.key}}" {{#ifEquals option.key change.key}}selected{{/ifEquals}}>{{option.label}}</option>
-                        {{/each}}
+                    <select class="effectStatChoice" name="changes.{{i}}.key">
+                            {{> "systems/shinzo/templates/activeEffect-list.hbs"}}
                     </select>
                 </div>
                 <div class="mode">

@@ -418,3 +418,7 @@
 .descGroup{
   display: flex;
 }
+
+.effectStatChoice{
+  padding-right: 40%;
+}

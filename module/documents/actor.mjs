@@ -190,6 +190,7 @@ export class ShinzoActor extends Actor {
         systemData.rdm.res_magique.value = 0;
       };
 
+      valuation.value = Math.floor(ss_stat1.pug.value + ss_stat1.cac.value + ss_stat1.pre.value + ss_stat1.esq.value + ss_stat1.par.value + ss_stat1.dis.value + ss_stat1.obs.value + ss_stat1.per.value + ss_stat1.psy.value + ss_stat1.int.value + ss_stat2.com.value + ss_stat2.aut.value + ss_stat2.med.value + ss_stat2.pil.value + ss_stat2.art.value + ss_stat2.vit.value + ss_stat2.ins.value + ss_stat2.s_f.value + ss_stat2.reg.value + ss_stat2.rec.value - 900);
       ss_stats.totalmod.value = Math.floor(ss_stat1.pug.mod + ss_stat1.cac.mod + ss_stat1.pre.mod + ss_stat1.esq.mod + ss_stat1.par.mod + ss_stat1.dis.mod + ss_stat1.obs.mod + ss_stat1.per.mod + ss_stat1.psy.mod + ss_stat1.int.mod + ss_stat2.com.mod + ss_stat2.aut.mod + ss_stat2.med.mod + ss_stat2.pil.mod + ss_stat2.art.mod + ss_stat2.vit.mod + ss_stat2.ins.mod + ss_stat2.s_f.mod + ss_stat2.reg.mod + ss_stat2.rec.mod);
   }
 

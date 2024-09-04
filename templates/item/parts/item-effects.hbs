@@ -1,98 +1,38 @@
-<form autocomplete="off">
+<ol class="items-list effects-list">
+    {{#each effects as |section sid|}}
+        <li class="items-header flexrow" data-effect-type="{{section.type}}" data-parent-id="{{@root.actor.id}}" >
+            <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+            <div class="effect-source">{{localize "SHINZO.Effect.Source"}}</div>
+            <div class="effect-source">{{localize "EFFECT.TabDuration"}}</div>
+            <div class="item-controls effect-controls flexrow">
+              <a class="effect-control" data-action="create" title="{{localize 'DOCUMENT.Create' type="Effect"}}">
+                <i class="fas fa-plus"></i> {{localize "DOCUMENT.New" type="Effect"}}
+              </a>
+            </div>
+        </li>
 
-    <!-- Details Tab -->
-    <section data-tab="details">
-
-        <div class="form-group">
-            <label>{{ localize "EFFECT.Label" }}</label>
-            <div class="form-fields">
-                <input type="text" name="label" value="{{ data.label }}"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>{{ localize "EFFECT.Disabled" }}</label>
-            <input type="checkbox" name="disabled" {{ checked data.disabled }}/>
-        </div>
-    </section>
-
-    <!-- Duration Tab -->
-    <section data-tab="duration">
-        <div class="form-group">
-            <label>{{ localize "EFFECT.DurationSecs" }}</label>
-            <div class="form-fields">
-                <input type="number" name="duration.seconds" value="{{ data.duration.seconds }}"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>{{ localize "EFFECT.StartTime" }}</label>
-            <div class="form-fields">
-                <input type="number" name="duration.startTime" value="{{ data.duration.startTime }}"/>
-            </div>
-        </div>
-        <hr/>
-        <div class="form-group">
-            <label>{{ localize "EFFECT.DurationTurns" }}</label>
-            <div class="form-fields">
-                <label>{{ localize "COMBAT.Rounds" }}</label>
-                <input type="number" name="duration.rounds" value="{{ data.duration.rounds }}"/>
-                <label>{{ localize "COMBAT.Turns" }}</label>
-                <input type="number" name="duration.turns" value="{{ data.duration.turns }}"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>{{ localize "EFFECT.Combat" }}</label>
-            <div class="form-fields">
-                <input type="text" name="duration.combat" value="{{ data.duration.combat }}" disabled/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>{{ localize "EFFECT.StartTurns" }}</label>
-            <div class="form-fields">
-                <label>{{ localize "COMBAT.Round" }}</label>
-                <input type="number" name="duration.startRound" value="{{ data.duration.startRound }}"/>
-                <label>{{ localize "COMBAT.Turn" }}</label>
-                <input type="number" name="duration.startTurn" value="{{ data.duration.startTurn }}"/>
-            </div>
-        </div>
-    </section>
-
-    <!-- Effects Tab -->
-    <section data-tab="effects">
-        <header class="effect-change effects-header flexrow">
-            <div class="key">{{ localize "EFFECT.ChangeKey" }}</div>
-            <div class="mode">{{ localize "EFFECT.ChangeMode" }}</div>
-            <div class="value">{{ localize "EFFECT.ChangeValue" }}</div>
-            <div class="effect-controls">
-                <a class="effect-control" data-action="add"><i class="far fa-plus-square"></i></a>
-            </div>
-        </header>
-        <ol class="changes-list">
-            {{#each data.changes as |change i|}}
-            <li class="effect-change flexrow" data-index="{{i}}">
-                <div class="key">
-                    <select name="changes.{{i}}.key">
-                        {{selectOptions ../config.activeEffectChanges selected=change.key localize=true}}
-                    </select>
-                </div>
-                <div class="mode">
-                    <select name="changes.{{i}}.mode" data-dtype="Number">
-                        {{selectOptions ../modes selected=change.mode}}
-                    </select>
-                </div>
-                <div class="value">
-                    <input type="text" name="changes.{{i}}.value" value="{{change.value}}"/>
-                </div>
-                <div class="effect-controls">
-                    <a class="effect-control" data-action="delete"><i class="fas fa-trash"></i></a>
-                </div>
+        <ol class="item-list">
+          {{#each section.effects as |effect|}}
+            <li class="item effect flexrow" data-effect-id="{{effect.id}}" data-parent-id="{{effect.parent.id}}">
+              <div class="item-name effect-name flexrow">
+                <img class="item-image" src="{{effect.img}}"/>
+                <h4>{{effect.name}}</h4>
+              </div>
+              <div class="effect-source">{{effect.sourceName}}</div>
+              <div class="effect-duration">{{effect.duration.label}}</div>
+              <div class="item-controls effect-controls flexrow">
+                <a class="effect-control" data-action="toggle" title="{{localize 'SHINZO.Effect.Toggle'}}">
+                  <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                </a>
+                <a class="effect-control" data-action="edit" title="{{localize 'DOCUMENT.Update' type="Effect"}}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="effect-control" data-action="delete" title="{{localize 'DOCUMENT.Delete' type="Effect"}}">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
             </li>
-            {{/each}}
+          {{/each}}
         </ol>
-    </section>
-
-    <footer class="sheet-footer">
-        <button type="submit"><i class="fas fa-save"></i> {{localize submitText}}</button>
-    </footer>
-</form>
+    {{/each}}
+</ol>

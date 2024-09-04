@@ -13,7 +13,6 @@ export class ShinzoActiveEffectConfig extends ActiveEffectConfig {
     const contexte = super.getData();
 
     contexte.config = CONFIG.SHINZO;
-    console.log(contexte.config.activeEffectChanges);
 
     return contexte;
   }
