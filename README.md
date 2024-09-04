@@ -19,7 +19,3 @@ La seconde manière consiste a simplement cloner ce répertoire GitHub dans `C:\
 ## Et ensuite ?
 
 Pour jouer avec notre système, vous devez maintenant ouvrir votre logiciel Foundry Virtual Tabletop et créer un monde avec le système Shinzo !
-
-## Bug connus 
-
-- Le champs de selection des statistiques affectés par les effets reviens à 0 à chaque regargement de page (Fermer/rouvrir ou juste ajouter une autre statistique). Ce changement est purement visuel, les effet sont bien mémorisés. Globalement, c'est chiant mais c'est pas injouable non plus donc... :eyes: 
