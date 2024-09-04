@@ -105,7 +105,47 @@
             <li class="effect-change flexrow" data-index="{{i}}">
                 <div class="key">
                     <select class="effectStatChoice" name="changes.{{i}}.key">
-                            {{> "systems/shinzo/templates/activeEffect-list.hbs"}}
+                        <option value="0" {{#if (eq change.key "0")}}selected{{/if}} selected></option>
+                        <option value="system.health.max" {{#if (eq change.key "system.health.max")}}selected{{/if}}>PV max</option>
+                        <option value="system.power.max" {{#if (eq change.key "system.power.max")}}selected{{/if}}>PE max</option>
+
+                        <option value="system.gds_stats.con.value" {{#if (eq change.key "system.gds_stats.con.value")}}selected{{/if}}>Constitution</option>
+                        <option value="system.gds_stats.con.b_m" {{#if (eq change.key "system.gds_stats.con.b_m")}}selected{{/if}}>Constitution | Brut</option>
+                        <option value="system.gds_stats.agi.value" {{#if (eq change.key "system.gds_stats.agi.value")}}selected{{/if}}>Agilité</option>
+                        <option value="system.gds_stats.agi.b_m" {{#if (eq change.key "system.gds_stats.agi.b_m")}}selected{{/if}}>Agilité | Brut</option>
+                        <option value="system.gds_stats.men.value" {{#if (eq change.key "system.gds_stats.men.value")}}selected{{/if}}>Mental</option>
+                        <option value="system.gds_stats.men.b_m" {{#if (eq change.key "system.gds_stats.men.b_m")}}selected{{/if}}>Mental | Brut</option>
+                        <option value="system.gds_stats.mag.value" {{#if (eq change.key "system.gds_stats.mag.value")}}selected{{/if}}>Magie</option>
+                        <option value="system.gds_stats.mag.b_m" {{#if (eq change.key "system.gds_stats.mag.b_m")}}selected{{/if}}>Magie | Brut</option>
+                        <option value="system.gds_stats.cha.value" {{#if (eq change.key "system.gds_stats.cha.value")}}selected{{/if}}>Charisme</option>
+                        <option value="system.gds_stats.cha.b_m" {{#if (eq change.key "system.gds_stats.cha.b_m")}}selected{{/if}}>Charisme | Brut</option>
+                        <option value="system.gds_stats.sav.value" {{#if (eq change.key "system.gds_stats.sav.value")}}selected{{/if}}>Savoir</option>
+                        <option value="system.gds_stats.sav.b_m" {{#if (eq change.key "system.gds_stats.sav.b_m")}}selected{{/if}}>Savoir | Brut</option>
+
+                        <option value="system.maitrises.cor.b_m" {{#if (eq change.key "system.maitrises.cor.b_m")}}selected{{/if}}>Corps</option>
+                        <option value="system.maitrises.esp.b_m" {{#if (eq change.key "system.maitrises.esp.b_m")}}selected{{/if}}>Esprit</option>
+                        <option value="system.maitrises.soc.b_m" {{#if (eq change.key "system.maitrises.soc.b_m")}}selected{{/if}}>Social</option>
+
+                        <option value="system.ss_stats.ss_stats1.pug.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.pug.b_m")}}selected{{/if}}>Pugilat</option>
+                        <option value="system.ss_stats.ss_stats1.cac.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.cac.b_m")}}selected{{/if}}>Arme Cac</option>
+                        <option value="system.ss_stats.ss_stats1.pre.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.pre.b_m")}}selected{{/if}}>Précision</option>
+                        <option value="system.ss_stats.ss_stats1.esq.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.esq.b_m")}}selected{{/if}}>Esquive</option>
+                        <option value="system.ss_stats.ss_stats1.par.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.par.b_m")}}selected{{/if}}>Parade</option>
+                        <option value="system.ss_stats.ss_stats1.dis.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.dis.b_m")}}selected{{/if}}>Discrétion</option>
+                        <option value="system.ss_stats.ss_stats1.obs.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.obs.b_m")}}selected{{/if}}>Observation</option>
+                        <option value="system.ss_stats.ss_stats1.per.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.per.b_m")}}selected{{/if}}>Perception</option>
+                        <option value="system.ss_stats.ss_stats1.psy.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.psy.b_m")}}selected{{/if}}>Psyché</option>
+                        <option value="system.ss_stats.ss_stats1.int.b_m" {{#if (eq change.key "system.ss_stats.ss_stats1.int.b_m")}}selected{{/if}}>Intimidation</option>
+                        <option value="system.ss_stats.ss_stats2.com.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.com.b_m")}}selected{{/if}}>Communication</option>
+                        <option value="system.ss_stats.ss_stats2.aut.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.aut.b_m")}}selected{{/if}}>Autorité</option>
+                        <option value="system.ss_stats.ss_stats2.med.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.med.b_m")}}selected{{/if}}>Médecine</option>
+                        <option value="system.ss_stats.ss_stats2.pil.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.pil.b_m")}}selected{{/if}}>Pilotage</option>
+                        <option value="system.ss_stats.ss_stats2.art.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.art.b_m")}}selected{{/if}}>Artisanat</option>
+                        <option value="system.ss_stats.ss_stats2.vit.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.vit.b_m")}}selected{{/if}}>Vitesse</option>
+                        <option value="system.ss_stats.ss_stats2.ins.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.ins.b_m")}}selected{{/if}}>Instinct</option>
+                        <option value="system.ss_stats.ss_stats2.s_f.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.s_f.b_m")}}selected{{/if}}>Sang-froid</option>
+                        <option value="system.ss_stats.ss_stats2.reg.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.reg.b_m")}}selected{{/if}}>Régénération de PV</option>
+                        <option value="system.ss_stats.ss_stats2.rec.b_m" {{#if (eq change.key "system.ss_stats.ss_stats2.rec.b_m")}}selected{{/if}}>Récupération de PE</option>
                     </select>
                 </div>
                 <div class="mode">
