@@ -381,6 +381,13 @@
 
 /*Truc ajouté*/
 
+@font-face {
+  font-family: 'DancingScript';
+  src: url('../font/DancingScript-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .items-and-money{
   display: flex;
   justify-content: space-between;
@@ -421,4 +428,39 @@
 
 .effectStatChoice{
   padding-right: 40%;
+}
+
+.window-content{
+  padding: 0 !important;
+}
+
+/*PJ-Sheet*/
+.actor{
+  min-width: 650px;
+  min-height: 640px; 
+}
+
+.actorSheet{
+  padding: 8px;
+  background-image: url(../assets/Fond.jpg);
+  background-size: cover; /* L'image couvre toute la div, en remplissant l'espace sans distorsion */
+  background-position: center; /* Centre l'image dans la div */
+  background-repeat: no-repeat; /* Empêche la répétition de l'image */
+}
+
+
+.ppActor{
+  border-radius: 50px;
+  border:none;
+  box-shadow: 2px 5px 3px rgba(0,0,0,0.2)
+}
+
+.actorName{
+  text-align: center !important;
+  border: none !important;
+  outline: none !important;
+  background: rgba(0, 0, 0, 0.0) !important;
+  font-family: DancingScript !important;
+  text-decoration: underline;
+  font-weight: bold;
 }
