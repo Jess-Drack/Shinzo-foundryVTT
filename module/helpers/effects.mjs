@@ -1,3 +1,4 @@
+import { ShinzoActiveEffectConfig } from '../sheets/activeEffectConfig-sheet.mjs';
 /**
  * Manage Active Effect instances through an Actor or Item Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
@@ -25,7 +26,10 @@ export function onManageActiveEffect(event, owner) {
         },
       ]);
     case 'edit':
-      return effect.sheet.render(true);
+      if(effect){
+        const effectConfig = new ShinzoActiveEffectConfig(effect);
+        return effectConfig.render(true);
+      } break;
     case 'delete':
       return effect.delete();
     case 'toggle':

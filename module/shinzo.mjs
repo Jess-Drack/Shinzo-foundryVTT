@@ -4,7 +4,6 @@ import { ShinzoItem } from './documents/item.mjs';
 // Import sheet classes.
 import { ShinzoActorSheet } from './sheets/actor-sheet.mjs';
 import { ShinzoItemSheet } from './sheets/item-sheet.mjs';
-import { ShinzoActiveEffectConfig } from './sheets/activeEffectConfig-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { SHINZO } from './helpers/config.mjs';
@@ -19,7 +18,6 @@ Hooks.once('init', function () {
   game.shinzo = {
     ShinzoActor,
     ShinzoItem,
-    ShinzoActiveEffectConfig,
     rollItemMacro,
   };
 
@@ -38,7 +36,6 @@ Hooks.once('init', function () {
   // Define custom Document classes
   CONFIG.Actor.documentClass = ShinzoActor;
   CONFIG.Item.documentClass = ShinzoItem;
-  CONFIG.ActiveEffect.sheetClass = ShinzoActiveEffectConfig;
 
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
@@ -56,11 +53,6 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'SHINZO.SheetLabels.Item',
   });
-  /*ActiveEffect.unregisterSheet('sheetClass', ActiveEffectConfig);
-  ActiveEffect.registerSheet('shinzo', ShinzoActiveEffectConfig, {
-    makeDefault: true,
-    label: 'SHINZO.SheetLabels.ActiveEffectConfig',
-  });*/
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();

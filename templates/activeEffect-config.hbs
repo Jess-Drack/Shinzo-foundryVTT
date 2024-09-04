@@ -1,9 +1,10 @@
-<form autocomplete="off">
+{{log this}} <!-- Ajoute ceci en haut du template -->
+<form class='{{cssClass}}' autocomplete="off">
 
     <!-- Effect Header -->
     <header class="sheet-header">
-        <img class="effect-icon" src="{{ data.icon }}" data-edit="icon">
-        <h1 class="effect-title">{{ data.label }}</h1>
+        <img class="effect-icon" src="{{ data.img }}" data-edit="img">
+        <h1 class="effect-title"><input type="text" name="label" value="{{ data.name }}" placeholder="Name"/></h1>
     </header>
 
     <!-- Effect Configuration Tabs -->
@@ -17,22 +18,7 @@
     <section class="tab" data-tab="details">
 
         <div class="form-group">
-            <label>{{ localize "EFFECT.Label" }}</label>
-            <div class="form-fields">
-                <input type="text" name="label" value="{{ data.label }}"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>{{ localize "EFFECT.Icon" }}</label>
-            <div class="form-fields">
-                {{filePicker target="icon" type="image"}}
-                <input class="image" type="text" name="icon" placeholder="path/image.png" value="{{data.icon}}"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>{{ localize "EFFECT.IconTint" }}</label>
+            <label>{{ localize "EFFECT.Tint" }}</label>
             <div class="form-fields">
                 <input class="color" type="text" name="tint" value="{{data.tint}}"/>
                 <input type="color" value="{{data.tint}}" data-edit="tint"/>
@@ -107,6 +93,7 @@
 
     <!-- Effects Tab -->
     <section class="tab" data-tab="effects">
+        <p>{{log options.changes.label}}</p>
         <header class="effect-change effects-header flexrow">
             <div class="key">{{ localize "EFFECT.ChangeKey" }}</div>
             <div class="mode">{{ localize "EFFECT.ChangeMode" }}</div>
@@ -120,7 +107,9 @@
             <li class="effect-change flexrow" data-index="{{i}}">
                 <div class="key">
                     <select name="changes.{{i}}.key">
-                        {{selectOptions ../config.activeEffectChanges selected=change.key localize=true}}
+                        {{#each options.changes as |option|}}
+                            <option value="{{option.key}}" {{#ifEquals option.key change.key}}selected{{/ifEquals}}>{{option.label}}</option>
+                        {{/each}}
                     </select>
                 </div>
                 <div class="mode">

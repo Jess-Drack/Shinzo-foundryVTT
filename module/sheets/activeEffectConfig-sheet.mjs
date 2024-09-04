@@ -3,14 +3,17 @@
  * @extends {ActiveEffectConfig}
  */
 export class ShinzoActiveEffectConfig extends ActiveEffectConfig {
-  get template() {
-    return "systems/shinzo/templates/activeEffectConfig-sheet.hbs";
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      template: 'systems/shinzo/templates/activeEffect-config.hbs'  // Chemin vers ton modèle personnalisé
+    });
   }
 
   getData() {
     const contexte = super.getData();
 
     contexte.config = CONFIG.SHINZO;
+    console.log(contexte.config.activeEffectChanges);
 
     return contexte;
   }

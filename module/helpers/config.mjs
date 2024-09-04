@@ -87,6 +87,13 @@ SHINZO.description = {
   loisir: "SHINZO.Description.Loisir"
 }
 
-SHINZO.EffectChanges = {
-  "data.magie": "SHINZO.Caracteristique.Mag.long",
+SHINZO.activeEffectChanges = {
+  con: {
+    key: "system.gds_stats.con.value",
+    label: "SHINZO.Caracteristique.Con.long"
+  },
+  mag: {
+    key: "system.gds_stats.mag.value",
+    label: "SHINZO.Caracteristique.Mag.long"
+  },
 }
