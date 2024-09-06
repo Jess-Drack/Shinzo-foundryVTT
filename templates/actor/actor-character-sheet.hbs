@@ -4,38 +4,50 @@
   <header class="sheet-header">
     <div class="header-fields">
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" class="actorName"/></h1>
-      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  --}}
       <div class="resources grid grid-3col">
-        {{!-- "flex-group-center" is also defined in the _grid.scss file
-        and it will add a small amount of padding, a border, and will
-        center all of its child elements content and text. --}}
         <div class="resource flex-group-center">
-          <label for="system.health.value" class="resource-label">Vitalité</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
-            <span> / </span>
-            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+          <div>
+            <img class="pvpe" src="systems/shinzo/assets/sheet/coeur.png" />
+            <input type="text" class="inputPvPe" name="system.health.max" value="{{system.health.max}}" data-dtype="Number">
+          </div>
+          <div class="resDegatContainer">
+            <div>
+            <img class="rdp" src="systems/shinzo/assets/sheet/Bphysique.png"/>
+            <span class="resDegatValue resPhys" type="text" name="system.rdp.res_physique.value" data-dtype="Number">{{system.rdp.res_physique.value}}</span>
+            </div>
+            <div>
+              <img class="rdp" src="systems/shinzo/assets/sheet/sword.png"/>
+              <span class="resDegatValue degPhys" type="text" name="system.rdp.deg_physique.value" data-dtype="Number">{{system.rdp.deg_physique.value}}</span>
+            </div>
           </div>
         </div>
 
-        <div class="resource flex-group-center">
+        <div class="resource flex-group-center ppWrapper">
           <img class="profile-img ppActor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+          <img class="ppCadre" src="systems/shinzo/assets/sheet/cadre2.png" />
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.power.value" class="resource-label">Energie</label>
-          <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.power.value" value="{{system.power.value}}" data-dtype="Number"/>
-          <span> / </span>
-          <input type="text" name="system.power.max" value="{{system.power.max}}" data-dtype="Number"/>
+          <div>
+            <img class="pvpe" src="systems/shinzo/assets/sheet/pe.png" />
+            <input type="text" class="inputPvPe pe" name="system.power.max" value="{{system.power.max}}" data-dtype="Number">
+          </div>
+            <div class="resDegatContainer">
+              <div>
+              <img class="rdp" src="systems/shinzo/assets/sheet/staff.png"/>
+              <span class="resDegatValue degMag" type="text" name="system.rdm.deg_magique.value" data-dtype="Number">{{system.rdm.deg_magique.value}}</span>
+              </div>
+              <div>
+                <img class="rdp" src="systems/shinzo/assets/sheet/Bmagique.png"/>
+                <span class="resDegatValue resMag" type="text" name="system.rdm.deg_magique.value" data-dtype="Number">{{system.rdm.deg_magique.value}}</span>
+              </div>
           </div>
         </div>
       </div>
-      <div class="resource flex-group-center">
+
+      <!--div class="resource flex-group-center">
         <label for="system.valuation.value" class="resource-label">Evaluation : {{system.valuation.value}}</label>
-      </div>
+      </div-->
     </div>
   </header>
 

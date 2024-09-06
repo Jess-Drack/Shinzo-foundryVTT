@@ -241,7 +241,7 @@
 .shinzo .sheet-body,
 .shinzo .sheet-body .tab,
 .shinzo .sheet-body .tab .editor {
-  height: 100%;
+  height: 75%;
 }
 .shinzo .tox .tox-editor-container {
   background: #fff;
@@ -430,29 +430,22 @@
   padding-right: 40%;
 }
 
+/*PJ-Sheet*/
 .window-content{
-  padding: 0 !important;
+  background-image: url(../assets/Fond.jpg) !important;
+  background-size: cover !important; /* L'image couvre toute la div, en remplissant l'espace sans distorsion */
+  background-position: center !important; /* Centre l'image dans la div */
+  background-repeat: no-repeat !important; /* Empêche la répétition de l'image */
+  z-index: 0 !important;
 }
 
-/*PJ-Sheet*/
-.actor{
-  min-width: 650px;
-  min-height: 640px; 
+.app.window-app.shinzo.sheet.actor{
+  min-width: 800px !important;
+  min-height: 755px !important; 
 }
 
 .actorSheet{
   padding: 8px;
-  background-image: url(../assets/Fond.jpg);
-  background-size: cover; /* L'image couvre toute la div, en remplissant l'espace sans distorsion */
-  background-position: center; /* Centre l'image dans la div */
-  background-repeat: no-repeat; /* Empêche la répétition de l'image */
-}
-
-
-.ppActor{
-  border-radius: 50px;
-  border:none;
-  box-shadow: 2px 5px 3px rgba(0,0,0,0.2)
 }
 
 .actorName{
@@ -464,3 +457,89 @@
   text-decoration: underline;
   font-weight: bold;
 }
+
+.deStat:hover {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+
+.ppWrapper {
+  position: relative;
+  width: 160px !important; /* Ajuste selon la taille de ton cadre */
+  height: 160px !important; /* Ajuste selon la taille de ton cadre */
+  margin: auto;
+}
+
+.ppActor {
+  width: 130px !important; /* Ajuste la taille de l'image de profil */
+  height: 130px !important; /* Assure-toi que ce soit légèrement plus petit que le cadre */
+  border-radius: 50%;
+  border: none;
+  box-shadow: 2px 5px 3px rgba(0,0,0,0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ppCadre {
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+}
+
+.inputPvPe{
+  width: 5% !important;
+  border: none !important;
+  outline: none !important;
+  background: rgba(0, 0, 0, 0.0) !important;
+  position: absolute;
+  left: 14.4%;
+  top: 17%;
+}
+
+.pe{
+  left: 78.5%;
+}
+
+.pvpe {
+  border: none;
+  filter: sepia(1) saturate(1000%) hue-rotate(-50deg);
+}
+
+.resDegatContainer{
+  display: flex;
+  justify-content: center;
+  gap: 25%;
+}
+
+.resDegatValue{
+  position: absolute;
+  top: 26.5%;
+  font-weight: bold;
+}
+
+.rdp{
+  border: none;
+}
+
+.resPhys{
+  left: 9.3%;
+}
+
+.degPhys{
+  left: 23.2%;
+}
+
+.degMag{
+  right: 26.5%;
+}
+
+.resMag{
+  right: 10.3%;
+}
+
