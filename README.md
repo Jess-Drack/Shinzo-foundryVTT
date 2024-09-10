@@ -11,10 +11,13 @@ Il y a deux manières très simple d'installer ce système :
 
 La première manière consiste à cliquer sur le bouton Code en vert situé tout en haut de la page. Une fois que vous l'avez fait, cliquez sur "Download ZIP".
 Afin d'utiliser le système, vous devez extraire le dossier dans un endroit particulier. Extrayez le dans `C:\Users\[Username]\AppData\Local\FoundryVTT\Data\systems`.
+</br>
+####⚠️ **RENOMMEZ LE DOSSIER EN "shinzo" EXACTEMENT, NE LAISSEZ PAS "Shinzo-foundryVTT" !!!** ⚠️
 
 ### Cloner le répertoire
 
 La seconde manière consiste a simplement cloner ce répertoire GitHub dans `C:\Users\[Username]\AppData\Local\FoundryVTT\Data\systems`.
+####⚠️ **RENOMMEZ LE DOSSIER EN "shinzo" EXACTEMENT, NE LAISSEZ PAS "Shinzo-foundryVTT" !!!** ⚠️
 
 ## Et ensuite ?
 
