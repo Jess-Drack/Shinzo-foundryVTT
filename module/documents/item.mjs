@@ -43,12 +43,48 @@ export class ShinzoItem extends Item {
     const label = `[${item.type}] ${item.name}`;
 
     // If there's no roll data, send a chat message.
-    if (!this.system.formula) {
+    if (item.type === "trait") {
       ChatMessage.create({
         speaker: speaker,
         rollMode: rollMode,
         flavor: label,
-        content: item.system.description ?? '',
+        content: `${item.system.effect} <i>${item.system.description}</i>`,
+      });
+    }
+
+    else if (item.type === "competence") {
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: `Coûts: ${item.system.cost} ${item.system.unit} ${item.system.effect} <i>${item.system.description}</i>`,
+      });
+    }
+
+    else if (item.type === "arme") {
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: `Dégâts: ${item.system.damage} <i>${item.system.type}</i> ${item.system.effect} <i>${item.system.description}</i>`,
+      });
+    }
+
+    else if (item.type === "armure") {
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: `${item.system.effect} <i>${item.system.description}</i>`,
+      });
+    }
+
+    else if (item.type === "objet") {
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: `${item.system.effect} <i>${item.system.description}</i>`,
       });
     }
     // Otherwise, create a roll and send a chat message from it.

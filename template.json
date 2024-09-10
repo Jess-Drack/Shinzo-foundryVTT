@@ -5,12 +5,12 @@
       "base": {
         "health": {
           "value": 0,
-          "min": 0,
+          "min": -30,
           "max": 30
         },
         "power": {
           "value": 0,
-          "min": 0,
+          "min": -30,
           "max": 30
         },
         "biography": ""
@@ -431,7 +431,7 @@
     },
     "trait": {
       "templates": ["base"],
-      "effect": "",
+      "effect": [],
       "note": "",
       "unit": ""
     }

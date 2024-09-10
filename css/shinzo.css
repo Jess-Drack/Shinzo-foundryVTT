@@ -424,10 +424,10 @@
 }
 
 /*PJ-Sheet*/
-.window-content{
-  background-image: url(../assets/Fond.jpg) !important;
-  background-size: cover !important; /* L'image couvre toute la div, en remplissant l'espace sans distorsion */
-  background-position: center !important; /* Centre l'image dans la div */
-  background-repeat: no-repeat !important; /* Empêche la répétition de l'image */
-  z-index: 0 !important;
+.window-app .window-content{
+  background-image: url(../assets/Fond.jpg);
+  background-size: cover; /* L'image couvre toute la div, en remplissant l'espace sans distorsion */
+  background-position: center; /* Centre l'image dans la div */
+  background-repeat: no-repeat; /* Empêche la répétition de l'image */
+  z-index: 0;
 }

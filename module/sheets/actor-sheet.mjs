@@ -240,6 +240,7 @@ export class ShinzoActorSheet extends ActorSheet {
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
+        console.log(item)
         if (item) return item.roll();
       }
     }
@@ -262,7 +263,6 @@ export class ShinzoActorSheet extends ActorSheet {
     const statName = event.target.dataset["label"];
     const statNameAbridged = event.target.dataset["statname"];
     const jetFormule = "1d100";
-    console.log(valueStat);
   
     let roll = new Roll(jetFormule);
     await roll.evaluate();

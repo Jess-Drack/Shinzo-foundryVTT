@@ -1,3 +1,5 @@
+{{log this}}
+{{log data}}
 <form class='{{cssClass}}' autocomplete='off'>
   <header class='sheet-header'>
     <div class='header-fields'>
@@ -22,6 +24,21 @@
 
     {{! effect Tab }}
     <div class='tab' data-group='primary' data-tab='effect'>
+      <ol class="item-list">
+          {{#each data.effects as |effect i|}}
+            <li class="item effect flexrow" data-index="{{i}}">
+              <ol class="changes-list">
+            {{#each effect.changes as |change i|}}
+            <li class="effect-change flexrow" data-index="{{i}}">
+                <div class="key">
+                  <input type="text" name="system.effect" value="{{change.key}} {{change.value}}"></input>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+            </li>
+          {{/each}}
+      </ol>
       {{! Editors must receive enriched text data from getData to properly handle rolls }}
       {{> "systems/shinzo/templates/item/parts/item-effects.hbs"}}
     </div>
