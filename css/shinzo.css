@@ -431,3 +431,23 @@
   background-repeat: no-repeat; /* Empêche la répétition de l'image */
   z-index: 0;
 }
+
+.underline{
+  text-decoration: underline;
+}
+
+.radio-style {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #999;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.radio-style:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
