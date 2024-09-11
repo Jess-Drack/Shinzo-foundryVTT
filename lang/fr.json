@@ -7,6 +7,12 @@
       "Sav": { "long": "Savoir", "abbr": "sav" },
       "Mag": { "long": "Magie", "abbr": "mag" },
       "Men": { "long": "Mental", "abbr": "men" },
+      "ConB": { "long": "Constitution Brute", "abbr": "con B" },
+      "AgiB": { "long": "Agilité Brute", "abbr": "agi B" },
+      "ChaB": { "long": "Charisme Brute", "abbr": "cha B" },
+      "SavB": { "long": "Savoir Brute", "abbr": "sav B" },
+      "MagB": { "long": "Magie Brute", "abbr": "mag B" },
+      "MenB": { "long": "Mental Brute", "abbr": "men B" },
       
       "Cor": { "long": "Corps", "abbr": "cor" },
       "Esp": { "long": "Esprit", "abbr": "esp" },
