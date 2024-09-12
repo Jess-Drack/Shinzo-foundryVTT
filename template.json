@@ -457,7 +457,7 @@
     },
     "trait": {
       "templates": ["base"],
-      "effect": [],
+      "effect": ["-"],
       "note": "",
       "unit": ""
     }
