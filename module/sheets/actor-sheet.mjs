@@ -182,6 +182,7 @@ export class ShinzoActorSheet extends ActorSheet {
     html.on('click', '.rollable', this._onRoll.bind(this));
     html.on('click', '.deStat', this._onRollStats.bind(this));
     html.on('click', '.deArme', this._onRollArmes.bind(this));
+    html.on('click', '.deSpe', this._onRollSpe.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -266,15 +267,16 @@ export class ShinzoActorSheet extends ActorSheet {
   
     let roll = new Roll(jetFormule);
     await roll.evaluate();
+    console.log(roll.evaluate);
 
     if(roll.total <= 5) {
-      const text = `[${statName}] C'est une réussite critique !!!!`
+      const text = `[<span class="reussite">${statName}</span>] C'est une <span class="reussite">réussite critique</span> !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
       });
     } else if(roll.total >= 96) {
-      const text = `[${statName}] C'est un échec critique !!!!`
+      const text = `[<span class="echec">${statName}</span>] C'est un <span class="echec">échec critique</span> !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
@@ -282,20 +284,20 @@ export class ShinzoActorSheet extends ActorSheet {
     } else if( roll.total < valueStat) {
       if(statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
         const rollDiff = valueStat - roll.total;
-        const text = `[${statName}] C'est une réussite ! La différence est de ${rollDiff} !`;
+        const text = `[<span class="reussite">${statName}</span>] C'est une réussite. La différence est de ${rollDiff}.`;
         roll.toMessage({
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
           flavor: text,
         });
       } else {
-        const text = `[${statName}] C'est une réussite !`;
+        const text = `[<span class="reussite">${statName}</span>] C'est une réussite.`;
         roll.toMessage({
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
           flavor: text,
         });
       }
     } else if( roll.total > valueStat) {
-      const text = `[${statName}] C'est un echec`
+      const text = `[<span class="echec">${statName}</span>] C'est un echec.`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
@@ -307,13 +309,41 @@ export class ShinzoActorSheet extends ActorSheet {
     const jetFormule = event.currentTarget.dataset["formule"];
     const nomArme = event.currentTarget.dataset["nom"];
     const actor = this.actor;
+    const bonus = actor.system.rdp.deg_physique.value;
+    let roll;
 
-    let roll = new Roll(jetFormule);
+    if(bonus != 0){
+      roll = new Roll(jetFormule + "+" + bonus);
+    } else {
+      roll = new Roll(jetFormule);
+    }
     
     const text = `${actor.name} inflige ses dégâts avec ${nomArme} :`
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: text,
     });
+  }
+
+  async _onRollSpe(event){
+    const statName = event.target.dataset["label"];
+    const jetFormule = "1d150";
+  
+    let roll = new Roll(jetFormule);
+    await roll.evaluate();
+
+    if(roll.total <= 100) {
+      const text = `[${statName} Spé] C'est une réussite de spé !!!!`;
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: text,
+      });
+    } else if( roll.total > 100) {
+      const text = `[${statName} Spé] C'est un échec de spé... Préparez vous à affronter les conséquences...`;
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: text,
+      });
+    }
   }
 }
