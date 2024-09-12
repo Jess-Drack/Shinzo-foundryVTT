@@ -84,7 +84,8 @@
       "arme": "Arme",
       "armure": "Armure",
       "competence": "Compétence",
-      "trait": "Trait"
+      "trait": "Trait",
+      "equipement": "Equipement"
     }
   }
 }

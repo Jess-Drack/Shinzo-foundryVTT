@@ -452,19 +452,19 @@
         "description": ""
       }
     },
+    "armure": {
+      "templates": ["base"],
+      "poids": "",
+      "resPhysique": "0",
+      "resMagique": "0",
+      "effect": "",
+      "quality": ""
+    },
     "arme": {
       "templates": ["base"],
       "type" : "",
       "polyvalence": "",
       "damage": "",
-      "effect": "",
-      "quality": ""
-    },
-    "armure": {
-      "templates": ["base"],
-      "poids": "",
-      "resPhysique": "",
-      "resMagique": "",
       "effect": "",
       "quality": ""
     },
