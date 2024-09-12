@@ -36,16 +36,7 @@
       "path": "lang/fr.json"
     }
   ],
-  "packs": [
-    {
-      "name": "rules",
-      "label": "Livre des règles",
-      "system": "shinzo",
-      "path": "packs/rules",
-      "type": "JournalEntry",
-      "private": false
-    }
-  ],
+  "packs": [],
   "packFolders": [],
   "socket": false,
   "manifest": "Replace this with a link to the /latest release system.json so people can receive updates after they've installed the system",
