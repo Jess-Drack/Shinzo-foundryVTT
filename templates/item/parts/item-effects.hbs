@@ -1,21 +1,31 @@
-<ol class="items-list effects-list">
-  <li class="items-header flexrow" data-effect-type="inactive" data-parent-id="{{@root.actor.id}}" >
-            <div class="item-controls effect-controls flexrow">
-              <a class="effect-control" data-action="create" title="{{localize 'DOCUMENT.Create' type="Effect"}}">
-                <i class="fas fa-plus"></i> {{localize "DOCUMENT.New" type="Effect"}}
-              </a>
-            </div>
-            </li>
+{{log item}}
+<ol class="effects items-list effects-list">
+
+      <li class="items-header flexrow" data-effect-type="passive" data-parent-id="{{item.actor.id}}" >
+          <div class="effect-source">Effets</div>
+          <div class="effect-duration">{{localize "EFFECT.TabDuration"}}</div>
+          <div class="item-controls effect-controls flexrow">
+            <a class="effect-control" data-action="create" title="{{localize 'DOCUMENT.Create' type="Effect"}}">
+              <i class="fas fa-plus"></i> {{localize "DOCUMENT.New" type="Effect"}}
+            </a>
+          </div>
+        </li>
 
         <ol class="item-list">
           {{#each data.effects as |effect|}}
-          {{log effect}}
             <li class="item effect flexrow" data-effect-id="{{effect._id}}" data-parent-id="{{effect.origin}}">
-              <div class="item-name effect-name flexrow">
-                <h4>{{effect.name}}</h4>
+              <div>
+                <ol>
+                  {{#each effect.changes as |change i|}}
+                    <li class="effect-change flexrow" data-index="{{i}}">
+                      <div class="effect-source">
+                        <span name="system.effect">{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}</span>
+                      </div>
+                    </li>
+                  {{/each}}
+                </ol>
               </div>
-              <div class="effect-source">{{effect.sourceName}}</div>
-              <div class="effect-duration">{{effect.duration.label}}</div>
+              <div class="effect-duration">{{effect.duration.rounds}}</div>
               <div class="item-controls effect-controls flexrow">
                 <a class="effect-control" data-action="toggle" title="{{localize 'SHINZO.Effect.Toggle'}}">
                   <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>

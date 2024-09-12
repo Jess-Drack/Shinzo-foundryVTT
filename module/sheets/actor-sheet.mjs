@@ -267,19 +267,60 @@ export class ShinzoActorSheet extends ActorSheet {
   
     let roll = new Roll(jetFormule);
     await roll.evaluate();
-    console.log(roll.evaluate);
 
     if(roll.total <= 5) {
-      const text = `[<span class="reussite">${statName}</span>] C'est une <span class="reussite">réussite critique</span> !!!!`
+      const text = `[<span class="reussite">${statName}</span>] C'est une réussite critique !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
+        content: `
+          <div class="dice-roll">
+            <div class="dice-result">
+              <div class="dice-formula">${jetFormule}</div>
+              <div class="dice-tooltip">
+                <section class="tooltip-part">
+                  <div class="dice">
+                    <header class="part-header flexrow">
+                      <span class="part-formula">${jetFormule}</span>
+                
+                      <span class="part-total">${roll.total}</span>
+                    </header>
+                  <ol class="dice-rolls">
+                    <li class="roll die d100 max">${roll.total}</li>
+                  </ol>
+                </div>
+              </section>
+            </div>
+              <h4 class="dice-total reussite">${roll.total}</h4>
+            </div>
+          </div>`,
       });
     } else if(roll.total >= 96) {
-      const text = `[<span class="echec">${statName}</span>] C'est un <span class="echec">échec critique</span> !!!!`
+      const text = `[<span class="echec">${statName}</span>] C'est un échec critique !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
+        content: `
+          <div class="dice-roll">
+            <div class="dice-result">
+              <div class="dice-formula">${jetFormule}</div>
+              <div class="dice-tooltip">
+                <section class="tooltip-part">
+                  <div class="dice">
+                    <header class="part-header flexrow">
+                      <span class="part-formula">${jetFormule}</span>
+                
+                      <span class="part-total">${roll.total}</span>
+                    </header>
+                  <ol class="dice-rolls">
+                    <li class="roll die d100 min">${roll.total}</li>
+                  </ol>
+                </div>
+              </section>
+            </div>
+              <h4 class="dice-total echec">${roll.total}</h4>
+            </div>
+          </div>`,
       });
     } else if( roll.total < valueStat) {
       if(statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
