@@ -451,3 +451,61 @@
   background-color: #007bff;
   border-color: #007bff;
 }
+
+.app.window-app.shinzo.sheet.actor{
+  min-width: 850px;
+  min-height: 665px;
+}
+
+/* Animation pour clignoter lentement entre deux rouges */
+@keyframes clignoter {
+  0% {
+    color: #8b0000; /* Rouge foncé */
+  }
+  50% {
+    color: #ff4d4d; /* Rouge clair */
+  }
+  100% {
+    color: #8b0000; /* Retour au rouge foncé */
+  }
+}
+
+@keyframes clignoterHover {
+  0% {
+    color: #ff4d4d; /* Rouge foncé */
+  }
+  25% {
+    color: yellow; /* Rouge clair */
+  }
+  50% {
+    color: gold; /* Retour au rouge foncé */
+  }
+  75% {
+    color: yellow; /* Rouge clair */
+  }
+  100% {
+    color: #ff4d4d; /* Rouge foncé */
+  }
+}
+
+.deSpe {
+  font-weight: bold;
+  color: #8b0000; /* Rouge foncé */
+  animation: clignoter 3s infinite; /* Animation qui clignote entre rouge foncé et rouge clair */
+  transition: all .2s;
+}
+
+.deSpe:hover {
+  color: red;
+  animation: none; /* Désactiver l'animation de clignotement au hover */
+  animation: clignoterHover 1s infinite;
+  text-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue, 0 0 20px blue, 0 0 25px blue;
+}
+
+.reussite{
+  color: green;
+}
+
+.echec{
+  color: red;
+}
