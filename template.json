@@ -269,27 +269,32 @@
         "agi": {
           "value": 50,
           "brut": 0,
-          "b_m": 0
+          "b_m": 0,
+          "spe": false
         },
         "men": {
           "value": 50,
           "brut": 0,
-          "b_m": 0
+          "b_m": 0,
+          "spe": false
         },
         "mag": {
           "value": 50,
           "brut": 0,
-          "b_m": 0
+          "b_m": 0,
+          "spe": false
         },
         "cha": {
           "value": 50,
           "brut": 0,
-          "b_m": 0
+          "b_m": 0,
+          "spe": false
         },
         "sav": {
           "value": 50,
           "brut": 0,
-          "b_m": 0
+          "b_m": 0,
+          "spe": false
         }
       },
       "maitrises":{
@@ -311,104 +316,124 @@
           "pug": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "cac": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "pre": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "esq": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "par": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "dis": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "obs": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "per": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "psy": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "int": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           }
         },
         "ss_stats2": {
           "com": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "aut": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "med": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "pil": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "art": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "vit": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "ins": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "s_f": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "reg": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           },
           "rec": {
             "value": 0,
             "mod": 0,
-            "b_m": 0
+            "b_m": 0,
+            "spe": false
           }
         },
         "totalmod": {
