@@ -24,21 +24,6 @@
     <div class='tab' data-group='primary' data-tab='effect'>
       {{! Editors must receive enriched text data from getData to properly handle rolls }}
       {{> "systems/shinzo/templates/item/parts/item-effects.hbs"}}
-      <ol class="item-list">
-          {{#each data.effects as |effect i|}}
-            <li class="item effect flexrow" data-index="{{i}}">
-              <ol class="changes-list">
-            {{#each effect.changes as |change i|}}
-            <li class="effect-change flexrow" data-index="{{i}}">
-                <div class="key">
-                  <input type="hidden" name="system.effect" value="{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}"></input>
-                </div>
-            </li>
-            {{/each}}
-        </ol>
-            </li>
-          {{/each}}
-      </ol>
     </div>
 
     {{! description Tab }}

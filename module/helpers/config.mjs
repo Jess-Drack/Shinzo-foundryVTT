@@ -101,7 +101,7 @@ SHINZO.activeEffectChanges = {
   "system.gds_stats.cha.b_m": 'SHINZO.Caracteristique.ChaB.abbr',
   "system.gds_stats.sav.b_m": 'SHINZO.Caracteristique.SavB.abbr',
   "system.gds_stats.mag.b_m": 'SHINZO.Caracteristique.MagB.abbr',
-  "system.gds_stats.ment.b_m": 'SHINZO.Caracteristique.MenB.abbr',
+  "system.gds_stats.men.b_m": 'SHINZO.Caracteristique.MenB.abbr',
   "system.maitrises.cor.b_m": 'SHINZO.Caracteristique.Cor.abbr',
   "system.maitrises.esp.b_m": 'SHINZO.Caracteristique.Esp.abbr',
   "system.maitrises.soc.b_m": 'SHINZO.Caracteristique.Soc.abbr',

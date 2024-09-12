@@ -14,13 +14,12 @@
         <ol class="item-list">
           {{#each data.effects as |effect|}}
             <li class="item effect flexrow" data-effect-id="{{effect._id}}" data-parent-id="{{effect.origin}}">
-              <div>
-                <ol>
+              <div class="effect-source">
+                <ol style="padding: 0;">
                   {{#each effect.changes as |change i|}}
                     <li class="effect-change flexrow" data-index="{{i}}">
-                      <div class="effect-source">
                         <span name="system.effect">{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}</span>
-                      </div>
+                        <input type="hidden" name="system.effect" value="{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}"></input>
                     </li>
                   {{/each}}
                 </ol>
