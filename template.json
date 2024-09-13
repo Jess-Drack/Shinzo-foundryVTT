@@ -35,18 +35,22 @@
       },
       "rdp": {
         "deg_physique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         },
         "res_physique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         }
       },
       "rdm": {
         "deg_magique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         },
         "res_magique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         }
       },
       "gds_stats": {

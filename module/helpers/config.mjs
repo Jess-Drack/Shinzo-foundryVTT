@@ -125,4 +125,8 @@ SHINZO.activeEffectChanges = {
   "system.ss_stats.ss_stats2.s_f.b_m": 'SHINZO.Caracteristique.S_f.abbr',
   "system.ss_stats.ss_stats2.reg.b_m": 'SHINZO.Caracteristique.Reg.abbr',
   "system.ss_stats.ss_stats2.rec.b_m": 'SHINZO.Caracteristique.Rec.abbr',
+  "system.rdp.deg_physique.b_m":"SHINZO.Caracteristique.Dep.abbr",
+  "system.rdm.deg_magique.b_m":"SHINZO.Caracteristique.Dem.abbr",
+  "system.rdp.res_physique.b_m":"SHINZO.Caracteristique.Rep.abbr",
+  "system.rdm.res_magique.b_m":"SHINZO.Caracteristique.Rem.abbr",
 }

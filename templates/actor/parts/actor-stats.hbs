@@ -12,7 +12,9 @@
               </div>
               <input type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
               <span class="ability-mod rollable deStat" data-dice="{{gd_stat.brut}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{gd_stat.brut}}</span>
+              <div class="checkspe">
               <input type="checkbox" name="system.gds_stats.{{key}}.spe" {{#if gd_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
+              </div>
             </div>
         {{/each}}
     </div>
@@ -56,7 +58,9 @@
                 </div>
                 <input type="text" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
                 <span class="ability-mod rollable deStat" data-dice="{{ss_stat.value}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
+                <div class="checkspe">
                 <input type="checkbox" name="system.ss_stats.ss_stats1.{{key}}.spe" {{#if ss_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
+                </div>
               </div>
               {{/each}}
             </div>
@@ -70,7 +74,9 @@
                 </div>
                 <input type="text" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
                 <span class="ability-mod rollable deStat" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
+                <div class="checkspe">
                 <input type="checkbox" name="system.ss_stats.ss_stats2.{{key}}.spe" {{#if ss_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
+                </div>
               </div>
               {{/each}}
             </div>

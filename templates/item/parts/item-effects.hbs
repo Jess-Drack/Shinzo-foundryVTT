@@ -2,6 +2,7 @@
 <ol class="effects items-list effects-list">
 
       <li class="items-header flexrow" data-effect-type="passive" data-parent-id="{{item.actor.id}}" >
+        <h3 class="item-name effect-name flexrow">{{localize "EFFECT.Name"}}</h3>
           <div class="effect-source">Effets</div>
           <div class="effect-duration">{{localize "EFFECT.TabDuration"}}</div>
           <div class="item-controls effect-controls flexrow">
@@ -14,15 +15,16 @@
         <ol class="item-list">
           {{#each data.effects as |effect|}}
             <li class="item effect flexrow" data-effect-id="{{effect._id}}" data-parent-id="{{effect.origin}}">
+              <div class="item-name effect-name flexrow">
+                <h4>{{effect.name}}</h4>
+              </div>
               <div class="effect-source">
-                <ol style="padding: 0;">
                   {{#each effect.changes as |change i|}}
-                    <li class="effect-change flexrow" data-index="{{i}}">
+                    <ol class="effect-change flexrow" data-index="{{i}}" style="padding: 0;">
                         <span name="system.effect">{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}</span>
                         <input type="hidden" name="system.effect" value="{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}"></input>
-                    </li>
+                    </ol>
                   {{/each}}
-                </ol>
               </div>
               <div class="effect-duration">{{effect.duration.rounds}}</div>
               <div class="item-controls effect-controls flexrow">

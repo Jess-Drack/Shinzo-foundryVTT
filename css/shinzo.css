@@ -436,10 +436,17 @@
   text-decoration: underline;
 }
 
+.checkspe{
+  width: 50px;
+  height: 15px;
+  flex: none;
+}
+
 .radio-style {
+  margin: 0 !important;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 15px !important;
+  height: 15px !important;
   border: 2px solid #999;
   border-radius: 50%;
   outline: none;
@@ -448,8 +455,8 @@
 }
 
 .radio-style:checked {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #292b2c71;
+  border-color: #292b2c71;
 }
 
 .app.window-app.shinzo.sheet.actor{
