@@ -36,7 +36,29 @@
       "path": "lang/fr.json"
     }
   ],
-  "packs": [],
+  "packs": [
+    {
+      "name": "rules",
+      "label": "Livre des règles",
+      "system": "shinzo",
+      "path": "packs/rules",
+      "type": "JournalEntry"
+    },
+    {
+      "name": "characters",
+      "label": "Personnages importants",
+      "system": "shinzo",
+      "path": "packs/characters",
+      "type": "Actor",
+      "flags": {
+        "shinzo": {
+            "types": [
+                "character"
+            ]
+        }
+    }
+    }
+  ],
   "packFolders": [],
   "socket": false,
   "manifest": "Replace this with a link to the /latest release system.json so people can receive updates after they've installed the system",
