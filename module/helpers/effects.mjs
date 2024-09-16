@@ -31,7 +31,29 @@ export function onManageActiveEffect(event, owner) {
         return effectConfig.render(true);
       } break;
     case 'delete':
-      return effect.delete();
+      console.log("Oui je passe ici");
+      new Dialog({
+        title: "Confirmation",
+        content: `<p>Êtes-vous sûr de vouloir supprimer ${effect.name} ?</p>`,
+        buttons: {
+          yes: {
+            label: "Oui",
+            callback: async () => {
+              // Vérifier que l'effet existe encore avant de le supprimer
+              if (effect) {
+                ui.notifications.info(`${effect.name} supprimé.`);
+                await effect.delete();
+              }
+            }
+          },
+          no: {
+            label: "Non",
+            callback: () => {}
+          }
+        },
+        default: "no"
+      }).render(true);
+      break;
     case 'toggle':
       return effect.update({ disabled: !effect.disabled });
   }
