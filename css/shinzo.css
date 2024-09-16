@@ -436,10 +436,14 @@
   text-decoration: underline;
 }
 
-.checkspe{
+.checkspe, .item-equiped{
   width: 50px;
   height: 15px;
   flex: none;
+}
+
+.item-equiped{
+  width: 20px;
 }
 
 .radio-style {

@@ -31,13 +31,13 @@
           </div>
         </div>
 
-        <!--div class="resource flex-group-center">
+        <div class="resource flex-group-center">
           <label for="system.valuation.value" class="resource-label">Evaluation</label>
           <div class="resource-content flexrow flex-center flex-between">
           {{!--<input type="text" name="system.valuation.rating.value" value="{{system.valuation.rating.value}}" data-dtype="Number"/>--}}
           <span name="system.valuation.value" data-dtype="Number">{{system.valuation.value}}</span>
           </div>
-        </div>-->
+        </div>
 
       </div>
     </div>
@@ -50,6 +50,7 @@
     <a class="item" data-tab="note">Note</a>
     <a class="item" data-tab="spells">Capacités</a>
     <a class="item" data-tab="items">Bagages</a>
+    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -74,6 +75,10 @@
     <div class="tab spells" data-group="primary" data-tab="spells">
       <h4 class="titleActorPages">Compétences</h4>
       {{> "systems/shinzo/templates/actor/parts/actor-competences.hbs"}}
+    </div>
+
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/shinzo/templates/actor/parts/actor-effects.hbs"}}
     </div>
 
   </section>

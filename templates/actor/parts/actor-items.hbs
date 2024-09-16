@@ -32,6 +32,9 @@
         <div class='item-formula item-prop'>{{item.system.damage}}</div>
       </a>
       <div class='item-controls'>
+        <div class='item-equiped'>
+          <input type='checkbox' name="item.system.equiped" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
+        </div>
         <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
           <i class="fas fa-edit"></i>
         </a>
@@ -77,6 +80,9 @@
       <div class='item-res item-prop'>{{item.system.resPhysique}}</div>
       <div class='item-res item-prop'>{{item.system.resMagique}}</div>
       <div class='item-controls'>
+        <div class='item-equiped'>
+          <input type='checkbox' name="item.system.equiped" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
+        </div>
         <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
           <i class="fas fa-edit"></i>
         </a>

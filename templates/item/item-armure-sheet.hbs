@@ -73,7 +73,13 @@
           data-dtype='Number'
         />
       <label class='resource-label'>Effet additionel</label>
-        <textarea name='system.effect'data-dtype='text-area'>{{system.effect}}</textarea>
+      {{editor
+        enrichedEffect
+        target='system.effect'
+        engine='prosemirror'
+        button=true
+        editable=editable
+      }}
     </div>
 
     {{! Description Tab }}

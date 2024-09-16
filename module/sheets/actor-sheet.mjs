@@ -76,6 +76,23 @@ export class ShinzoActorSheet extends ActorSheet {
       }
     );
 
+        // Enrich biography info for display
+    // Enrichment turns text like `[[/r 1d20]]` into buttons
+    context.enrichedNote = await TextEditor.enrichHTML(
+      this.actor.system.note,
+      {
+        // Whether to show secret blocks in the finished html
+        secrets: this.document.isOwner,
+        // Necessary in v11, can be removed in v12
+        async: true,
+        // Data to fill in for inline rolls
+        rollData: this.actor.getRollData(),
+        // Relative UUID resolution
+        relativeTo: this.actor,
+      }
+    );
+
+
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(
       // A generator that returns all effects stored on the actor
@@ -160,13 +177,6 @@ export class ShinzoActorSheet extends ActorSheet {
     // Add Inventory Item
     html.on('click', '.item-create', this._onItemCreate.bind(this));
 
-    // Delete Inventory Item
-    html.on('click', '.item-delete', (ev) => {
-      const li = $(ev.currentTarget).parents('.item');
-      const item = this.actor.items.get(li.data('itemId'));
-      item.delete();
-      li.slideUp(200, () => this.render(false));
-    });
 
     // Active Effect management
     html.on('click', '.effect-control', (ev) => {
@@ -178,11 +188,40 @@ export class ShinzoActorSheet extends ActorSheet {
       onManageActiveEffect(ev, document);
     });
 
+    /*Delete Inventory Items*/
+    html.on('click', '.item-delete', (ev) => {
+      const li = $(ev.currentTarget).parents('.item');
+      const item = this.actor.items.get(li.data('itemId'));
+
+      // Afficher une boîte de dialogue de confirmation
+      new Dialog({
+        title: "Confirmation",
+        content: `<p>Êtes-vous sûr de vouloir supprimer ${item.name} ?</p>`,
+        buttons: {
+          yes: {
+            label: "Oui",
+            callback: async () => {
+              // Effectuer la suppression ici
+              item.delete();
+              ui.notifications.info(`${item.name} supprimé.`);
+            }
+          },
+          no: {
+            label: "Non",
+            callback: () => {}
+          }
+        },
+        default: "no"
+      }).render(true);
+    })
+
     // Rollable abilities.
     html.on('click', '.rollable', this._onRoll.bind(this));
     html.on('click', '.deStat', this._onRollStats.bind(this));
     html.on('click', '.deArme', this._onRollArmes.bind(this));
     html.on('click', '.deSpe', this._onRollSpe.bind(this));
+    
+    html.on('change', '.equiped-toggle', this._equippedChange.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -386,5 +425,28 @@ export class ShinzoActorSheet extends ActorSheet {
         flavor: text,
       });
     }
+  }
+
+  async _equippedChange(event) {
+    // Récupérer l'élément lié à ce changement
+    const checkbox = event.target;
+    const itemId = $(checkbox).closest('.item').data('itemId');
+    
+    // Récupérer l'élément de l'acteur
+    const item = this.actor.items.get(itemId);
+    
+    if (!item) {
+      console.error('Item not found!');
+      return;
+    }
+  
+    // Inverser l'état 'equiped'
+    const newEquippedState = !item.system.equiped;
+  
+    // Mettre à jour l'élément
+    await item.update({ 'system.equiped': newEquippedState });
+  
+    // Optionnel : Actualiser l'affichage si nécessaire
+    this.render(false);
   }
 }

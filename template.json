@@ -234,6 +234,7 @@
           "value": 0
         }
       },
+      "note": "",
       "devise": {
           "or": {
             "value": 0
@@ -248,20 +249,27 @@
     },
     "npc": {
       "templates": ["base"],
+      "valuation": {
+        "value": 0
+      },
       "rdp": {
         "deg_physique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         },
         "res_physique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         }
       },
       "rdm": {
         "deg_magique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         },
         "res_magique": {
-          "value": 0
+          "value": 0,
+          "b_m": 0
         }
       },
       "gds_stats": {
@@ -462,7 +470,8 @@
       "resPhysique": "0",
       "resMagique": "0",
       "effect": "",
-      "quality": ""
+      "quality": "",
+      "equiped" : false
     },
     "arme": {
       "templates": ["base"],
@@ -470,7 +479,8 @@
       "polyvalence": "",
       "damage": "",
       "effect": "",
-      "quality": ""
+      "quality": "",
+      "equiped" : false
     },
     "objet": {
       "templates": ["base"],
@@ -482,7 +492,8 @@
       "effect": "",
       "cost": "",
       "note": "",
-      "unit": ""
+      "unit": "",
+      "turn": ""
     },
     "trait": {
       "templates": ["base"],
