@@ -1,1 +1,4 @@
-packs/** binary
+packs/characters/*.ldb binary -diff
+packs/characters/*.log binary -diff
+packs/rules/*.ldb binary -diff
+packs/rules/*.log binary -diff
