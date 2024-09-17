@@ -513,6 +513,10 @@
   text-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue, 0 0 20px blue, 0 0 25px blue;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .reussite{
   color: green;
 }

@@ -7,7 +7,7 @@
         {{#each system.gds_stats as |gd_stat key|}}
             <div class="ability flexrow flex-group-center gdsStatsGroupInput">
               <div>
-                <label for="system.gds_stats.{{key}}.value" class="resource-label rollable deStat flexlarge align-left" data-dice="{{gd_stat.brut}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                <label for="system.gds_stats.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if gd_stat.addCrit }}underline{{/if}}" {{#if gd_stat.addCrit }}title="Bonus/malus au critique : {{gd_stat.addCrit}}"{{/if}} data-dice="{{gd_stat.brut}}"  data-statName="{{key}}" data-crit="{{gd_stat.addCrit}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}" >{{localize (lookup @root.config.caracteristiques key)}}</label>
                 {{#if gd_stat.spe}}<span class="deSpe" data-label="{{localize (lookup @root.config.caracteristiques key)}}">Spé</span>{{/if}}
               </div>
               <input type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
@@ -53,13 +53,13 @@
               {{#each system.ss_stats.ss_stats1 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
                 <div>
-                  <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable deStat flexlarge align-left" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                  <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if ss_stat.addCrit }}underline{{/if}}" {{#if ss_stat.addCrit }}title="Bonus/malus au critique : {{ss_stat.addCrit}}"{{/if}} data-dice="{{ss_stat.value}}"  data-crit="{{ss_stat.addCrit}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                   {{#if ss_stat.spe}}<span class="deSpe" data-label="{{localize (lookup @root.config.caracteristiques key)}}">Spé</span>{{/if}}
                 </div>
                 <input type="text" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
                 <span class="ability-mod rollable deStat" data-dice="{{ss_stat.value}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
                 <div class="checkspe">
-                <input type="checkbox" name="system.ss_stats.ss_stats1.{{key}}.spe" {{#if ss_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
+                  <input type="checkbox" name="system.ss_stats.ss_stats1.{{key}}.spe" {{#if ss_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
                 </div>
               </div>
               {{/each}}
@@ -69,13 +69,13 @@
               {{#each system.ss_stats.ss_stats2 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
                 <div>
-                  <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label rollable deStat flexlarge align-left" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
+                  <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if ss_stat.addCrit }}underline{{/if}}" {{#if ss_stat.addCrit }}title="Bonus/malus au critique : {{ss_stat.addCrit}}"{{/if}} data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                   {{#if ss_stat.spe}}<span class="deSpe" data-label="{{localize (lookup @root.config.caracteristiques key)}}">Spé</span>{{/if}}                
                 </div>
                 <input type="text" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
                 <span class="ability-mod rollable deStat" data-dice="{{ss_stat.value}}"  data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.value}}</span>
                 <div class="checkspe">
-                <input type="checkbox" name="system.ss_stats.ss_stats2.{{key}}.spe" {{#if ss_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
+                  <input type="checkbox" name="system.ss_stats.ss_stats2.{{key}}.spe" {{#if ss_stat.spe}}checked{{/if}} class="specialization-toggle radio-style"/>
                 </div>
               </div>
               {{/each}}

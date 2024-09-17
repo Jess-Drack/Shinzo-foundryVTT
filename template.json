@@ -58,37 +58,43 @@
           "value": 50,
           "brut": 0,
           "b_m": 0,
-          "spe": false
+          "spe": false,
+          "addCrit": 0
         },
         "agi": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
-          "spe": false
+          "spe": false,
+          "addCrit": 0
         },
         "men": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
-          "spe": false
+          "spe": false,
+          "addCrit": 0
         },
         "mag": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
-          "spe": false
+          "spe": false,
+          "addCrit": 0
         },
         "cha": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
-          "spe": false
+          "spe": false,
+          "addCrit": 0
         },
         "sav": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
-          "spe": false
+          "spe": false,
+          "addCrit": 0
         }
       },
       "maitrises":{
@@ -111,61 +117,71 @@
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "cac": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "pre": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "esq": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "par": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "dis": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "obs": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "per": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "psy": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "int": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           }
         },
         "ss_stats2": {
@@ -173,61 +189,71 @@
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "aut": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "med": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "pil": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "art": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "vit": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "ins": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "s_f": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "reg": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           },
           "rec": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
-            "spe": false
+            "spe": false,
+            "addCrit": 0
           }
         },
         "totalmod": {

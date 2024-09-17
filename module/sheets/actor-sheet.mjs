@@ -302,12 +302,22 @@ export class ShinzoActorSheet extends ActorSheet {
     const valueStat = event.target.dataset["dice"];
     const statName = event.target.dataset["label"];
     const statNameAbridged = event.target.dataset["statname"];
+    const crit = Number(event.target.dataset["crit"]);
     const jetFormule = "1d100";
+
+    let reussiteCrit = 0;
+    let echecCrit = 0;
+
+    if(crit > 0 ){
+      reussiteCrit = crit;
+    } else if (crit < 0) {
+      echecCrit = -(crit);
+    }
   
     let roll = new Roll(jetFormule);
     await roll.evaluate();
 
-    if(roll.total <= 5) {
+    if(roll.total <= 5 + reussiteCrit) {
       const text = `[<span class="reussite">${statName}</span>] C'est une réussite critique !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -334,7 +344,7 @@ export class ShinzoActorSheet extends ActorSheet {
             </div>
           </div>`,
       });
-    } else if(roll.total >= 96) {
+    } else if(roll.total >= (96 - echecCrit)) {
       const text = `[<span class="echec">${statName}</span>] C'est un échec critique !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
