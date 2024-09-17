@@ -196,6 +196,12 @@ export class ShinzoActor extends Actor {
       ss_stat2.reg.value = Math.floor((gds_stats.con.value + maitrise.esp.value) / 2 + ss_stat2.reg.mod + ss_stat2.reg.b_m);
       ss_stat2.rec.value = Math.floor((gds_stats.mag.value + maitrise.esp.value) / 2 + ss_stat2.rec.mod + ss_stat2.rec.b_m);
 
+      let gdStats = [gds_stats.con, gds_stats.agi, gds_stats.cha, gds_stats.sav, gds_stats.mag, gds_stats.men]
+      let ssStats = [ss_stat1.pug, ss_stat1.cac, ss_stat1.pre,ss_stat1.esq, ss_stat1.par, ss_stat1.dis, ss_stat1.obs, ss_stat1.per,ss_stat1.psy, ss_stat1.int, ss_stat2.com, ss_stat2.aut, ss_stat2.med,ss_stat2.pil, ss_stat2.art, ss_stat2.vit, ss_stat2.ins, ss_stat2.s_f,ss_stat2.reg, ss_stat2.rec];
+
+      gdStats.forEach(stat => checkGdStat(stat));
+      ssStats.forEach(stat => checkStat(stat));
+
       if(gds_stats.con.value >= 70){
         systemData.rdp.deg_physique.value = Math.floor(1 + systemData.rdp.deg_physique.b_m);
         systemData.rdp.res_physique.value = Math.floor(1 + systemData.rdp.res_physique.b_m);
