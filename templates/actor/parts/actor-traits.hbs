@@ -2,16 +2,18 @@
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-effects'>Effets</div>
-    <div class='item-controls'>
-      <a
-        class='item-control item-create'
-        title='Create item'
-        data-type='trait'
-      >
-        <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type='trait'}}
-      </a>
-    </div>
+    {{#if editable}}
+      <div class='item-controls'>
+        <a
+          class='item-control item-create'
+          title='Create item'
+          data-type='trait'
+        >
+          <i class='fas fa-plus'></i>
+          {{localize 'DOCUMENT.New' type='trait'}}
+        </a>
+      </div>
+    {{/if}}
   </li>
   {{#each trait as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
@@ -31,14 +33,16 @@
         </a>
       </div>
       <div class='item-effects item-prop'>{{system.effect}}</div>
-      <div class='item-controls'>
-        <a class='item-control item-edit' title='{{localize "DOCUMENT.Edit" type='Item'}}'>
-          <i class="fas fa-edit"></i>
-        </a>
-        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
-          <i class='fas fa-trash'></i>
-        </a>
-      </div>
+      {{#if ../editable}}
+        <div class='item-controls'>
+          <a class='item-control item-edit' title='{{localize "DOCUMENT.Edit" type='Item'}}'>
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
+            <i class='fas fa-trash'></i>
+          </a>
+        </div>
+      {{/if}}
     </li>
   {{/each}}
 </ol>

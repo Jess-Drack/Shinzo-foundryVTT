@@ -3,7 +3,7 @@
         {{#each system.description1 as |desc key|}}
             <div class="ability flexrow flex-group-center">
               <label for="system.description1.{{key}}" data-label="{{localize (lookup @root.config.description key)}}">{{localize (lookup @root.config.description key)}}</label>
-              <input type="text" name="system.description1.{{key}}" value="{{desc}}" data-dtype="text"/>
+              <input type="text" name="system.description1.{{key}}" value="{{desc}}" data-dtype="text" {{#unless ../editable}}disabled{{/unless}}/>
             </div>
         {{/each}}
       </div>
@@ -11,7 +11,7 @@
         {{#each system.description2 as |desc key|}}
             <div class="ability flexrow flex-group-center">
               <label for="system.description2.{{key}}" data-label="{{localize (lookup @root.config.description key)}}">{{localize (lookup @root.config.description key)}}</label>
-              <input type="text" name="system.description2.{{key}}" value="{{desc}}" data-dtype="text"/>
+              <input type="text" name="system.description2.{{key}}" value="{{desc}}" data-dtype="text" {{#unless ../editable}}disabled{{/unless}}/>
             </div>
         {{/each}}
       </div>

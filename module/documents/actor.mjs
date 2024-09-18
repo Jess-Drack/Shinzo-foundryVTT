@@ -280,7 +280,6 @@ function checkStat(stat, min = 15, max = 85) {
       stat.addCrit = Math.floor((stat.value - max) / 2);
       stat.value = max;
   }
-  console.log(stat.addCrit, stat.value);
 }
 
 function checkGdStat(stat, min = 15, max = 85) {
@@ -291,5 +290,4 @@ function checkGdStat(stat, min = 15, max = 85) {
       stat.addCrit = Math.floor((stat.brut - max) / 2);
       stat.brut = max;
   }
-  console.log(stat.addCrit, stat.value);
 }

@@ -524,3 +524,47 @@
 .echec{
   color: red;
 }
+
+.toggle-edit{
+  position: absolute;
+  padding: 0.2% 1% 0.2% 1%;
+  width: 36px;
+  left: -36px;
+  background-color: black;
+  cursor: pointer;
+  transition: all 1s !important;
+}
+
+.toggle-edit.active {
+  background-color: red; /* Change background to red when active */
+}
+
+.toggle-edit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -16px; /* Adjust based on the size of the triangle */
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent; /* Size of the triangle */
+  border-bottom: 10px solid transparent; /* Size of the triangle */
+  border-right: 16px solid black; /* Color of the triangle */
+}
+
+.toggle-edit.active::before {
+  border-right: 16px solid red; /* Change background to red when active */
+}
+
+.fa-pen{
+  color: white;
+}
+
+.stat-non-editable{
+  text-align: left;
+  margin-bottom: 8px;
+  margin-left: 10%;
+}
+
+.value-non-editable{
+  display: flex;
+}

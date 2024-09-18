@@ -1,10 +1,12 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-{{log this}}
+  <div id="toggle-edit" class="toggle-edit {{#if editable}} active {{/if}}">
+      <i class="fa-solid fa-pen"></i>
+  </div>
   {{!-- Sheet Header --}}
   <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    <img class="profile-img" src="{{actor.img}}" {{#if editable}}data-edit="img"{{/if}} title="{{actor.name}}" height="100" width="100"/>
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}/></h1>
       {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
       use both the "grid" and "grid-Ncol" class where "N" can be any number
       from 1 to 12 and will create that number of columns.  --}}
@@ -18,7 +20,7 @@
           <div class="resource-content flexrow flex-center flex-between">
           <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
           <span> / </span>
-          <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+          <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" {{#unless editable}}disabled{{/unless}}/>
           </div>
         </div>
 
@@ -27,7 +29,7 @@
           <div class="resource-content flexrow flex-center flex-between">
           <input type="text" name="system.power.value" value="{{system.power.value}}" data-dtype="Number"/>
           <span> / </span>
-          <input type="text" name="system.power.max" value="{{system.power.max}}" data-dtype="Number"/>
+          <input type="text" name="system.power.max" value="{{system.power.max}}" data-dtype="Number" {{#unless editable}}disabled{{/unless}}/>
           </div>
         </div>
 

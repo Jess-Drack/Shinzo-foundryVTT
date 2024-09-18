@@ -2,6 +2,7 @@
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-cost'>Coûts</div>
+    {{#if editable}}
     <div class='item-controls'>
       <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
       data-type="competence">
@@ -9,6 +10,7 @@
       {{localize 'DOCUMENT.New' type='competence'}}
       </a>
     </div>
+    {{/if}}
   </li>
   {{#each competence as |item id|}}
     <li class='item flexrow' data-item-id='{{item._id}}'>
@@ -28,6 +30,7 @@
         </a>
       </div>
       <div class='item-cost item-prop'>{{item.system.cost}}{{item.system.unit}}{{item.system.turn}}</div>
+      {{#if ../editable }}
       <div class='item-controls'>
         <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
           <i class="fas fa-edit"></i>
@@ -36,6 +39,7 @@
           <i class='fas fa-trash'></i>
         </a>
       </div>
+      {{/if}}
     </li>
   {{/each}}
 </ol>

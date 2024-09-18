@@ -4,11 +4,13 @@
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-degat'>Dégâts</div>
     <div class='item-controls'>
-      <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-      data-type="arme">
-      <i class='fas fa-plus'></i>
-      {{localize 'DOCUMENT.New' type='arme'}}
-      </a>
+      {{#if editable}}
+        <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
+        data-type="arme">
+        <i class='fas fa-plus'></i>
+        {{localize 'DOCUMENT.New' type='arme'}}
+        </a>
+      {{/if}}
     </div>
   </li>
   {{#each arme as |item id|}}
@@ -33,14 +35,16 @@
       </a>
       <div class='item-controls'>
         <div class='item-equiped'>
-          <input type='checkbox' name="item.system.equiped" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
+          <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
         </div>
-        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-          <i class="fas fa-edit"></i>
-        </a>
-        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
-          <i class='fas fa-trash'></i>
-        </a>
+        {{#if ../editable}}
+          <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
+            <i class='fas fa-trash'></i>
+          </a>
+        {{/if}}
       </div>
     </li>
   {{/each}}
@@ -53,11 +57,13 @@
     <div class='item-res'>Résistance physique</div>
     <div class='item-res'>Résistance magique</div>
     <div class='item-controls'>
-      <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-      data-type="armure">
-      <i class='fas fa-plus'></i>
-      {{localize 'DOCUMENT.New' type='armure'}}
-      </a>
+      {{#if editable}}
+        <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
+        data-type="armure">
+        <i class='fas fa-plus'></i>
+        {{localize 'DOCUMENT.New' type='armure'}}
+        </a>
+      {{/if}}
     </div>
   </li>
   {{#each armure as |item id|}}
@@ -81,14 +87,16 @@
       <div class='item-res item-prop'>{{item.system.resMagique}}</div>
       <div class='item-controls'>
         <div class='item-equiped'>
-          <input type='checkbox' name="item.system.equiped" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
+          <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
         </div>
-        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-          <i class="fas fa-edit"></i>
-        </a>
-        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
-          <i class='fas fa-trash'></i>
-        </a>
+        {{#if ../editable}}
+          <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
+            <i class='fas fa-trash'></i>
+          </a>
+        {{/if}}
       </div>
     </li>
   {{/each}}
@@ -99,13 +107,15 @@
     <h2 class="titleActorPages">Bagages</h2>
     <li class='item flexrow items-header'>
       <div class='item-name'>{{localize 'Name'}}</div>
-      <div class='item-controls'>
-        <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-        data-type="objet">
-        <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type='objet'}}
-        </a>
-      </div>
+      {{#if editable}}
+        <div class='item-controls'>
+          <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
+          data-type="objet">
+          <i class='fas fa-plus'></i>
+          {{localize 'DOCUMENT.New' type='objet'}}
+          </a>
+        </div>
+      {{/if}}
     </li>
     {{#each objet as |item id|}}
       <li class='item flexrow' data-item-id='{{item._id}}'>
@@ -124,14 +134,16 @@
             <h4>{{item.name}}</h4>
           </a>
         </div>
-        <div class='item-controls'>
-          <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <i class="fas fa-edit"></i>
-          </a>
-          <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
-            <i class='fas fa-trash'></i>
-          </a>
-        </div>
+        {{#if ../editable}}
+          <div class='item-controls'>
+            <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+              <i class="fas fa-edit"></i>
+            </a>
+            <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'>
+              <i class='fas fa-trash'></i>
+            </a>
+          </div>
+        {{/if}}
       </li>
     {{/each}}
   </ol>
@@ -142,7 +154,7 @@
       {{#if (or (eq key "or") (eq key "argent") (eq key "cuivre"))}}
         <div class="ability flexrow flex-group-center">
           <label for="system.devise.{{key}}.value" class="resource-label flexlarge align-left">{{key}}</label>
-          <input type="text" name="system.devise.{{key}}.value" value="{{devise.value}}" data-dtype="Number"/>
+          <input type="text" name="system.devise.{{key}}.value" value="{{devise.value}}" data-dtype="Number" {{#unless ../editable}}disabled{{/unless}}/>
         </div>
       {{/if}}
     {{/each}}

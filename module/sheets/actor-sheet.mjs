@@ -8,6 +8,12 @@ import {
  * @extends {ActorSheet}
  */
 export class ShinzoActorSheet extends ActorSheet {
+  
+  constructor(...args) {
+    super(...args);
+    this.editable = false; // Initialiser editable à true par défaut
+  }
+
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -38,6 +44,8 @@ export class ShinzoActorSheet extends ActorSheet {
     // sheets are the actor object, the data object, whether or not it's
     // editable, the items array, and the effects array.
     const context = super.getData();
+
+    context.editable = this.editable;
 
     // Use a safe clone of the actor data for further operations.
     const actorData = this.document.toObject(false);
@@ -232,6 +240,12 @@ export class ShinzoActorSheet extends ActorSheet {
         li.addEventListener('dragstart', handler, false);
       });
     }
+
+    // Gérer le clic sur le bouton d'activation/désactivation
+    html.find("#toggle-edit").click(ev => {
+      this.editable = !this.editable;
+      this.render();
+    });
   }
 
   /**
