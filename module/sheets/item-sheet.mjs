@@ -227,7 +227,7 @@ export class ShinzoItemSheet extends ItemSheet {
     const itemData = this.item.system.content.find(i => i._id === itemId);
  
     // Créer une nouvelle instance temporaire d'Item dans Foundry avec ces données
-    let tempItem = new Item(itemData);
+    let tempItem = new Item(itemData, { parent: this.actor });
  
     // Ouvrir la fiche de cet item
     tempItem.sheet.render(true);
