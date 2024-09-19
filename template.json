@@ -497,7 +497,7 @@
       "resMagique": "0",
       "effect": "",
       "quality": "",
-      "equiped" : false
+      "equiped" : true
     },
     "arme": {
       "templates": ["base"],
@@ -506,7 +506,7 @@
       "damage": "",
       "effect": "",
       "quality": "",
-      "equiped" : false
+      "equiped" : true
     },
     "objet": {
       "templates": ["base"],
