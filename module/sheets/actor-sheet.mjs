@@ -131,6 +131,7 @@ export class ShinzoActorSheet extends ActorSheet {
     const objets = [];
     const armes = [];
     const armures = [];
+    const sacs = [];
     const traits = [];
     const competences = [];
 
@@ -147,6 +148,9 @@ export class ShinzoActorSheet extends ActorSheet {
       else if (i.type === 'armure') {
         armures.push(i);
       }
+      else if (i.type === 'sac') {
+        sacs.push(i);
+      }
       // Append to features.
       else if (i.type === 'trait') {
         traits.push(i);
@@ -161,6 +165,7 @@ export class ShinzoActorSheet extends ActorSheet {
     context.objet = objets;
     context.arme = armes;
     context.armure = armures;
+    context.sac = sacs;
     context.trait = traits;
     context.competence = competences;
   }
@@ -269,7 +274,6 @@ export class ShinzoActorSheet extends ActorSheet {
       system: data,
     };
 
-    console.log(itemData);
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.system['type'];
 
@@ -294,7 +298,6 @@ export class ShinzoActorSheet extends ActorSheet {
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
-        console.log(item)
         if (item) return item.roll();
       }
     }

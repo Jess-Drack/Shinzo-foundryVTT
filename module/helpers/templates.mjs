@@ -16,6 +16,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/shinzo/templates/actor/parts/actor-npc-items.hbs',
     // Item partials
     'systems/shinzo/templates/item/parts/item-effects.hbs',
+    'systems/shinzo/templates/item/parts/item-content.hbs',
     // ActiveEffectConfig
     'systems/shinzo/templates/activeEffect-config.hbs'
   ]);

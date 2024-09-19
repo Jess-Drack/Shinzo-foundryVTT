@@ -79,6 +79,15 @@ export class ShinzoItem extends Item {
       });
     }
 
+    else if (item.type === "sac") {
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: `${item.system.effect} <i>${item.system.description}</i>`,
+      });
+    }
+
     else if (item.type === "objet") {
       ChatMessage.create({
         speaker: speaker,
