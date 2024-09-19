@@ -1,16 +1,12 @@
 <ol class='items-list'>
+  <div class="addBagage">
+      <i class="fa-solid fa-plus"></i>
+  </div>
   <h2 class="titleActorPages">Armes</h2>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-degat'>Dégâts</div>
     <div class='item-controls'>
-      {{#if editable}}
-        <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-        data-type="arme">
-        <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type='arme'}}
-        </a>
-      {{/if}}
     </div>
   </li>
   {{#each arme as |item id|}}
@@ -54,27 +50,11 @@
 
 <ol class='items-list'>
   <h2 class="titleActorPages">Armure / Tenue</h2>
-  <div class='item-controls'>
-    {{#if editable}}
-      <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-      data-type="sac">
-      <i class='fas fa-plus'></i>
-      {{localize 'DOCUMENT.New' type='sac'}}
-      </a>
-    {{/if}}
-  </div>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-res'>Résistance physique</div>
     <div class='item-res'>Résistance magique</div>
     <div class='item-controls'>
-      {{#if editable}}
-        <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-        data-type="armure">
-        <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type='armure'}}
-        </a>
-      {{/if}}
     </div>
   </li>
   {{#each armure as |item id|}}
@@ -154,15 +134,6 @@
     <h2 class="titleActorPages">Bagages</h2>
     <li class='item flexrow items-header'>
       <div class='item-name'>{{localize 'Name'}}</div>
-      {{#if editable}}
-        <div class='item-controls'>
-          <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
-          data-type="objet">
-          <i class='fas fa-plus'></i>
-          {{localize 'DOCUMENT.New' type='objet'}}
-          </a>
-        </div>
-      {{/if}}
     </li>
     {{#each objet as |item id|}}
       <li class='item flexrow' data-item-id='{{item._id}}'>

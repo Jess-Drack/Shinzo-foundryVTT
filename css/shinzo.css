@@ -530,13 +530,13 @@
   padding: 0.2% 1% 0.2% 1%;
   width: 36px;
   left: -36px;
-  background-color: black;
+  background-color: #000000b5;
   cursor: pointer;
   transition: all 1s !important;
 }
 
 .toggle-edit.active {
-  background-color: red; /* Change background to red when active */
+  background-color: #ff0000bf; /* Change background to red when active */
 }
 
 .toggle-edit::before {
@@ -548,14 +548,14 @@
   height: 0;
   border-top: 10px solid transparent; /* Size of the triangle */
   border-bottom: 10px solid transparent; /* Size of the triangle */
-  border-right: 16px solid black; /* Color of the triangle */
+  border-right: 16px solid #000000b5; /* Color of the triangle */
 }
 
 .toggle-edit.active::before {
-  border-right: 16px solid red; /* Change background to red when active */
+  border-right: 16px solid #ff0000bf; /* Change background to red when active */
 }
 
-.fa-pen{
+.fa-pen, .fa-plus{
   color: white;
 }
 
@@ -567,4 +567,27 @@
 
 .value-non-editable{
   display: flex;
+}
+
+.addBagage{
+  position: absolute;
+  padding: 0.2% 1% 0.2% 1%;
+  width: 36px;
+  top: 65px;
+  left: -36px;
+  background-color: #6495edc7;
+  cursor: pointer;
+  transition: all 1s !important;
+}
+
+.addBagage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -16px; /* Adjust based on the size of the triangle */
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent; /* Size of the triangle */
+  border-bottom: 10px solid transparent; /* Size of the triangle */
+  border-right: 16px solid #6495edc7; /* Color of the triangle */
 }

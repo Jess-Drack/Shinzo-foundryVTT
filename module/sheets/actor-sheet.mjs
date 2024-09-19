@@ -233,8 +233,76 @@ export class ShinzoActorSheet extends ActorSheet {
     html.on('click', '.deStat', this._onRollStats.bind(this));
     html.on('click', '.deArme', this._onRollArmes.bind(this));
     html.on('click', '.deSpe', this._onRollSpe.bind(this));
-    
     html.on('change', '.equiped-toggle', this._equippedChange.bind(this));
+
+    html.on('click', '.addBagage', (ev) => {
+      const li = $(ev.currentTarget).parents('.item');
+      const item = this.actor.items.get(li.data('itemId'));
+
+      // Afficher une boîte de dialogue de confirmation
+      new Dialog({
+        title: "Ajouter Objet",
+        content: `<p>Quel objet voulez vous ajouter ?</p>`,
+        buttons: {
+          arme: {
+            label: "Arme",
+            callback: () => {
+              const fakeEvent = {
+                preventDefault: () => {},
+                currentTarget: {
+                  dataset: {
+                    type: 'arme'
+                  }
+                }
+              };
+              this._onItemCreate(fakeEvent); 
+            }
+          },
+          armure: {
+            label: "Armure",
+            callback: () => {
+              const fakeEvent = {
+                preventDefault: () => {},
+                currentTarget: {
+                  dataset: {
+                    type: 'armure'
+                  }
+                }
+              };
+              this._onItemCreate(fakeEvent); 
+            }
+          },
+          sac: {
+            label: "Sac",
+            callback: () => {
+              const fakeEvent = {
+                preventDefault: () => {},
+                currentTarget: {
+                  dataset: {
+                    type: 'sac'
+                  }
+                }
+              };
+              this._onItemCreate(fakeEvent); 
+            }
+          },
+          objet: {
+            label: "Objet",
+            callback: () => {
+              const fakeEvent = {
+                preventDefault: () => {},
+                currentTarget: {
+                  dataset: {
+                    type: 'objet'
+                  }
+                }
+              };
+              this._onItemCreate(fakeEvent); 
+            }
+          }
+        }
+      }).render(true);
+    })
 
     // Drag events for macros.
     if (this.actor.isOwner) {
