@@ -97,6 +97,9 @@
           "addCrit": 0
         }
       },
+      "gds_statsTotal": {
+          "value": 0
+      },
       "maitrises":{
         "cor": {
           "value": 0,
@@ -334,6 +337,9 @@
           "b_m": 0,
           "spe": false
         }
+      },
+      "gds_statsTotal": {
+          "value": 0
       },
       "maitrises":{
         "cor": {

@@ -53,7 +53,7 @@
             <div class="abilities flexcol">
               {{#each system.ss_stats.ss_stats1 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <div class="{{#if (not ../editable) }}stat-non-editable{{/if}}">
+                <div class="ss_statsGroup {{#if (not ../editable) }}stat-non-editable{{/if}}">
                   <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if ss_stat.addCrit }}underline{{/if}}" {{#if ss_stat.addCrit }}title="Bonus/malus au critique : {{ss_stat.addCrit}}"{{/if}} data-dice="{{ss_stat.value}}"  data-crit="{{ss_stat.addCrit}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                   {{#if ss_stat.spe}}<span class="deSpe" data-label="{{localize (lookup @root.config.caracteristiques key)}}">Spé</span>{{/if}}
                 </div>
@@ -73,7 +73,7 @@
             <div class="abilities flexcol">
               {{#each system.ss_stats.ss_stats2 as |ss_stat key|}}
               <div class="ability flexrow flex-group-center">
-                <div class="{{#if (not ../editable) }}stat-non-editable{{/if}}">
+                <div class="ss_statsGroup {{#if (not ../editable) }}stat-non-editable{{/if}}">
                   <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if ss_stat.addCrit }}underline{{/if}}" {{#if ss_stat.addCrit }}title="Bonus/malus au critique : {{ss_stat.addCrit}}"{{/if}} data-dice="{{ss_stat.value}}"  data-crit="{{ss_stat.addCrit}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
                   {{#if ss_stat.spe}}<span class="deSpe" data-label="{{localize (lookup @root.config.caracteristiques key)}}">Spé</span>{{/if}}
                 </div>
@@ -90,7 +90,4 @@
               {{/each}}
             </div>
         </section>
-    {{#if editable}}
-      <h4 class="titleActorPages">Total des bonus et malus : {{system.ss_stats.totalmod.value}}</h4>
-    {{/if}}
 </aside>

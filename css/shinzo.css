@@ -302,16 +302,20 @@
   display: flex;
   flex: 0 0 100px;
   justify-content: flex-end;
+  align-items: center;
 }
 .shinzo .items-list .item-controls a {
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
+  display: flex;
+  flex-direction: row-reverse;
 }
 .shinzo .items-list .item {
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #c9c7b8;
+  height: 30px;
 }
 .shinzo .items-list .item:last-child {
   border-bottom: none;
@@ -325,6 +329,8 @@
   background-size: 30px;
   border: none;
   margin-right: 5px;
+  display: flex;
+  align-items: flex-end;
 }
 .shinzo .items-list .item-prop {
   text-align: center;
@@ -381,6 +387,76 @@
 
 /*Truc ajouté*/
 
+/*Header actor*/
+
+/*#triangle-code{
+  display : inline-block;
+  position: absolute;
+  z-index: -1;
+  background-image: linear-gradient(150deg, #27532F, #57B969);
+  clip-path: polygon(100% 0, 0 0, 0 100%);
+  width: 200px;
+  height: 200px;
+  top: 30px;
+  left: 0px;
+}*/
+
+.header-right{
+  display: flex;
+  flex-direction: column;
+}
+
+.evaluation{
+  display: flex;
+  background-color: #d9d9d975;
+  border: 1px solid #989B3D;
+  border-radius: 5px;
+  width: 115px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-img-actor {
+  width: 125px;
+  height: 125px;
+  margin: 5px 40px 0px 25px;
+  /*background-color: #fcf8ed;*/
+  border: 5px solid #989b3d;
+}
+
+img {
+  box-sizing: border-box;
+  border: 1px solid #989b3d;
+  border-radius: 5px;
+  max-width: 100%;
+}
+
+.control-edit{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.toggle-edit{
+  padding: 1% 1% 1% 1%;
+  display: flex;
+  width: 30px;
+  background-color: #000000b5;
+  cursor: pointer;
+  transition: all 1s !important;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.toggle-edit.active {
+  background-color: #ff0000bf; /* Change background to red when active */
+}
+
+.fa-pen, .fa-plus{
+  color: white;
+}
+
 .items-and-money{
   display: flex;
   justify-content: space-between;
@@ -413,6 +489,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.ss_statsGroup{
+  min-width: 115px;
 }
 
 .descGroup{
@@ -463,10 +543,10 @@
   border-color: #292b2c71;
 }
 
-.app.window-app.shinzo.sheet.actor{
-  min-width: 850px;
+/*.app.window-app.shinzo.sheet.actor{
+  min-width: 600px;
   min-height: 665px;
-}
+}*/
 
 /* Animation pour clignoter lentement entre deux rouges */
 @keyframes clignoter {
@@ -525,40 +605,6 @@
   color: red;
 }
 
-.toggle-edit{
-  position: absolute;
-  padding: 0.2% 1% 0.2% 1%;
-  width: 36px;
-  left: -36px;
-  background-color: #000000b5;
-  cursor: pointer;
-  transition: all 1s !important;
-}
-
-.toggle-edit.active {
-  background-color: #ff0000bf; /* Change background to red when active */
-}
-
-.toggle-edit::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -16px; /* Adjust based on the size of the triangle */
-  width: 0;
-  height: 0;
-  border-top: 10px solid transparent; /* Size of the triangle */
-  border-bottom: 10px solid transparent; /* Size of the triangle */
-  border-right: 16px solid #000000b5; /* Color of the triangle */
-}
-
-.toggle-edit.active::before {
-  border-right: 16px solid #ff0000bf; /* Change background to red when active */
-}
-
-.fa-pen, .fa-plus{
-  color: white;
-}
-
 .stat-non-editable{
   text-align: left;
   margin-bottom: 8px;
@@ -569,25 +615,29 @@
   display: flex;
 }
 
-.addBagage{
-  position: absolute;
-  padding: 0.2% 1% 0.2% 1%;
-  width: 36px;
-  top: 65px;
-  left: -36px;
-  background-color: #6495edc7;
-  cursor: pointer;
-  transition: all 1s !important;
+.displayAddBagage{
+  display: flex;
+  justify-content: space-between;
 }
 
-.addBagage::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -16px; /* Adjust based on the size of the triangle */
-  width: 0;
-  height: 0;
-  border-top: 10px solid transparent; /* Size of the triangle */
-  border-bottom: 10px solid transparent; /* Size of the triangle */
-  border-right: 16px solid #6495edc7; /* Color of the triangle */
+.addBagage{
+  width: 20px;
+  background-color: #444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  height: 20px;
+}
+
+.add{
+  width: 20px;
+  background-color: #444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  height: 20px;
 }

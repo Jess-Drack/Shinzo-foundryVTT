@@ -4,13 +4,10 @@
     <div class='item-effects'>Effets</div>
     {{#if editable}}
       <div class='item-controls'>
-        <a
-          class='item-control item-create'
-          title='Create item'
-          data-type='trait'
-        >
-          <i class='fas fa-plus'></i>
-          {{localize 'DOCUMENT.New' type='trait'}}
+        <a class='item-control item-create' title='{{localize 'DOCUMENT.New' type='trait'}}' data-type='trait'>
+          <div class="add">
+            <i class="fa-solid fa-plus"></i>
+          </div>
         </a>
       </div>
     {{/if}}
