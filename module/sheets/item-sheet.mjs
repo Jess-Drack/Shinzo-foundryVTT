@@ -98,6 +98,19 @@ export class ShinzoItemSheet extends ItemSheet {
     // Si c'est un sac, initialiser une structure pour contenir des items
     if (itemData.type === "sac") {
       itemData.content = itemData.system.content || [];
+      // Synchroniser les permissions des items dans le sac
+      const bagPermissions = itemData.ownership;
+
+      // Boucler sur chaque item contenu dans le sac
+      for (let item of itemData.content) {
+        // Appliquer les permissions du sac à chaque item
+        item.ownership = bagPermissions;
+      }
+
+      // Mettre à jour l'item avec les nouveaux objets et leurs permissions synchronisées
+      await this.item.update({
+        "system.content": itemData.content,
+      });
     }
 
     // Prepare active effects for easier access
@@ -227,7 +240,7 @@ export class ShinzoItemSheet extends ItemSheet {
     const itemData = this.item.system.content.find(i => i._id === itemId);
  
     // Créer une nouvelle instance temporaire d'Item dans Foundry avec ces données
-    let tempItem = new Item(itemData);
+    let tempItem = new Item(itemData, { parent: this.actor });
  
     // Ouvrir la fiche de cet item
     tempItem.sheet.render(true);
@@ -350,5 +363,30 @@ export class ShinzoItemSheet extends ItemSheet {
 
     // Stocker les données sous forme de texte dans l'événement de drag
     nativeEvent.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+  }
+
+  async syncItemPermissionsWithBag() {
+    // Récupérer les permissions du sac
+    const bagPermissions = this.item.data.permission;
+
+    // Parcourir les items dans le sac et leur appliquer les mêmes permissions que le sac
+    for (let item of this.item.system.content) {
+        // Cloner les données de l'item
+        let updatedItemData = foundry.utils.duplicate(item);
+        
+        // Appliquer les permissions du sac à l'item
+        updatedItemData.permission = bagPermissions;
+
+        // Mettre à jour l'item dans le sac
+        const itemIndex = this.item.system.content.findIndex(i => i._id === item._id);
+        if (itemIndex !== -1) {
+            this.item.system.content[itemIndex] = updatedItemData;
+        }
+    }
+
+    // Mettre à jour le sac lui-même pour enregistrer les changements
+    await this.item.update({
+        'system.content': this.item.system.content
+    });
   }
 }
