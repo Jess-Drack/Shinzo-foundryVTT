@@ -315,7 +315,6 @@
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #c9c7b8;
-  height: 30px;
 }
 .shinzo .items-list .item:last-child {
   border-bottom: none;
@@ -417,12 +416,37 @@
   align-items: center;
 }
 
-.profile-img-actor {
+.eval{
+  margin-right: 5%;
+}
+
+.profile-img-wrapper {
+  position: relative;
   width: 125px;
   height: 125px;
   margin: 5px 40px 0px 25px;
+  display: inline-block; /* S'assure que le conteneur prenne la taille de l'image */
+}
+
+.profile-img-actor {
+  width: 125px;
+  height: 125px;
+  position: relative;
   /*background-color: #fcf8ed;*/
-  border: 5px solid #989b3d;
+}
+
+.profile-img-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-image: url(../img/ProfilePicture/cadre-pp.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none; /* Pour ne pas interférer avec les interactions de l'image */
 }
 
 img {
@@ -442,7 +466,7 @@ img {
   padding: 1% 1% 1% 1%;
   display: flex;
   width: 30px;
-  background-color: #000000b5;
+  background-color: #786d5cba;
   cursor: pointer;
   transition: all 1s !important;
   border-radius: 5px;
@@ -455,6 +479,88 @@ img {
 
 .fa-pen, .fa-plus{
   color: white;
+}
+
+.healthpower{
+  display: flex;
+  justify-content: center;
+}
+
+.inputhealthpower{
+  border-radius: 50% !important;
+  height: 45px !important;
+  border: none !important;
+}
+
+.health{
+  background-image: url("../img/ProfilePicture/health.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  display: flex;
+  background-position: center;
+}
+
+.rdpm{
+  margin-left: 5px;
+}
+
+.deg_physiqueicon{
+  background-image: url("../img/ProfilePicture/sword.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  background-position: center;
+}
+
+.res_physiqueicon{
+  background-image: url("../img/ProfilePicture/Bphysique.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  background-position: center;
+}
+
+.power{
+  background-image: url("../img/ProfilePicture/power.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  display: flex;
+  background-position: center;
+}
+
+.deg_magiqueicon{
+  background-image: url("../img/ProfilePicture/staff.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  background-position: center;
+}
+
+.res_magiqueicon{
+  background-image: url("../img/ProfilePicture/Bmagique.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  background-position: center;
+}
+
+.hpvalue{
+  width: 60px;
+  text-align: center;
 }
 
 .items-and-money{
@@ -483,16 +589,75 @@ img {
 .gdsStatsGroup{
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
 
 .gdsStatsGroupInput{
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  width: 90px;
+  height: 80px;
+  padding-top: 5px;
+  justify-content: flex-start;
+  background-image: url("../img/ProfilePicture/cadre_grandes_stats.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 10px;
+}
+
+.inputGDstats{
+  border-radius: 50% !important;
+  height: 35px !important;
+}
+
+.maitriseGroupInput{
+  display: flex;
+  flex-direction: column;
+  width: 90px;
+  height: 80px;
+  padding-bottom: 5px;
+  justify-content: flex-end;
+  background-image: url("../img/ProfilePicture/cadre_maitrises.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.tabmaitrise{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.maitrise{
+  gap: 5px;
+  top: -15px;
+  position: relative;
+  margin-bottom: -10px;
+}
+
+.nbStats{
+  width: 40px;
+  height: 40px;
+  background-image: url(../img/ProfilePicture/cadre.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ss_statsFond{
+  background-color: #D9D9D975;
+  border-radius: 10px;
+  border: 2px solid #989B3D;
+
 }
 
 .ss_statsGroup{
   min-width: 115px;
+  text-align: left;
+  padding: 5px 0;
+  margin-left: 10%;
 }
 
 .descGroup{
@@ -519,7 +684,6 @@ img {
 .checkspe, .item-equiped{
   width: 50px;
   height: 15px;
-  flex: none;
 }
 
 .item-equiped{
@@ -529,9 +693,9 @@ img {
 .radio-style {
   margin: 0 !important;
   appearance: none;
-  width: 15px !important;
-  height: 15px !important;
-  border: 2px solid #999;
+  width: 16px !important;
+  height: 16px !important;
+  border: 2px solid #989B3D;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
@@ -539,14 +703,33 @@ img {
 }
 
 .radio-style:checked {
-  background-color: #292b2c71;
-  border-color: #292b2c71;
+  background-color: #9b9859be;
+  background-clip: content-box;
+  padding: 2px;
+  border-color: #989B3D;
 }
 
-/*.app.window-app.shinzo.sheet.actor{
-  min-width: 600px;
-  min-height: 665px;
-}*/
+.equiped-style {
+  margin: 0 !important;
+  appearance: none;
+  width: 12px !important;
+  height: 12px !important;
+  border: 1px solid #786d5cfa;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  border-radius: 2px;
+}
+
+.equiped-style:checked {
+  background-color: #292b2c71;
+  background-clip: content-box;
+  padding: 2px;
+}
+
+.app.window-app.shinzo.sheet.actor{
+  min-width: 550px;
+}
 
 /* Animation pour clignoter lentement entre deux rouges */
 @keyframes clignoter {
@@ -584,6 +767,7 @@ img {
   color: #8b0000; /* Rouge foncé */
   animation: clignoter 3s infinite; /* Animation qui clignote entre rouge foncé et rouge clair */
   transition: all .2s;
+  cursor: pointer;
 }
 
 .deSpe:hover {
@@ -605,24 +789,20 @@ img {
   color: red;
 }
 
-.stat-non-editable{
-  text-align: left;
-  margin-bottom: 8px;
-  margin-left: 10%;
-}
-
 .value-non-editable{
   display: flex;
+  justify-content: center;
 }
 
 .displayAddBagage{
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .addBagage{
   width: 20px;
-  background-color: #444;
+  background-color: #786d5cba;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -633,7 +813,7 @@ img {
 
 .add{
   width: 20px;
-  background-color: #444;
+  background-color: #786d5cba;
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -1,7 +1,7 @@
 <section class="grid grid-2col">
-      <div class="description flexcol descGroup">
+      <div class="description flexcol">
         {{#each system.description1 as |desc key|}}
-            <div class="ability flexrow flex-group-center">
+            <div>
               <label for="system.description1.{{key}}" data-label="{{localize (lookup @root.config.description key)}}">{{localize (lookup @root.config.description key)}}</label>
               <input type="text" name="system.description1.{{key}}" value="{{desc}}" data-dtype="text" {{#unless ../editable}}disabled{{/unless}}/>
             </div>
@@ -9,7 +9,7 @@
       </div>
       <div class="description flexcol descGroup">
         {{#each system.description2 as |desc key|}}
-            <div class="ability flexrow flex-group-center">
+            <div>
               <label for="system.description2.{{key}}" data-label="{{localize (lookup @root.config.description key)}}">{{localize (lookup @root.config.description key)}}</label>
               <input type="text" name="system.description2.{{key}}" value="{{desc}}" data-dtype="text" {{#unless ../editable}}disabled{{/unless}}/>
             </div>
