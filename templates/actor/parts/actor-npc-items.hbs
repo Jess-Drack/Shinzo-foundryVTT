@@ -1,8 +1,13 @@
 <ol class='items-list'>
-  <div class="addBagage">
-      <i class="fa-solid fa-plus"></i>
+  <div class="displayAddBagage">
+    <div class="addBagage" style="visibility: hidden;">
+        <i class="fa-solid fa-plus"></i>
+    </div>
+    <h2 class="titleActorPages">Armes</h2>
+    <div class="addBagage">
+        <i class="fa-solid fa-plus"></i>
+    </div>
   </div>
-  <h2 class="titleActorPages">Armes</h2>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
     <div class='item-degat'>Dégâts</div>
@@ -24,7 +29,7 @@
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <h4>{{item.name}}</h4>
+            <p>{{item.name}}</p>
           </a>
         </div>
         <a class='deArme' data-formule='{{item.system.damage}}' data-nom='{{item.name}}'>
@@ -32,7 +37,7 @@
         </a>
         <div class='item-controls'>
           <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
+            <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle equiped-style" {{#if item.system.equiped}}checked{{/if}} />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -72,14 +77,14 @@
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <h4>{{item.name}}</h4>
+            <p>{{item.name}}</p>
           </a>
         </div>
         <div class='item-res item-prop'>{{item.system.resPhysique}}</div>
         <div class='item-res item-prop'>{{item.system.resMagique}}</div>
         <div class='item-controls'>
           <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle radio-style" {{#if item.system.equiped}}checked{{/if}} />
+            <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle equiped-style" {{#if item.system.equiped}}checked{{/if}} />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -108,12 +113,12 @@
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <h4>{{item.name}}</h4>
+            <p>{{item.name}}</p>
           </a>
         </div>
         <div class='item-controls'>
           <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Équipé" class="equiped-toggle radio-style" checked/>
+            <input type='checkbox' name="item.system.equiped" title="Équipé" class="equiped-toggle equiped-style" checked/>
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -148,7 +153,7 @@
           </a>
         </div>
         <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-          <h4>{{item.name}}</h4>
+          <p>{{item.name}}</p>
         </a>
       </div>
       {{#if ../editable}}
@@ -178,12 +183,12 @@
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <h4>{{item.name}}</h4>
+            <p>{{item.name}}</p>
           </a>
         </div>
         <div class='item-controls'>
           <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle radio-style"/>
+            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle equiped-style"/>
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -212,12 +217,12 @@
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <h4>{{item.name}}</h4>
+            <p>{{item.name}}</p>
           </a>
         </div>
         <div class='item-controls'>
           <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle radio-style"/>
+            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle equiped-style"/>
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -246,12 +251,12 @@
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-            <h4>{{item.name}}</h4>
+            <p>{{item.name}}</p>
           </a>
         </div>
         <div class='item-controls'>
           <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle radio-style"/>
+            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle equiped-style"/>
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>

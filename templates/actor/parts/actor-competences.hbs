@@ -4,10 +4,11 @@
     <div class='item-cost'>Coûts</div>
     {{#if editable}}
     <div class='item-controls'>
-      <a class="item-control item-create" title="{{localize 'DOCUMENT.Create' type='Item'}}"
+      <a class="item-control item-create" title="{{localize 'DOCUMENT.New' type='competence'}}"
       data-type="competence">
-      <i class='fas fa-plus'></i>
-      {{localize 'DOCUMENT.New' type='competence'}}
+      <div class="add">
+        <i class="fa-solid fa-plus"></i>
+      </div>
       </a>
     </div>
     {{/if}}
@@ -26,7 +27,7 @@
           </a>
         </div>
         <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
-          <h4>{{item.name}}</h4>
+          <p>{{item.name}}</p>
         </a>
       </div>
       <div class='item-cost item-prop'>{{item.system.cost}}{{item.system.unit}}{{item.system.turn}}</div>
