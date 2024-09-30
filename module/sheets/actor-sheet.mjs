@@ -457,7 +457,7 @@ export class ShinzoActorSheet extends ActorSheet {
           </div>`,
       });
     } else if( roll.total < valueStat) {
-      if(statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
+      if(statNameAbridged === "con" || statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
         const rollDiff = valueStat - roll.total;
         const text = `[<span class="reussite">${statName}</span>] C'est une réussite. La différence est de ${rollDiff}.`;
         roll.toMessage({
