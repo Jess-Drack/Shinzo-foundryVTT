@@ -230,7 +230,7 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.on('click', '.rollable', this._onRoll.bind(this));
-    html.on('click', '.deStat', this._onRollStats.bind(this));
+    html.on('click', '.deStat', this._bonusStats.bind(this));
     html.on('click', '.deArme', this._onRollArmes.bind(this));
     html.on('click', '.deSpe', this._onRollSpe.bind(this));
     html.on('change', '.equiped-toggle', this._equippedChange.bind(this));
@@ -383,12 +383,7 @@ export class ShinzoActorSheet extends ActorSheet {
     }
   }
 
-  async _onRollStats(event){
-    const valueStat = event.target.dataset["dice"];
-    const statName = event.target.dataset["label"];
-    const statNameAbridged = event.target.dataset["statname"];
-    const crit = Number(event.target.dataset["crit"]);
-    const jetFormule = "1d100";
+  async rollStats(valueStat, statName, statNameAbridged, crit, jetFormule){
 
     let reussiteCrit = 0;
     let echecCrit = 0;
@@ -514,7 +509,7 @@ export class ShinzoActorSheet extends ActorSheet {
         flavor: text,
       });
     } else if( roll.total > 100) {
-      const text = `[${statName} Spé] C'est un échec de spé... Préparez vous à affronter les conséquences...`;
+      const text = `[${statName} Spé] C'est un échec de spé...`;
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
@@ -543,5 +538,79 @@ export class ShinzoActorSheet extends ActorSheet {
   
     // Optionnel : Actualiser l'affichage si nécessaire
     this.render(false);
+  }
+
+  async _bonusStats(event) {
+    const valueStat = event.target.dataset["dice"];
+    const statName = event.target.dataset["label"];
+    const statNameAbridged = event.target.dataset["statname"];
+    let crit = Number(event.target.dataset["crit"]);
+
+    const content = `
+    <h1 style="border: none; display: flex; font-size: 1.5em; justify-content: center;">Valeur de base : <nav style="text-decoration: underline; margin-left: 1%">${valueStat}</nav></h1>
+    <p style=" display: flex; justify-content: space-between; align-items: center;">Bonus/Malus : <input type="number" id="modifierValue" style="width: 60%;"/> <button id="halveButton" style="width: 10%;">/2</button></p>`;
+
+    new Dialog({
+      title: `Modificateur du jet de ${statName}`,
+      content: content,
+      buttons: {
+        desavantage: {
+          label: "Desavantage",
+          callback: (html) => {  
+            const jetFormule = "2d100k";    
+            const newStatName = statName + " : Désavantage";      
+            const modifier = Number(html.find('#modifierValue').val());
+            let newValueStat = Number(valueStat) + modifier;
+            if (newValueStat < 15) {
+              crit = -(15 - newValueStat);
+              newValueStat = 15;
+            } else if (newValueStat > 85) {
+              crit = Math.floor((newValueStat - 85) / 2);
+              newValueStat = 85;
+            };
+            this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
+          }
+        },
+        normal: {
+          label: "Neutre",
+          callback: (html) => {
+            const jetFormule = "1d100";
+            const modifier = Number(html.find('#modifierValue').val());
+            let newValueStat = Number(valueStat) + modifier;
+            if (newValueStat < 15) {
+              crit = -(15 - newValueStat);
+              newValueStat = 15;
+            } else if (newValueStat > 85) {
+              crit = Math.floor((newValueStat - 85) / 2);
+              newValueStat = 85;
+            };
+            this.rollStats(newValueStat, statName, statNameAbridged, crit, jetFormule);
+          }
+        },
+        avantage: {
+          label: "Avantage",
+          callback: (html) => {         
+            const jetFormule = "2d100kl";   
+            const newStatName = statName + " : Avantage";
+            const modifier = Number(html.find('#modifierValue').val());
+            let newValueStat = Number(valueStat) + modifier;
+            if (newValueStat < 15) {
+              crit = -(15 - newValueStat);
+              newValueStat = 15;
+            } else if (newValueStat > 85) {
+              crit = Math.floor((newValueStat - 85) / 2);
+              newValueStat = 85;
+            };
+            this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
+          }
+        }
+      },
+      render: (html) => {
+        html.find('#halveButton').click(() => {
+          const halfMalus = Math.floor(-valueStat / 2);
+          html.find('#modifierValue').val(halfMalus);
+        });
+      }
+    }).render(true)
   }
 }
