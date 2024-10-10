@@ -144,3 +144,187 @@ function rollItemMacro(itemUuid) {
     item.roll();
   });
 }
+
+Hooks.on('renderChatMessage', (message, html, data) => {
+  // Recherche les dés affichés dans le message du chat
+  const diceTotal = html.find(".dice-total");
+  const diceRolls = html.find(".d100");
+  const diceEc = html.find(".ec");
+  const diceRc = html.find(".rc");
+
+  diceRc.each(function(){
+    // Pour chaque résultat de dé, on applique la coloration au total
+    diceTotal.each(function() {
+      $(this).css("color", "green");
+    });
+
+    // Pour chaque résultat de dé, on applique la coloration au dé
+    diceRolls.each(function() {
+        $(this).addClass("max");
+    });
+  });
+
+  diceEc.each(function(){
+    // Pour chaque résultat de dé, on applique la coloration au total
+    diceTotal.each(function() {
+      $(this).css("color", "red");
+    });
+
+    // Pour chaque résultat de dé, on applique la coloration au dé
+    diceRolls.each(function() {
+        $(this).addClass("min");
+    });
+  });
+});
+
+Hooks.on("updateCombat", async (combat, updateData) => {
+  if (updateData.turn !== undefined) {
+    const currentCombatant = combat.combatants.get(combat.current.combatantId);
+    const actor = currentCombatant.actor;
+
+    const isElectrise = actor.effects.find(effet => effet.name === "Electrisé");
+    const isEnflamme = actor.effects.find(effet => effet.name === "Enflammé");
+    const isGele = actor.effects.find(effet => effet.name === "Gelure");
+    const isHemorragie = actor.effects.find(effet => effet.name === "Hémorragie");
+    const isBleeding = actor.effects.find(effet => effet.name === "Saignement");
+    const isBeaucoupBleeding = actor.effects.find(effet => effet.name === "Saignement : 2nd stack")
+
+    if (isElectrise) {
+      const damageRoll = new Roll("1d2");
+      await damageRoll.evaluate();
+      const damage = damageRoll.total;
+
+      let actualHealth = actor.system.health.value;
+
+      await actor.update({ "system.health.value": actualHealth - damage });
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `${actor.name} subit ${damage} dégâts à cause de l'altération Electrisé !`
+      });
+    }
+    if (isEnflamme) {
+      const damageRoll = new Roll("1d4");
+      await damageRoll.evaluate();
+      const damage = damageRoll.total;
+
+      let actualHealth = actor.system.health.value;
+
+      await actor.update({ "system.health.value": actualHealth - damage });
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `${actor.name} subit ${damage} dégâts à cause de l'altération Enflammé !`
+      });
+    } 
+    if (isGele) {
+      const damageRoll = new Roll("1d4");
+      await damageRoll.evaluate();
+      const damage = damageRoll.total;
+
+      let actualHealth = actor.system.health.value;
+
+      await actor.update({ "system.health.value": actualHealth - damage });
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `${actor.name} subit ${damage} dégâts à cause de l'altération Gelure !`
+      });
+    } 
+    if (isBleeding) {
+      const damageRoll = new Roll("1d2");
+      await damageRoll.evaluate();
+      const damage = damageRoll.total;
+
+      let actualHealth = actor.system.health.value;
+
+      await actor.update({ "system.health.value": actualHealth - damage });
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `${actor.name} saigne et subit ${damage} points de dégâts !`
+      })
+    } 
+    if (isBeaucoupBleeding) {
+      const damageRoll = new Roll("1d2");
+      await damageRoll.evaluate();
+      const damage = damageRoll.total;
+
+      let actualHealth = actor.system.health.value;
+
+      await actor.update({ "system.health.value": actualHealth - damage });
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `${actor.name} saigne un peu plus et subit ${damage} points de dégâts supplémentaires !`
+      })
+    } 
+    if (isHemorragie) {
+      const damageRoll = new Roll("1d4");
+      await damageRoll.evaluate();
+      const damage = damageRoll.total;
+
+      let actualHealth = actor.system.health.value;
+
+      await actor.update({ "system.health.value": actualHealth - damage });
+
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `${actor.name} saigne abondamment et subit ${damage} points de dégâts !`
+      })
+    }
+  }
+});
+
+Hooks.on('updateCombat', async (combat, update, diff) => {
+  if (update.turn !== undefined) {
+    const previousCombatant = combat.combatants.get(combat.previous?.combatantId);
+    const actor = previousCombatant?.actor;
+
+    if (actor && actor.effects) {
+      for (let effect of actor.effects) {
+        let duration = effect.duration;
+        
+        if (duration.turns > 0) {
+          await effect.update({ "duration.turns": duration.turns - 1 });
+          
+          if (duration.turns - 1 === 0) {
+            await effect.delete();
+          }
+        }
+
+        if (duration.rounds > 0 && update.round !== undefined) {
+          await effect.update({ "duration.rounds": duration.rounds - 1 });
+
+          if (duration.rounds - 1 === 0 && duration.turns === 0) {
+            await effect.delete();
+          }
+        }
+      }
+    }
+  }
+  if (update.round !== undefined) {
+    for (let combatant of combat.combatants) {
+      const actor = combatant.actor;
+
+      // Vérifie si l'acteur a des effets actifs
+      if (actor && actor.effects) {
+        for (let effect of actor.effects) {
+          let duration = effect.duration;
+
+          // Vérifie si l'effet a une durée en rounds spécifiée
+          if (duration.rounds > 0) {
+            // Réduit la durée en rounds de l'effet
+            await effect.update({ "duration.rounds": duration.rounds - 1 });
+
+            // Supprime l'effet si la durée en rounds est écoulée
+            if (duration.rounds - 1 === 0 && duration.turns === 0) {
+              await effect.delete();
+            }
+          }
+        }
+      }
+    }
+  }
+});
+

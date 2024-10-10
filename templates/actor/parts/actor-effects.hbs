@@ -25,7 +25,7 @@
           </a>
         </div>
         <div class="effect-source">{{effect.sourceName}}</div>
-        <div class="effect-duration">{{effect.duration.rounds}}</div>
+        <div class="effect-duration">{{#if effect.duration.rounds}} {{effect.duration.rounds}} round(s) {{else if effect.duration.turns }} {{effect.duration.turns}} tour(s){{/if}}</div>
         <div class="item-controls effect-controls flexrow">
           <a class="effect-control" data-action="toggle" title="{{localize 'SHINZO.Effect.Toggle'}}">
             <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>

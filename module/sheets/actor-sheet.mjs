@@ -398,58 +398,16 @@ export class ShinzoActorSheet extends ActorSheet {
     await roll.evaluate();
 
     if(roll.total <= 5 + reussiteCrit) {
-      const text = `[<span class="reussite">${statName}</span>] C'est une réussite critique !!!!`
+      const text = `[<span class="reussite rc">${statName}</span>] C'est une réussite critique !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
-        content: `
-          <div class="dice-roll">
-            <div class="dice-result">
-              <div class="dice-formula">${jetFormule}</div>
-              <div class="dice-tooltip">
-                <section class="tooltip-part">
-                  <div class="dice">
-                    <header class="part-header flexrow">
-                      <span class="part-formula">${jetFormule}</span>
-                
-                      <span class="part-total">${roll.total}</span>
-                    </header>
-                  <ol class="dice-rolls">
-                    <li class="roll die d100 max">${roll.total}</li>
-                  </ol>
-                </div>
-              </section>
-            </div>
-              <h4 class="dice-total reussite">${roll.total}</h4>
-            </div>
-          </div>`,
       });
     } else if(roll.total >= (96 - echecCrit)) {
-      const text = `[<span class="echec">${statName}</span>] C'est un échec critique !!!!`
+      const text = `[<span class="echec ec">${statName}</span>] C'est un échec critique !!!!`
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: text,
-        content: `
-          <div class="dice-roll">
-            <div class="dice-result">
-              <div class="dice-formula">${jetFormule}</div>
-              <div class="dice-tooltip">
-                <section class="tooltip-part">
-                  <div class="dice">
-                    <header class="part-header flexrow">
-                      <span class="part-formula">${jetFormule}</span>
-                
-                      <span class="part-total">${roll.total}</span>
-                    </header>
-                  <ol class="dice-rolls">
-                    <li class="roll die d100 min">${roll.total}</li>
-                  </ol>
-                </div>
-              </section>
-            </div>
-              <h4 class="dice-total echec">${roll.total}</h4>
-            </div>
-          </div>`,
       });
     } else if( roll.total < valueStat) {
       if(statNameAbridged === "con" || statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
@@ -562,10 +520,12 @@ export class ShinzoActorSheet extends ActorSheet {
             const modifier = Number(html.find('#modifierValue').val());
             let newValueStat = Number(valueStat) + modifier;
             if (newValueStat < 15) {
-              crit = -(15 - newValueStat);
+              let newCrit = -((15 - newValueStat));
+              crit = crit + newCrit;
               newValueStat = 15;
             } else if (newValueStat > 85) {
-              crit = Math.floor((newValueStat - 85) / 2);
+              let newCrit = Math.floor((newValueStat - 85) / 2);
+              crit = crit + newCrit;
               newValueStat = 85;
             };
             this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
@@ -578,10 +538,12 @@ export class ShinzoActorSheet extends ActorSheet {
             const modifier = Number(html.find('#modifierValue').val());
             let newValueStat = Number(valueStat) + modifier;
             if (newValueStat < 15) {
-              crit = -(15 - newValueStat);
+              let newCrit = -((15 - newValueStat));
+              crit = crit + newCrit;
               newValueStat = 15;
             } else if (newValueStat > 85) {
-              crit = Math.floor((newValueStat - 85) / 2);
+              let newCrit = Math.floor((newValueStat - 85) / 2);
+              crit = crit + newCrit;
               newValueStat = 85;
             };
             this.rollStats(newValueStat, statName, statNameAbridged, crit, jetFormule);
@@ -595,10 +557,12 @@ export class ShinzoActorSheet extends ActorSheet {
             const modifier = Number(html.find('#modifierValue').val());
             let newValueStat = Number(valueStat) + modifier;
             if (newValueStat < 15) {
-              crit = -(15 - newValueStat);
+              let newCrit = -((15 - newValueStat));
+              crit = crit + newCrit;
               newValueStat = 15;
             } else if (newValueStat > 85) {
-              crit = Math.floor((newValueStat - 85) / 2);
+              let newCrit = Math.floor((newValueStat - 85) / 2);
+              crit = crit + newCrit;
               newValueStat = 85;
             };
             this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
