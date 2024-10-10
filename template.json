@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "npc", "illu"],
+    "types": ["character", "npc"],
     "templates": {
       "base": {
         "health": {
@@ -537,9 +537,6 @@
           "value": 0
         }
       }
-    },
-    "illu": {
-      "templates": ["base"]
     }
   },
   "Item": {
