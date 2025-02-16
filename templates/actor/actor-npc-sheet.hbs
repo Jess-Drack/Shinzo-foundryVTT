@@ -98,8 +98,10 @@
     </div>
 
     {{!-- Biography Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="note">
-      <h4 class="titleActorPages">Note</h4>
+    <div class="tab biography" data-group="primary" data-tab="description">
+      {{!-- Editors must receive enriched text data from getData to properly handle rolls --}}
+      {{> "systems/shinzo/templates/actor/parts/actor-description.hbs"}}
+      <h4 class="titleActorPages">Histoire</h4>
       {{editor enrichedBiography target="system.biography" engine="prosemirror" button=true editable=editable}}
     </div>
 
