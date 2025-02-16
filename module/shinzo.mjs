@@ -178,7 +178,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 });
 
 Hooks.on("updateCombat", async (combat, updateData) => {
-  if (updateData.turn !== undefined) {
+  if (game.user.isGM && updateData.turn !== undefined) {
     const currentCombatant = combat.combatants.get(combat.current.combatantId);
     const actor = currentCombatant.actor;
 
@@ -272,6 +272,8 @@ Hooks.on("updateCombat", async (combat, updateData) => {
         speaker: ChatMessage.getSpeaker({ actor }),
         content: `${actor.name} saigne abondamment et subit ${damage} points de dégâts !`
       })
+    } else {
+      null;
     }
   }
 });
