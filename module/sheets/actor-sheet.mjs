@@ -17,17 +17,19 @@ export class ShinzoActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['shinzo', 'sheet', 'actor'],
-      width: 600,
-      height: 600,
-      tabs: [
-        {
-          navSelector: '.sheet-tabs',
-          contentSelector: '.sheet-body',
-          initial: 'stat',
-        },
-      ],
-    });
+        classes: ['shinzo', 'sheet', 'actor'],
+        width: 600,
+        height: 600,
+        tabs: [
+          {
+            navSelector: '.sheet-tabs',
+            contentSelector: '.sheet-body',
+            initial: 'stat',
+          },
+        ],
+      }, 
+      { inplace:false }
+    );
   }
 
   /** @override */
@@ -43,7 +45,7 @@ export class ShinzoActorSheet extends ActorSheet {
     // the context variable to see the structure, but some key properties for
     // sheets are the actor object, the data object, whether or not it's
     // editable, the items array, and the effects array.
-    const context = super.getData();
+    const context = await super.getData();
 
     context.editable = this.editable;
 
@@ -75,8 +77,6 @@ export class ShinzoActorSheet extends ActorSheet {
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.actor.getRollData(),
         // Relative UUID resolution
@@ -91,8 +91,6 @@ export class ShinzoActorSheet extends ActorSheet {
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.actor.getRollData(),
         // Relative UUID resolution

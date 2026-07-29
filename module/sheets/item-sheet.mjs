@@ -39,7 +39,7 @@ export class ShinzoItemSheet extends ItemSheet {
   /** @override */
   async getData() {
     // Retrieve base data structure.
-    const context = super.getData();
+    const context = await super.getData();
 
     // Use a safe clone of the item data for further operations.
     const itemData = this.document.toObject(false);
@@ -51,8 +51,6 @@ export class ShinzoItemSheet extends ItemSheet {
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.item.getRollData(),
         // Relative UUID resolution
@@ -65,8 +63,6 @@ export class ShinzoItemSheet extends ItemSheet {
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.item.getRollData(),
         // Relative UUID resolution
@@ -79,8 +75,6 @@ export class ShinzoItemSheet extends ItemSheet {
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.item.getRollData(),
         // Relative UUID resolution
@@ -240,7 +234,7 @@ export class ShinzoItemSheet extends ItemSheet {
     const itemData = this.item.system.content.find(i => i._id === itemId);
  
     // Créer une nouvelle instance temporaire d'Item dans Foundry avec ces données
-    let tempItem = new Item(itemData, { parent: this.actor });
+    let tempItem = new CONFIG.Item.documentClass(itemData, { parent: this.actor });
  
     // Ouvrir la fiche de cet item
     tempItem.sheet.render(true);
@@ -304,7 +298,7 @@ export class ShinzoItemSheet extends ItemSheet {
     delete newItemData.system['type'];
 
     // Créer une nouvelle instance temporaire d'Item
-    let newItem = new Item(newItemData);
+    let newItem = new CONFIG.Item.documentClass(newItemData);
 
     // Ouvrir la fiche d'item pour permettre la modification
     newItem.sheet.render(true);
@@ -358,7 +352,7 @@ export class ShinzoItemSheet extends ItemSheet {
     // Créer l'objet de transfert pour le drag
     const dragData = {
         type: "Item",
-        data: itemData
+        uuid: itemData.uuid
     };
 
     // Stocker les données sous forme de texte dans l'événement de drag
@@ -367,7 +361,7 @@ export class ShinzoItemSheet extends ItemSheet {
 
   async syncItemPermissionsWithBag() {
     // Récupérer les permissions du sac
-    const bagPermissions = this.item.data.permission;
+    const bagPermissions = this.item.data.ownership;
 
     // Parcourir les items dans le sac et leur appliquer les mêmes permissions que le sac
     for (let item of this.item.system.content) {

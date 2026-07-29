@@ -1,4 +1,8 @@
-export const SHINZO = {};
+export const SHINZO = {
+  caracteristiques:{},
+  description:{},
+  activeEffectChanges:{}
+};
 
 /**
  * The set of Caracteristique Scores used within the system.

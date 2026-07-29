@@ -4,58 +4,58 @@ import { ShinzoActiveEffectConfig } from '../sheets/activeEffectConfig-sheet.mjs
  * @param {MouseEvent} event      The left-click event on the effect control
  * @param {Actor|Item} owner      The owning document which manages this effect
  */
-export function onManageActiveEffect(event, owner) {
+export async function onManageActiveEffect(event, owner) {
   event.preventDefault();
-  const a = event.currentTarget;
-  const li = a.closest('li');
-  const effect = li.dataset.effectId
+
+  const button = event.currentTarget;
+  const li = button.closest("li");
+
+  const effect = li?.dataset.effectId
     ? owner.effects.get(li.dataset.effectId)
     : null;
-  switch (a.dataset.action) {
-    case 'create':
-      return owner.createEmbeddedDocuments('ActiveEffect', [
-        {
-          name: game.i18n.format('DOCUMENT.New', {
-            type: game.i18n.localize('DOCUMENT.ActiveEffect'),
-          }),
-          img: 'icons/svg/aura.svg',
-          origin: owner.uuid,
-          'duration.rounds':
-            li.dataset.effectType === 'temporary' ? 1 : undefined,
-          disabled: li.dataset.effectType === 'inactive',
-        },
-      ]);
-    case 'edit':
-      if(effect){
-        const effectConfig = new ShinzoActiveEffectConfig(effect);
-        return effectConfig.render(true);
-      } break;
-    case 'delete':
-      console.log("Oui je passe ici");
-      new Dialog({
-        title: "Confirmation",
-        content: `<p>Êtes-vous sûr de vouloir supprimer ${effect.name} ?</p>`,
-        buttons: {
-          yes: {
-            label: "Oui",
-            callback: async () => {
-              // Vérifier que l'effet existe encore avant de le supprimer
-              if (effect) {
-                ui.notifications.info(`${effect.name} supprimé.`);
-                await effect.delete();
-              }
-            }
-          },
-          no: {
-            label: "Non",
-            callback: () => {}
-          }
-        },
-        default: "no"
-      }).render(true);
+
+
+  switch(button.dataset.action) {
+
+    case "create":
+      return owner.createEmbeddedDocuments("ActiveEffect", [{
+        name: game.i18n.localize("DOCUMENT.New"),
+        img: "icons/svg/aura.svg",
+        origin: owner.uuid,
+        disabled: li?.dataset.effectType === "inactive",
+        duration: {
+          rounds: li?.dataset.effectType === "temporary" ? 1 : undefined
+        }
+      }]);
+
+
+    case "edit":
+      if(effect) {
+        return new ShinzoActiveEffectConfig(effect).render(true);
+      }
       break;
-    case 'toggle':
-      return effect.update({ disabled: !effect.disabled });
+
+
+    case "delete":
+
+      if(!effect) return;
+
+      await Dialog.confirm({
+          title: "Confirmation",
+          content: `<p>Êtes-vous sûr de vouloir supprimer ${effect.name} ?</p>`,
+          yes: async () => {
+              await effect.delete();
+              ui.notifications.info(`${effect.name} supprimé.`);
+          }
+      });
+
+
+    case "toggle":
+      if(effect)
+        return effect.update({
+          disabled: !effect.disabled
+        });
+
   }
 }
 
@@ -64,56 +64,79 @@ export function onManageActiveEffect(event, owner) {
  * @param {ActiveEffect[]} effects    A collection or generator of Active Effect documents to prepare sheet data for
  * @return {object}                   Data for rendering
  */
-export function prepareActiveEffectCategories(effects) {
-  // Define effect header categories
-  const categories = {
-    temporary: {
-      type: 'temporary',
-      label: game.i18n.localize('SHINZO.Effect.Temporary'),
-      effects: [],
-    },
-    passive: {
-      type: 'passive',
-      label: game.i18n.localize('SHINZO.Effect.Passive'),
-      effects: [],
-    },
-    inactive: {
-      type: 'inactive',
-      label: game.i18n.localize('SHINZO.Effect.Inactive'),
-      effects: [],
-    },
-  };
+export function prepareActiveEffectCategories(effects){
 
-  // Iterate over active effects, classifying them into categories
-  for (let e of effects) {
-    if (e.disabled) categories.inactive.effects.push(e);
-    else if (e.isTemporary) categories.temporary.effects.push(e);
-    else categories.passive.effects.push(e);
+ const categories = {
+
+  temporary:{
+    type:"temporary",
+    label:game.i18n.localize("SHINZO.Effect.Temporary"),
+    effects:[]
+  },
+
+  passive:{
+    type:"passive",
+    label:game.i18n.localize("SHINZO.Effect.Passive"),
+    effects:[]
+  },
+
+  inactive:{
+    type:"inactive",
+    label:game.i18n.localize("SHINZO.Effect.Inactive"),
+    effects:[]
   }
-  return categories;
+
+ };
+
+
+ for(const effect of effects){
+
+   if(effect.disabled){
+     categories.inactive.effects.push(effect);
+   }
+   else if(
+      effect.duration?.rounds ||
+      effect.duration?.turns ||
+      effect.duration?.seconds ||
+      effect.duration?.startTime
+   ){
+     categories.temporary.effects.push(effect);
+   }
+   else{
+     categories.passive.effects.push(effect);
+   }
+
+ }
+
+ return categories;
+
 }
 
 export function registerCustomEffects(){
-  CONFIG.statusEffects = [
+  const effects = [
     {
       id: "aggripe",
       name: "Aggripé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/aggripe.svg",
+      statuses:["aggripe"]
     },
     {
       id: "alourdi",
       name: "Alourdi",
       img: "systems/shinzo/assets/icons/alteration/nefaste/alourdi.svg",
+      statuses:["alourdi"]
     },
     {
       id: "anti-magie",
       name: "Anti-magie",
       img: "systems/shinzo/assets/icons/alteration/nefaste/anti-magie.webp",
+      statuses:["anti-magie"]
     },
     {
       id: "porteDeLaMort",
       name: "Aux portes de la mort",
       img: "systems/shinzo/assets/icons/alteration/nefaste/aux-portes-de-la-mort.png",
+      statuses:["porteDeLaMort"],
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -20},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -20},
@@ -150,36 +173,43 @@ export function registerCustomEffects(){
       id: "aveugle",
       name: "Aveuglé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/aveugle.svg",
+      statuses:["aveugle"]
     },
     {
       id: "boiteux",
       name: "Boiteux",
       img: "systems/shinzo/assets/icons/alteration/nefaste/boiteux.svg",
+      statuses:["boiteux"]
     },
     {
       id: "charme",
       name: "Charmé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/charme.svg",
+      statuses:["charme"]
     },
     {
       id: "chute",
       name: "Chute",
       img: "systems/shinzo/assets/icons/alteration/nefaste/chute.svg",
+      statuses:["chute"]
     },
     {
       id: "confusion",
       name: "Confusion",
       img: "systems/shinzo/assets/icons/alteration/nefaste/confus.svg",
+      statuses:["confusion"]
     },
     {
       id: "desequilibre",
       name: "Déséquilibré",
       img: "systems/shinzo/assets/icons/alteration/nefaste/desequilibre.svg",
+      statuses:["desquilibre"]
     },
     {
       id: "distrait",
       name: "Distrait",
       img: "systems/shinzo/assets/icons/alteration/nefaste/distrait.svg",
+      statuses:["distrait"],
       changes: [
         { key: "system.ss_stats.ss_stats1.obs.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats1.per.b_m", mode: 2, value: -15},
@@ -190,31 +220,82 @@ export function registerCustomEffects(){
       id: "effraye",
       name: "Effrayé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/effraye.svg",
+      statuses:["effraye"]
     },
     {
       id: "electrise",
       name: "Electrisé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/electrise.svg",
+      statuses:["electrise"],
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d2",
+              damageType: "electric"
+            },
+            {
+              type: "chat",
+              message: "{name} subit {damage} dégâts à cause de l'altération Electrisé !"
+            }
+          ]
+        }
+      }
     },
     {
       id: "empoisonne",
       name: "Empoisonné",
       img: "systems/shinzo/assets/icons/alteration/nefaste/empoisonne.svg",
+      statuses:["empoisonne"],
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d6",
+              damageType: "poison"
+            },
+            {
+              type: "chat",
+              message: "{name} subit {damage} dégâts de poison."
+            }
+          ]
+        }
+      }
     },
     {
       id: "enchevetre",
       name: "Enchevêtré",
       img: "systems/shinzo/assets/icons/alteration/nefaste/enchevetre.svg",
+      statuses:["enchevetre"]
     },
     {
       id: "enflamme",
       name: "Enflammé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/enflamme.svg",
+      statuses:["enflamme"],
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d2",
+              damageType: "feu"
+            },
+            {
+              type: "chat",
+              message: "{name} subit {damage} dégâts à cause de l'altération Enflammé !"
+            }
+          ]
+        }
+      }
     },
     {
       id: "epuise",
       name: "Epuisé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/epuise.svg",
+      statuses:["epuise"],
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -15},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -15},
@@ -248,6 +329,7 @@ export function registerCustomEffects(){
       id: "etourdis",
       name: "Etourdis",
       img: "systems/shinzo/assets/icons/alteration/nefaste/etourdis.svg",
+      statuses:["etourdis"],
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -15},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -15},
@@ -284,21 +366,40 @@ export function registerCustomEffects(){
       id: "faible",
       name: "Faible",
       img: "systems/shinzo/assets/icons/alteration/nefaste/faible.svg",
+      statuses:["faible"]
     },
     {
       id: "fissure",
       name: "Fissure",
       img: "systems/shinzo/assets/icons/alteration/nefaste/fissure.svg",
+      statuses:["fissure"]
     },
     {
       id: "gelure",
       name: "Gelure",
       img: "systems/shinzo/assets/icons/alteration/nefaste/gelure.svg",
+      statuses:["gelure"],
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d2",
+              damageType: "froid"
+            },
+            {
+              type: "chat",
+              message: "{name} subit {damage} dégâts à cause de l'altération Gelure !"
+            }
+          ]
+        }
+      }
     },
     {
       id: "hebete",
       name: "Hébété",
       img: "systems/shinzo/assets/icons/alteration/nefaste/hebete.svg",
+      statuses:["hebete"],
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -30},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -30},
@@ -335,41 +436,77 @@ export function registerCustomEffects(){
       id: "hemorragie",
       name: "Hémorragie",
       img: "systems/shinzo/assets/icons/alteration/nefaste/hemorragie.svg",
+      statuses:["hemorragie"],
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d2",
+            },
+            {
+              type: "chat",
+              message: "{name} saigne abondamment et subit {damage} points de dégâts !"
+            }
+          ]
+        }
+      }
     },
     {
       id: "hypnotise",
       name: "Hypnotisé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/hypnotise.svg",
+      statuses:["hypnotise"]
     },
     {
       id: "lenteur",
       name: "Lenteur",
       img: "systems/shinzo/assets/icons/alteration/nefaste/lenteur.svg",
+      statuses:["lenteur"]
     },
     {
       id: "lethargique",
       name: "Léthargique",
       img: "systems/shinzo/assets/icons/alteration/nefaste/lethargique.svg",
+      statuses:["lethargique"]
     },
     {
       id: "necrose",
       name: "Nécrosé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/necrose.svg",
+      statuses:["necrose"]
     },
     {
       id: "paralyse",
       name: "Paralysé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/paralyse.svg",
+      statuses:["paralyse"]
     },
     {
       id: "petrifie",
       name: "Pétrifié",
       img: "systems/shinzo/assets/icons/alteration/nefaste/petrifie.svg",
+      statuses:["petrifie"]
     },
     {
       id: "saignement",
       name: "Saignement",
       img: "systems/shinzo/assets/icons/alteration/nefaste/saignement.svg",
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d2",
+            },
+            {
+              type: "chat",
+              message: "{name} saigne et subit {damage} points de dégâts !"
+            }
+          ]
+        }
+      },
+      statuses:["saignement"],
       duration: {
         turns: 3,
       },
@@ -378,6 +515,21 @@ export function registerCustomEffects(){
       id: "saignement2",
       name: "Saignement : 2nd stack",
       img: "systems/shinzo/assets/icons/alteration/nefaste/saignement2.svg",
+      statuses:["saignement2"],
+      flags: {
+        shinzo: {
+          onTurnStart: [
+            {
+              type: "damage",
+              formula: "1d2",
+            },
+            {
+              type: "chat",
+              message: "{name} saigne un peu plus et subit {damage} points de dégâts supplémentaires !"
+            }
+          ]
+        }
+      },
       duration: {
         turns: 3,
       },
@@ -386,6 +538,7 @@ export function registerCustomEffects(){
       id: "adrenaline",
       name: "Adrénaline",
       img: "systems/shinzo/assets/icons/alteration/benefique/adrenaline.svg",
+      statuses:["adrenaline"],
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: 20},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: 20},
@@ -422,36 +575,43 @@ export function registerCustomEffects(){
       id: "apaise",
       name: "Apaisé",
       img: "systems/shinzo/assets/icons/alteration/benefique/apaise.svg",
+      statuses:["apaise"]
     },
     {
       id: "armure",
       name: "Armure",
       img: "systems/shinzo/assets/icons/alteration/benefique/armure.svg",
+      statuses:["armure"]
     },
     {
       id: "barriere",
       name: "Barrière",
       img: "systems/shinzo/assets/icons/alteration/benefique/barriere.svg",
+      statuses:["barriere"]
     },
     {
       id: "celerite",
       name: "Célérité",
       img: "systems/shinzo/assets/icons/alteration/benefique/celerite.svg",
+      statuses:["celerite"]
     },
     {
       id: "concentration",
       name: "Concentration",
       img: "systems/shinzo/assets/icons/alteration/benefique/concentration.svg",
+      statuses:["concentration"]
     },
     {
       id: "contre",
       name: "Contre",
       img: "systems/shinzo/assets/icons/alteration/benefique/contre.svg",
+      statuses:["contre"]
     },
     {
       id: "frenetique",
       name: "Frénétique",
       img: "systems/shinzo/assets/icons/alteration/benefique/frenetique.svg",
+      statuses:["frenetique"],
       changes: [
         { key: "system.rdp.deg_physique.b_m", mode: 2, value: 2},
       ]
@@ -460,51 +620,61 @@ export function registerCustomEffects(){
       id: "immunite",
       name: "Immunisé",
       img: "systems/shinzo/assets/icons/alteration/benefique/immunite.svg",
+      statuses:["immunite"]
     },
     {
       id: "invisible",
       name: "Invisible",
       img: "systems/shinzo/assets/icons/alteration/benefique/invisible.svg",
+      statuses:["invisible"]
     },
     {
       id: "levitation",
       name: "Lévitation",
       img: "systems/shinzo/assets/icons/alteration/benefique/levitation.svg",
+      statuses:["levitation"]
     },
     {
       id: "masque",
       name: "Masqué",
       img: "systems/shinzo/assets/icons/alteration/benefique/masque.svg",
+      statuses:["masque"]
     },
     {
       id: "miroir",
       name: "Miroir",
       img: "systems/shinzo/assets/icons/alteration/benefique/miroir.svg",
+      statuses:["miroir"]
     },
     {
       id: "omniscience",
       name: "Omniscience",
       img: "systems/shinzo/assets/icons/alteration/benefique/omniscience.svg",
+      statuses:["omnisciense"]
     },
     {
       id: "prepare",
       name: "Préparé",
       img: "systems/shinzo/assets/icons/alteration/benefique/prepare.svg",
+      statuses:["prepare"]
     },
     {
       id: "reflet",
       name: "Reflet",
       img: "systems/shinzo/assets/icons/alteration/benefique/reflet.svg",
+      statuses:["reflet"]
     },
     {
       id: "regeneration",
       name: "Régénération",
       img: "systems/shinzo/assets/icons/alteration/benefique/regeneration.svg",
+      statuses:["regeneration"]
     },
     {
       id: "sens",
       name: "Sens-accrus",
       img: "systems/shinzo/assets/icons/alteration/benefique/sens.svg",
+      statuses:["sens"],
       changes: [
         { key: "system.ss_stats.ss_stats1.obs.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats1.per.b_m", mode: 2, value: -15},
@@ -515,26 +685,36 @@ export function registerCustomEffects(){
       id: "vision",
       name: "Vision",
       img: "systems/shinzo/assets/icons/alteration/benefique/vision.svg",
+      statuses:["vision"]
     },
     {
       id: "endormis",
       name: "Endormis",
       img: "systems/shinzo/assets/icons/alteration/autre/endormis.svg",
+      statuses:["endormis"]
     },
     {
       id: "surpris",
       name: "Surpris",
       img: "systems/shinzo/assets/icons/alteration/autre/surpris.svg",
+      statuses:["surpris"]
     },
     {
       id: "inconscient",
       name: "Inconscient",
       img: "systems/shinzo/assets/icons/alteration/autre/inconscient.svg",
+      statuses:["inconscient"]
     },
     {
       id: "mort",
       name: "Mort",
       img: "systems/shinzo/assets/icons/alteration/autre/mort.svg",
+      statuses:["mort"]
     }
   ];
+
+  CONFIG.statusEffects = [
+    ...effects
+  ];
+
 }

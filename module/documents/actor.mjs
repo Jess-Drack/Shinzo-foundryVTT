@@ -29,13 +29,13 @@ export class ShinzoActor extends Actor {
    */
   prepareDerivedData() {
     const actorData = this;
-    const systemData = actorData.system;
-    const flags = actorData.flags.shinzo || {};
+    const systemData = this.system;
+    const flags = this.flags?.shinzo ?? {};
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
-    this._prepareCharacterData(actorData);
-    this._prepareNpcData(actorData);
+    this._prepareCharacterData(this);
+    this._prepareNpcData(this);
   }
 
   /**
