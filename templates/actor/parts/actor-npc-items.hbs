@@ -15,7 +15,7 @@
     </div>
   </li>
   {{#each arme as |item id|}}
-    {{#if item.system.equiped }}
+    {{#if item.system.equipped }}
       <li class='item flexrow' data-item-id='{{item._id}}'>
         <div class='item-name'>
           <div class='item-image'>
@@ -36,8 +36,14 @@
           <div class='item-formula item-prop'>{{item.system.damage}}</div>
         </a>
         <div class='item-controls'>
-          <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle equiped-style" {{#if item.system.equiped}}checked{{/if}} />
+          <div class='item-equipped'>
+            <input
+            type="checkbox"
+            name="system.equipped"
+            title="Équipé"
+            class="equipped-toggle equipped-style"
+            {{checked item.system.equipped}}
+            />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -63,7 +69,7 @@
     </div>
   </li>
   {{#each armure as |item id|}}
-    {{#if item.system.equiped }}
+    {{#if item.system.equipped }}
       <li class='item flexrow' data-item-id='{{item._id}}'>
         <div class='item-name'>
           <div class='item-image'>
@@ -83,8 +89,14 @@
         <div class='item-res item-prop'>{{item.system.resPhysique}}</div>
         <div class='item-res item-prop'>{{item.system.resMagique}}</div>
         <div class='item-controls'>
-          <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="{{#if item.system.equiped}} Équipé {{else}} Non-équipé {{/if}}" class="equiped-toggle equiped-style" {{#if item.system.equiped}}checked{{/if}} />
+          <div class='item-equipped'>
+            <input
+            type="checkbox"
+            name="system.equipped"
+            title="Équipé"
+            class="equipped-toggle equipped-style"
+            {{checked item.system.equipped}}
+            />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -99,7 +111,7 @@
     {{/if}}
   {{/each}}
   {{#each sac as |item id|}}
-    {{#if item.system.equiped }}
+    {{#if item.system.equipped }}
       <li class='item flexrow' data-item-id='{{item._id}}'>
         <div class='item-name'>
           <div class='item-image'>
@@ -117,8 +129,14 @@
           </a>
         </div>
         <div class='item-controls'>
-          <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Équipé" class="equiped-toggle equiped-style" checked/>
+          <div class='item-equipped'>
+            <input
+            type="checkbox"
+            name="system.equipped"
+            title="Équipé"
+            class="equipped-toggle equipped-style"
+            {{checked item.system.equipped}}
+            />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -169,7 +187,7 @@
     </li>
   {{/each}}
   {{#each arme as |item id|}}
-    {{#unless item.system.equiped }}
+    {{#unless item.system.equipped }}
       <li class='item flexrow' data-item-id='{{item._id}}'>
         <div class='item-name'>
           <div class='item-image'>
@@ -187,8 +205,14 @@
           </a>
         </div>
         <div class='item-controls'>
-          <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle equiped-style"/>
+          <div class='item-equipped'>
+            <input
+            type="checkbox"
+            name="system.equipped"
+            title="Équipé"
+            class="equipped-toggle equipped-style"
+            {{checked item.system.equipped}}
+            />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -203,7 +227,7 @@
     {{/unless}}
   {{/each}}
   {{#each armure as |item id|}}
-    {{#unless item.system.equiped }}
+    {{#unless item.system.equipped }}
       <li class='item flexrow' data-item-id='{{item._id}}'>
         <div class='item-name'>
           <div class='item-image'>
@@ -221,8 +245,14 @@
           </a>
         </div>
         <div class='item-controls'>
-          <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle equiped-style"/>
+          <div class='item-equipped'>
+            <input
+            type="checkbox"
+            name="system.equipped"
+            title="Équipé"
+            class="equipped-toggle equipped-style"
+            {{checked item.system.equipped}}
+            />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -237,7 +267,7 @@
     {{/unless}}
   {{/each}}
   {{#each sac as |item id|}}
-    {{#unless item.system.equiped }}
+    {{#unless item.system.equipped }}
       <li class='item flexrow' data-item-id='{{item._id}}'>
         <div class='item-name'>
           <div class='item-image'>
@@ -255,8 +285,14 @@
           </a>
         </div>
         <div class='item-controls'>
-          <div class='item-equiped'>
-            <input type='checkbox' name="item.system.equiped" title="Non-équipé" class="equiped-toggle equiped-style"/>
+          <div class='item-equipped'>
+            <input
+            type="checkbox"
+            name="system.equipped"
+            title="Équipé"
+            class="equipped-toggle equipped-style"
+            {{checked item.system.equipped}}
+            />
           </div>
           {{#if ../editable}}
             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>

@@ -56,6 +56,8 @@ export class ShinzoActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
+    context.system.derived = this.actor.system.derived;
+
     // Adding a pointer to CONFIG.SHINZO
     context.config = CONFIG.SHINZO;
 
@@ -147,6 +149,9 @@ export class ShinzoActorSheet extends ActorSheet {
         armures.push(i);
       }
       else if (i.type === 'sac') {
+
+        i.content = i.system.content ?? [];
+
         sacs.push(i);
       }
       // Append to features.
@@ -213,7 +218,7 @@ export class ShinzoActorSheet extends ActorSheet {
             label: "Oui",
             callback: async () => {
               // Effectuer la suppression ici
-              item.delete();
+              await item.delete();
               ui.notifications.info(`${item.name} supprimé.`);
             }
           },
@@ -231,7 +236,7 @@ export class ShinzoActorSheet extends ActorSheet {
     html.on('click', '.deStat', this._bonusStats.bind(this));
     html.on('click', '.deArme', this._onRollArmes.bind(this));
     html.on('click', '.deSpe', this._onRollSpe.bind(this));
-    html.on('change', '.equiped-toggle', this._equippedChange.bind(this));
+    html.on('change', '.equipped-toggle', this._equippedChange.bind(this));
 
     html.on('click', '.addBagage', (ev) => {
       const li = $(ev.currentTarget).parents('.item');
@@ -305,10 +310,19 @@ export class ShinzoActorSheet extends ActorSheet {
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
-      html.find('li.item').each((i, li) => {
-        if (li.classList.contains('inventory-header')) return;
-        li.setAttribute('draggable', true);
-        li.addEventListener('dragstart', handler, false);
+      html.find('li.item[data-item-id]').each((i, li) => {
+
+        li.setAttribute(
+          'draggable',
+          true
+        );
+
+        li.addEventListener(
+          'dragstart',
+          handler,
+          false
+        );
+
       });
     }
 
@@ -343,10 +357,9 @@ export class ShinzoActorSheet extends ActorSheet {
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.system['type'];
 
-    const createdItem = await Item.create(itemData, { parent: this.actor });
-    console.log("Objet créé : ", createdItem);
+    const createdItem = await Item.create("Item", [itemData]);
 
-    return createdItem;
+    return createdItem[0];
   }
 
   /**
@@ -486,11 +499,11 @@ export class ShinzoActorSheet extends ActorSheet {
       return;
     }
   
-    // Inverser l'état 'equiped'
-    const newEquippedState = !item.system.equiped;
+    // Inverser l'état 'equipped'
+    const newEquippedState = !item.system.equipped;
   
     // Mettre à jour l'élément
-    await item.update({ 'system.equiped': newEquippedState });
+    await item.update({ 'system.equipped': newEquippedState });
   
     // Optionnel : Actualiser l'affichage si nécessaire
     this.render(false);
@@ -574,5 +587,166 @@ export class ShinzoActorSheet extends ActorSheet {
         });
       }
     }).render(true)
+  }
+
+  async _onDropItem(event){
+
+    event.preventDefault();
+
+
+    const data =
+      TextEditor.getDragEventData(event);
+
+
+
+    if(data.type !== "Item")
+      return;
+
+
+
+    let itemData;
+
+
+
+    /*
+    * Cas 1 :
+    * Objet provenant d'un sac Shinzo
+    */
+    if(data.data && data.fromContainer){
+
+
+      itemData =
+        foundry.utils.deepClone(
+          data.data
+        );
+
+
+    }
+
+
+    /*
+    * Cas 2 :
+    * Objet classique Foundry
+    */
+    else if(data.uuid){
+
+
+      const item =
+        await fromUuid(data.uuid);
+
+
+
+      if(!item)
+        return;
+
+
+
+      itemData =
+        item.toObject();
+
+
+    }
+
+
+    else {
+
+      console.warn(
+        "Drop Item invalide",
+        data
+      );
+
+      return;
+
+    }
+
+
+
+    /*
+    * Nouveau ID pour éviter
+    * les conflits
+    */
+    itemData._id =
+      foundry.utils.randomID();
+
+
+
+    /*
+    * Création dans l'inventaire
+    */
+    await this.actor.createEmbeddedDocuments(
+      "Item",
+      [
+        itemData
+      ]
+    );
+
+
+
+
+    /*
+    * Si l'objet vient d'un sac,
+    * suppression du sac
+    */
+    if(data.fromContainer){
+
+
+      const container =
+        await fromUuid(
+          data.containerUuid
+        );
+
+
+
+      if(container){
+
+
+        const content =
+          foundry.utils.deepClone(
+            container.system.content ?? []
+          );
+
+
+
+        const index =
+          content.findIndex(
+            i =>
+              i._id === data.data._id
+          );
+
+
+
+        if(index !== -1){
+
+
+          content.splice(
+            index,
+            1
+          );
+
+
+
+          await container.update({
+
+            "system.content":
+              content
+
+          });
+
+
+        }
+
+
+      }
+
+
+    }
+
+
+
+    ui.notifications.info(
+      `${itemData.name} ajouté`
+    );
+
+
   }
 }

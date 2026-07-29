@@ -10,6 +10,16 @@ import { SHINZO } from './helpers/config.mjs';
 
 import { registerCustomEffects } from './helpers/effects.mjs';
 
+import { CharacterModel } from "./data/actor/character-model.mjs";
+import { NPCModel } from "./data/actor/npc-model.mjs";
+
+import { ArmeModel } from "./data/item/arme-model.mjs";
+import { ArmureModel } from "./data/item/armure-model.mjs";
+import { ObjetModel } from "./data/item/objet-model.mjs";
+import { SacModel } from "./data/item/sac-model.mjs";
+import { CompetenceModel } from "./data/item/competence-model.mjs";
+import { TraitModel } from "./data/item/trait-model.mjs";
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
@@ -38,6 +48,28 @@ Hooks.once('init', function () {
   // Define custom Document classes
   CONFIG.Actor.documentClass = ShinzoActor;
   CONFIG.Item.documentClass = ShinzoItem;
+
+  /**
+  * DataModels V13
+  */
+  CONFIG.Actor.dataModels = {
+
+    character: CharacterModel,
+
+    npc: NPCModel
+
+  };
+
+  CONFIG.Item.dataModels = {
+
+    arme: ArmeModel,
+    armure: ArmureModel,
+    objet: ObjetModel,
+    sac: SacModel,
+    competence: CompetenceModel,
+    trait: TraitModel
+
+  };
 
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
@@ -73,11 +105,63 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once('ready', function () {
+Hooks.once("ready", async function () {
+
+  // Migration des anciennes données
+  //await migrateWorld();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+
   registerCustomEffects();
 });
+
+
+/**
+ * Migration des données du monde
+ */
+/*async function migrateWorld() {
+
+  console.log("SHINZO | Vérification des données du monde...");
+
+  for (const actor of game.actors) {
+
+    for (const item of actor.items) {
+
+      const update = {};
+
+      switch (item.type) {
+
+        case "armure":
+
+          if (typeof item.system.poids !== "number")
+            update["system.poids"] = Number(item.system.poids) || 0;
+
+          if (typeof item.system.resPhysique !== "number")
+            update["system.resPhysique"] = Number(item.system.resPhysique) || 0;
+
+          if (typeof item.system.resMagique !== "number")
+            update["system.resMagique"] = Number(item.system.resMagique) || 0;
+
+          break;
+
+        case "sac":
+
+          if (typeof item.system.poidsMax !== "number")
+            update["system.poidsMax"] = Number(item.system.poidsMax) || 0;
+
+          break;
+      }
+
+      if (Object.keys(update).length) {
+        console.log(`SHINZO | Migration de ${item.name}`);
+        await item.update(update, { diff: false, noHook: true });
+      }
+    }
+  }
+
+  console.log("SHINZO | Migration terminée.");
+}*/
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */

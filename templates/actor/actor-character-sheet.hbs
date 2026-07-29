@@ -44,7 +44,7 @@
             </div>
             {{/if}}
             <div class="abilities flexcol rdpm">
-              {{#each system.rdp as |rd key|}}
+              {{#each system.derived.rdp as |rd key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.rdp.{{key}}.value" class="resource-label flexlarge align-left {{key}}icon" data-label="{{localize (lookup @root.config.caracteristiques key)}}"></label>
                 <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
@@ -66,10 +66,10 @@
             </div>
             {{/if}}
             <div class="abilities flexcol rdpm">
-              {{#each system.rdm as |rd key|}}
+              {{#each system.derived.rdm as |rd key|}}
               <div class="ability flexrow flex-group-center">
                 <label for="system.rdm.{{key}}.value" class="resource-label flexlarge align-left {{key}}icon" data-label="{{localize (lookup @root.config.caracteristiques key)}}"></label>
-                <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
+                <span type="text" name="system.rdm.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
               </div>
               {{/each}}
             </div>

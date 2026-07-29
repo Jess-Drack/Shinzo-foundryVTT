@@ -681,12 +681,12 @@ img {
   text-decoration: underline;
 }
 
-.checkspe, .item-equiped{
+.checkspe, .item-equipped{
   width: 50px;
   height: 15px;
 }
 
-.item-equiped{
+.item-equipped{
   width: 20px;
 }
 
@@ -709,7 +709,7 @@ img {
   border-color: #989B3D;
 }
 
-.equiped-style {
+.equipped-style {
   margin: 0 !important;
   appearance: none;
   width: 12px !important;
@@ -721,7 +721,7 @@ img {
   border-radius: 2px;
 }
 
-.equiped-style:checked {
+.equipped-style:checked {
   background-color: #292b2c71;
   background-clip: content-box;
   padding: 2px;
