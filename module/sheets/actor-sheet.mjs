@@ -1,7 +1,5 @@
-import {
-  onManageActiveEffect,
-  prepareActiveEffectCategories,
-} from '../helpers/effects.mjs';
+import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs';
+import { RollSystem } from "../systems/roll-system.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -54,6 +52,9 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = actorData.system;
+
+    this._prepareDisplayStats(context.system);
+
     context.flags = actorData.flags;
 
     context.system.derived = this.actor.system.derived;
@@ -107,6 +108,8 @@ export class ShinzoActorSheet extends ActorSheet {
       // as well as any items
       this.actor.allApplicableEffects()
     );
+
+    console.log(context.system.gds_stats);
 
     return context;
   }
@@ -357,7 +360,7 @@ export class ShinzoActorSheet extends ActorSheet {
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.system['type'];
 
-    const createdItem = await Item.create("Item", [itemData]);
+    const createdItem = await Item.create(itemData, { parent: this.actor });
 
     return createdItem[0];
   }
@@ -391,56 +394,6 @@ export class ShinzoActorSheet extends ActorSheet {
         rollMode: game.settings.get('core', 'rollMode'),
       });
       return roll;
-    }
-  }
-
-  async rollStats(valueStat, statName, statNameAbridged, crit, jetFormule){
-
-    let reussiteCrit = 0;
-    let echecCrit = 0;
-
-    if(crit > 0 ){
-      reussiteCrit = crit;
-    } else if (crit < 0) {
-      echecCrit = -(crit);
-    }
-  
-    let roll = new Roll(jetFormule);
-    await roll.evaluate();
-
-    if(roll.total <= 5 + reussiteCrit) {
-      const text = `[<span class="reussite rc">${statName}</span>] C'est une réussite critique !!!!`
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
-    } else if(roll.total >= (96 - echecCrit)) {
-      const text = `[<span class="echec ec">${statName}</span>] C'est un échec critique !!!!`
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
-    } else if( roll.total < valueStat) {
-      if(statNameAbridged === "con" || statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
-        const rollDiff = valueStat - roll.total;
-        const text = `[<span class="reussite">${statName}</span>] C'est une réussite. La différence est de ${rollDiff}.`;
-        roll.toMessage({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          flavor: text,
-        });
-      } else {
-        const text = `[<span class="reussite">${statName}</span>] C'est une réussite.`;
-        roll.toMessage({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          flavor: text,
-        });
-      }
-    } else if( roll.total > valueStat) {
-      const text = `[<span class="echec">${statName}</span>] C'est un echec.`
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
     }
   }
 
@@ -510,10 +463,10 @@ export class ShinzoActorSheet extends ActorSheet {
   }
 
   async _bonusStats(event) {
-    const valueStat = event.target.dataset["dice"];
-    const statName = event.target.dataset["label"];
-    const statNameAbridged = event.target.dataset["statname"];
-    let crit = Number(event.target.dataset["crit"]);
+    const statName = event.target.dataset.label;
+    const statKey = event.target.dataset.statname;
+    const prepared = RollSystem.getPreparedStat(this.actor, statKey);
+    const valueStat = prepared.value;
 
     const content = `
     <h1 style="border: none; display: flex; font-size: 1.5em; justify-content: center;">Valeur de base : <nav style="text-decoration: underline; margin-left: 1%">${valueStat}</nav></h1>
@@ -525,65 +478,72 @@ export class ShinzoActorSheet extends ActorSheet {
       buttons: {
         desavantage: {
           label: "Desavantage",
-          callback: (html) => {  
-            const jetFormule = "2d100k";    
-            const newStatName = statName + " : Désavantage";      
-            const modifier = Number(html.find('#modifierValue').val());
-            let newValueStat = Number(valueStat) + modifier;
-            if (newValueStat < 15) {
-              let newCrit = -((15 - newValueStat));
-              crit = crit + newCrit;
-              newValueStat = 15;
-            } else if (newValueStat > 85) {
-              let newCrit = Math.floor((newValueStat - 85) / 2);
-              crit = crit + newCrit;
-              newValueStat = 85;
-            };
-            this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
+          callback: (html) => {
+              RollSystem.rollStat({
+
+                  actor: this.actor,
+
+                  stat: statKey,
+
+                  label: `${statName} : Désavantage`,
+
+                  modifier: Number(html.find("#modifierValue").val()),
+
+                  formula: "2d100k",
+
+                  prepared
+
+              });
           }
         },
         normal: {
           label: "Neutre",
           callback: (html) => {
-            const jetFormule = "1d100";
-            const modifier = Number(html.find('#modifierValue').val());
-            let newValueStat = Number(valueStat) + modifier;
-            if (newValueStat < 15) {
-              let newCrit = -((15 - newValueStat));
-              crit = crit + newCrit;
-              newValueStat = 15;
-            } else if (newValueStat > 85) {
-              let newCrit = Math.floor((newValueStat - 85) / 2);
-              crit = crit + newCrit;
-              newValueStat = 85;
-            };
-            this.rollStats(newValueStat, statName, statNameAbridged, crit, jetFormule);
+              RollSystem.rollStat({
+
+                  actor: this.actor,
+
+                  stat: statKey,
+
+                  label: statName,
+
+                  modifier: Number(html.find("#modifierValue").val()),
+
+                  formula: "1d100",
+
+                  prepared
+
+              });
           }
         },
         avantage: {
           label: "Avantage",
-          callback: (html) => {         
-            const jetFormule = "2d100kl";   
-            const newStatName = statName + " : Avantage";
-            const modifier = Number(html.find('#modifierValue').val());
-            let newValueStat = Number(valueStat) + modifier;
-            if (newValueStat < 15) {
-              let newCrit = -((15 - newValueStat));
-              crit = crit + newCrit;
-              newValueStat = 15;
-            } else if (newValueStat > 85) {
-              let newCrit = Math.floor((newValueStat - 85) / 2);
-              crit = crit + newCrit;
-              newValueStat = 85;
-            };
-            this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
+          callback: (html) => {
+
+              RollSystem.rollStat({
+
+                  actor: this.actor,
+
+                  stat: statKey,
+
+                  label: `${statName} : Avantage`,
+
+                  modifier: Number(html.find("#modifierValue").val()),
+
+                  formula: "2d100kl",
+
+                  prepared
+
+              });
+
           }
         }
       },
       render: (html) => {
         html.find('#halveButton').click(() => {
-          const halfMalus = Math.floor(-valueStat / 2);
-          html.find('#modifierValue').val(halfMalus);
+
+          html.find('#modifierValue').val(RollSystem.getHalfPenalty(prepared.brut));
+
         });
       }
     }).render(true)
@@ -749,4 +709,28 @@ export class ShinzoActorSheet extends ActorSheet {
 
 
   }
+
+  _prepareDisplayStats(system) {
+
+      const prepareGroup = (group) => {
+
+          for (const [key, stat] of Object.entries(group ?? {})) {
+
+              const prepared = RollSystem.prepareStat(
+                  stat.value,
+                  key,
+                  stat.addCrit ?? 0
+              );
+
+              stat.brut = prepared.brut;
+              stat.displayValue = prepared.value;
+              stat.addCrit = prepared.crit;
+          }
+      };
+
+      prepareGroup(system.gds_stats);
+      prepareGroup(system.ss_stats?.ss_stats1);
+      prepareGroup(system.ss_stats?.ss_stats2);
+  }
+
 }

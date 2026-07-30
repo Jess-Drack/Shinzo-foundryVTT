@@ -52,7 +52,6 @@ export class ShinzoActor extends Actor {
     super.prepareDerivedData();
 
 
-
     switch (this.type) {
 
 
@@ -70,16 +69,9 @@ export class ShinzoActor extends Actor {
 
       break;
 
-
     }
 
-
   }
-
-
-
-
-
 
 
   /**
@@ -177,12 +169,6 @@ export class ShinzoActor extends Actor {
 
 
   }
-
-
-
-
-
-
 
 
   /**

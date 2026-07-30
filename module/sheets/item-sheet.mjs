@@ -1,7 +1,4 @@
-import {
-  onManageActiveEffect,
-  prepareActiveEffectCategories,
-} from "../helpers/effects.mjs";
+import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
 
 /**
@@ -23,30 +20,23 @@ export class ShinzoItemSheet extends ItemSheet {
     return foundry.utils.mergeObject(
       super.defaultOptions,
       {
-
         classes:[
           "shinzo",
           "sheet",
           "item"
         ],
-
         width:520,
-
         height:480,
-
-
         tabs:[
           {
             navSelector:".sheet-tabs",
             contentSelector:".sheet-body"
           }
         ]
-
       }
     );
 
   }
-
 
 
   /**
@@ -59,41 +49,26 @@ export class ShinzoItemSheet extends ItemSheet {
   }
 
 
-
   /**
    * Préparation des données envoyées au Handlebars
    */
   async getData(options={}){
 
-
-    const context =
-      await super.getData(options);
-
-
+    const context = await super.getData(options);
 
     /*
      * Clone sécurisé de l'item
      */
-    const itemData =
-      this.item.toObject(false);
-
-
+    const itemData = this.item.toObject(false);
 
     /*
      * Données système
      */
-    context.system =
-      itemData.system;
+    context.system = itemData.system;
 
+    context.flags = itemData.flags;
 
-    context.flags =
-      itemData.flags;
-
-
-    context.config =
-      CONFIG.SHINZO;
-
-
+    context.config = CONFIG.SHINZO;
 
     /*
      * Description enrichie
@@ -115,9 +90,6 @@ export class ShinzoItemSheet extends ItemSheet {
 
       );
 
-
-
-
     /*
      * Effet enrichi
      */
@@ -137,10 +109,6 @@ export class ShinzoItemSheet extends ItemSheet {
         }
 
       );
-
-
-
-
 
     /*
      * Note enrichie
@@ -162,10 +130,6 @@ export class ShinzoItemSheet extends ItemSheet {
 
       );
 
-
-
-
-
     /*
      * Gestion du contenu des sacs
      *
@@ -174,18 +138,12 @@ export class ShinzoItemSheet extends ItemSheet {
      */
     if(this.item.type === "sac"){
 
-
       context.contents =
         foundry.utils.deepClone(
           this.item.system.content ?? []
         );
 
-
     }
-
-
-
-
 
     /*
      * Active Effects
@@ -195,14 +153,9 @@ export class ShinzoItemSheet extends ItemSheet {
         this.item.effects
       );
 
-
-
     return context;
 
-
   }
-
-
 
 
   /**
@@ -210,61 +163,33 @@ export class ShinzoItemSheet extends ItemSheet {
    */
   activateListeners(html){
 
-
     super.activateListeners(html);
-
-
 
     /*
      * Drop dans un sac
      */
-    html.find(".bag-contents")
-      .on(
-        "drop",
-        this._onDropItem.bind(this)
-      );
-
-
+    html.find(".bag-contents").on("drop",this._onDropItem.bind(this));
 
     /*
      * Edition d'un objet contenu
      */
-    html.find(".item-edit")
-      .click(
-        this._onEditContainedItem.bind(this)
-      );
-
-
+    html.find(".item-edit").click(this._onEditContainedItem.bind(this));
 
     /*
      * Suppression d'un objet contenu
      */
-    html.find(".item-delete")
-      .click(
-        this._onRemoveItem.bind(this)
-      );
-
-
+    html.find(".item-delete").click(this._onRemoveItem.bind(this));
 
     /*
      * Drag depuis le sac
      */
-    html.find(".item")
-      .on(
-        "dragstart",
-        this._onDragStartContainedItem.bind(this)
-      );
-
-
-
+    html.find(".item").on("dragstart", this._onDragStartContainedItem.bind(this));
 
     /*
      * Active Effects
      */
     if(!this.isEditable)
       return;
-
-
 
     html.on(
       "click",
@@ -292,10 +217,7 @@ export class ShinzoItemSheet extends ItemSheet {
    */
   async _onDropItem(event){
 
-
     event.preventDefault();
-
-
 
     let data;
 
@@ -321,25 +243,14 @@ export class ShinzoItemSheet extends ItemSheet {
 
     }
 
-
-
-
     if(data.type !== "Item")
       return;
-
-
-
 
     const sourceItem =
       await fromUuid(data.uuid);
 
-
-
     if(!sourceItem)
       return;
-
-
-
 
     /*
      * Copie complète de l'objet
@@ -347,30 +258,20 @@ export class ShinzoItemSheet extends ItemSheet {
     const itemData =
       sourceItem.toObject();
 
-
-
     /*
      * Nouvel ID interne
      */
     itemData._id =
       foundry.utils.randomID();
 
-
-
-
     const content =
       foundry.utils.deepClone(
         this.item.system.content ?? []
       );
 
-
-
     content.push(
       itemData
     );
-
-
-
 
     await this.item.update({
 
@@ -379,9 +280,6 @@ export class ShinzoItemSheet extends ItemSheet {
 
     });
 
-
-
-
     /*
      * Si l'objet vient d'un acteur
      *
@@ -389,25 +287,15 @@ export class ShinzoItemSheet extends ItemSheet {
      */
     if(sourceItem.actor){
 
-
       await sourceItem.delete();
 
-
     }
-
-
-
 
     ui.notifications.info(
       `${sourceItem.name} placé dans le sac`
     );
 
-
   }
-
-
-
-
 
 
   /**
@@ -415,54 +303,20 @@ export class ShinzoItemSheet extends ItemSheet {
    */
   async _onEditContainedItem(event){
 
-
     event.preventDefault();
 
+    const itemId = event.currentTarget.dataset.itemId;
 
+    const itemData = this.item.system.content.find(item => item._id === itemId);
 
-    const itemId =
-      event.currentTarget.dataset.itemId;
-
-
-
-
-    const itemData =
-      this.item.system.content.find(
-
-        item =>
-          item._id === itemId
-
-      );
-
-
-
-
-    if(!itemData)
-      return;
-
-
-
-
+    if(!itemData) return;
 
     /*
      * Création d'une instance temporaire
      */
-    const tempItem =
-    new CONFIG.Item.documentClass(
-      foundry.utils.deepClone(itemData),
-      {
-        parent: this.item.actor
-      }
-    );
-
-
-
-
+    const tempItem = new CONFIG.Item.documentClass(foundry.utils.deepClone(itemData), {parent: this.item.actor} );
 
     tempItem.sheet.render(true);
-
-
-
 
     /*
      * Quand la fiche est sauvegardée
@@ -470,67 +324,25 @@ export class ShinzoItemSheet extends ItemSheet {
     tempItem.sheet._updateObject =
       async(formData)=>{
 
+        const content = foundry.utils.deepClone(this.item.system.content);
 
-        const content =
-          foundry.utils.deepClone(
-            this.item.system.content
-          );
-
-
-
-        const index =
-          content.findIndex(
-
-            i =>
-              i._id === itemId
-
-          );
-
-
+        const index = content.findIndex(i => i._id === itemId);
 
         if(index === -1)
           return;
 
-
-
-
         /*
          * Reconstruction de l'objet
          */
-        const updated =
-          foundry.utils.mergeObject(
+        const updated = foundry.utils.mergeObject(content[index], formData);
 
-            content[index],
+        content[index] = updated;
 
-            formData
-
-          );
-
-
-
-        content[index] =
-          updated;
-
-
-
-
-        await this.item.update({
-
-          "system.content":
-            content
-
-        });
-
-
+        await this.item.update({"system.content": content});
 
       };
 
-
   }
-
-
-
-
 
 
   /**
@@ -538,131 +350,49 @@ export class ShinzoItemSheet extends ItemSheet {
    */
   async _onRemoveItem(event){
 
-
     event.preventDefault();
 
+    const itemId = event.currentTarget.dataset.itemId;
 
+    const content = foundry.utils.deepClone( this.item.system.content ?? [] );
 
-    const itemId =
-      event.currentTarget.dataset.itemId;
+    const index = content.findIndex( item => item._id === itemId );
 
+    if(index === -1) return;
 
-
-
-    const content =
-      foundry.utils.deepClone(
-
-        this.item.system.content ?? []
-
-      );
-
-
-
-
-    const index =
-      content.findIndex(
-
-        item =>
-          item._id === itemId
-
-      );
-
-
-
-
-    if(index === -1)
-      return;
-
-
-
-
-    const item =
-      content[index];
-
-
-
+    const item = content[index];
 
     new Dialog({
 
-      title:
-        "Supprimer l'objet",
+      title: "Supprimer l'objet",
 
-
-
-      content:
-        `
-        <p>
-        Retirer <b>${item.name}</b> du sac ?
-        </p>
-        `,
-
-
+      content:`<p> Retirer <b>${item.name}</b> du sac ? </p>`,
 
       buttons:{
 
-
         yes:{
 
-
-          label:
-            "Oui",
-
-
+          label: "Oui",
 
           callback:
             async()=>{
+              content.splice( index, 1 );
 
-
-              content.splice(
-                index,
-                1
-              );
-
-
-
-              await this.item.update({
-
-                "system.content":
-                  content
-
-              });
-
-
+              await this.item.update({ "system.content": content });
 
             }
 
-
         },
 
-
-
-        no:{
-
-
-          label:
-            "Non"
-
-
-        }
-
+        no:{ label:"Non" }
 
       },
 
-
-      default:
-        "no"
-
-
+      default: "no"
 
     }).render(true);
 
-
-
   }
-
-
-
-
 
 
   /**
@@ -671,7 +401,6 @@ export class ShinzoItemSheet extends ItemSheet {
    * Drag & Drop
    */
   _onDragStartContainedItem(event){
-
 
     const itemId = event.currentTarget.dataset.itemId;
 
