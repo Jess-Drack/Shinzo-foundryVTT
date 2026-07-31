@@ -1,5 +1,7 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
+import { ContainerSystem } from "../systems/container-system.mjs";
+
 
 /**
  * Shinzo Item Sheet
@@ -10,7 +12,6 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
  * sur des objets Item complets stockés dans system.content.
  */
 export class ShinzoItemSheet extends ItemSheet {
-
 
   /**
    * Options de la fenêtre
@@ -136,22 +137,29 @@ export class ShinzoItemSheet extends ItemSheet {
      * system.content contient maintenant
      * des objets Item complets.
      */
-    if(this.item.type === "sac"){
+    this._contents = [];
 
-      context.contents =
-        foundry.utils.deepClone(
-          this.item.system.content ?? []
-        );
+    if (this.item.type === "sac") {
 
+        context.contents = this._contents;
+
+        for (const data of this.item.system.content ?? []) {
+
+            const tempItem = new CONFIG.Item.documentClass(
+                foundry.utils.deepClone(data),
+                {
+                    parent: null
+                }
+            );
+
+            this._contents.push(tempItem);
+        }
     }
 
     /*
      * Active Effects
      */
-    context.effects =
-      prepareActiveEffectCategories(
-        this.item.effects
-      );
+    context.effects = prepareActiveEffectCategories(this.item.effects);
 
     return context;
 
@@ -188,18 +196,11 @@ export class ShinzoItemSheet extends ItemSheet {
     /*
      * Active Effects
      */
-    if(!this.isEditable)
-      return;
+    if(!this.isEditable) return;
 
-    html.on(
-      "click",
-      ".effect-control",
-      (event)=>{
+    html.on("click", ".effect-control", (event)=>{
 
-        onManageActiveEffect(
-          event,
-          this.item
-        );
+        onManageActiveEffect(event, this.item);
 
       }
     );
@@ -217,83 +218,22 @@ export class ShinzoItemSheet extends ItemSheet {
    */
   async _onDropItem(event){
 
-    event.preventDefault();
+  event.preventDefault();
 
-    let data;
+  const data = TextEditor.getDragEventData(event.originalEvent);
 
-    try {
+  if(data.type !== "Item") return;
 
-      data =
-        JSON.parse(
-          event.originalEvent.dataTransfer.getData(
-            "text/plain"
-          )
-        );
 
-    }
+  await ContainerSystem.handleDrop({
 
-    catch(error){
+    data,
 
-      console.error(
-        "Drop item invalide",
-        error
-      );
+    targetContainer:this.item
 
-      return;
+  });
 
-    }
-
-    if(data.type !== "Item")
-      return;
-
-    const sourceItem =
-      await fromUuid(data.uuid);
-
-    if(!sourceItem)
-      return;
-
-    /*
-     * Copie complète de l'objet
-     */
-    const itemData =
-      sourceItem.toObject();
-
-    /*
-     * Nouvel ID interne
-     */
-    itemData._id =
-      foundry.utils.randomID();
-
-    const content =
-      foundry.utils.deepClone(
-        this.item.system.content ?? []
-      );
-
-    content.push(
-      itemData
-    );
-
-    await this.item.update({
-
-      "system.content":
-        content
-
-    });
-
-    /*
-     * Si l'objet vient d'un acteur
-     *
-     * on le retire de son inventaire
-     */
-    if(sourceItem.actor){
-
-      await sourceItem.delete();
-
-    }
-
-    ui.notifications.info(
-      `${sourceItem.name} placé dans le sac`
-    );
+  this.render(false);
 
   }
 
@@ -303,88 +243,108 @@ export class ShinzoItemSheet extends ItemSheet {
    */
   async _onEditContainedItem(event){
 
-    event.preventDefault();
+      event.preventDefault();
 
-    const itemId = event.currentTarget.dataset.itemId;
+      const itemId = event.currentTarget.dataset.itemId;
 
-    const itemData = this.item.system.content.find(item => item._id === itemId);
+      const tempItem = this._contents.find(item => item.id === itemId);
 
-    if(!itemData) return;
+      if(!tempItem) return;
 
-    /*
-     * Création d'une instance temporaire
-     */
-    const tempItem = new CONFIG.Item.documentClass(foundry.utils.deepClone(itemData), {parent: this.item.actor} );
+      const sheet = tempItem.sheet;
 
-    tempItem.sheet.render(true);
+      /*
+      * On sauvegarde la méthode originale
+      */
+      const originalUpdate = sheet._updateObject.bind(sheet);
 
-    /*
-     * Quand la fiche est sauvegardée
-     */
-    tempItem.sheet._updateObject =
-      async(formData)=>{
+      /*
+      * On surcharge la sauvegarde
+      */
+      sheet._updateObject = async(event, formData)=>{
 
-        const content = foundry.utils.deepClone(this.item.system.content);
+          /*
+          * Force la récupération des valeurs des éditeurs
+          */
+          if(sheet.form){
 
-        const index = content.findIndex(i => i._id === itemId);
+              const editors = sheet.form.querySelectorAll(".editor-content");
 
-        if(index === -1)
-          return;
+              for(const editor of editors){
 
-        /*
-         * Reconstruction de l'objet
-         */
-        const updated = foundry.utils.mergeObject(content[index], formData);
+                  const target = editor.closest(".editor")?.dataset?.edit;
 
-        content[index] = updated;
+                  if(target){
 
-        await this.item.update({"system.content": content});
+                    formData[target] = editor.innerHTML;
+
+                  }
+
+              }
+
+          }
+
+          await ContainerSystem.updateContainedItem(
+              this.item,
+              itemId,
+              formData
+          );
+
+          /*
+          * Met à jour l'instance temporaire
+          */
+          await tempItem.updateSource(
+              formData
+          );
 
       };
+
+      sheet.render(true);
 
   }
 
 
   /**
-   * Suppression d'un objet du sac
-   */
-  async _onRemoveItem(event){
+  * Suppression d'un objet du sac
+  */
+  async _onRemoveItem(event) {
 
     event.preventDefault();
 
     const itemId = event.currentTarget.dataset.itemId;
 
-    const content = foundry.utils.deepClone( this.item.system.content ?? [] );
+    const item = this._contents.find(i => i.id === itemId);
 
-    const index = content.findIndex( item => item._id === itemId );
-
-    if(index === -1) return;
-
-    const item = content[index];
+    if (!item) return;
 
     new Dialog({
 
       title: "Supprimer l'objet",
 
-      content:`<p> Retirer <b>${item.name}</b> du sac ? </p>`,
+      content: `<p>Retirer <b>${item.name}</b> du sac ?</p>`,
 
-      buttons:{
+      buttons: {
 
-        yes:{
+        yes: {
 
           label: "Oui",
 
-          callback:
-            async()=>{
-              content.splice( index, 1 );
+          callback: async () => {
 
-              await this.item.update({ "system.content": content });
+            await ContainerSystem.removeFromContainer(
+              this.item,
+              itemId
+            );
 
-            }
+            this.render(false);
+
+          }
 
         },
 
-        no:{ label:"Non" }
+        no: {
+          label: "Non"
+        }
 
       },
 
@@ -400,21 +360,29 @@ export class ShinzoItemSheet extends ItemSheet {
    *
    * Drag & Drop
    */
-  _onDragStartContainedItem(event){
+  _onDragStartContainedItem(event) {
 
     const itemId = event.currentTarget.dataset.itemId;
 
-    const item = this.item.system.content.find(i => i._id === itemId);
+    const item = this._contents.find(i => i.id === itemId);
 
-    if(!item) return;
+    if (!item) return;
 
     const dragData = {
+
       type: "Item",
-      data: item,
-      itemId: item._id,
+
+      data: item.toObject(),
+
+      itemId: item.id,
+
       fromContainer: true,
-      containerUuid:this.item.uuid
+
+      containerUuid: this.item.uuid
+
     };
+
+    event.originalEvent.dataTransfer.effectAllowed = "move";
 
     event.originalEvent.dataTransfer.setData(
       "text/plain",

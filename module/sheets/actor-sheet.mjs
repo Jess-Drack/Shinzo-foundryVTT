@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs';
 import { RollSystem } from "../systems/roll-system.mjs";
+import { ContainerSystem } from "../systems/container-system.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -87,7 +88,7 @@ export class ShinzoActorSheet extends ActorSheet {
       }
     );
 
-        // Enrich biography info for display
+    // Enrich biography info for display
     // Enrichment turns text like `[[/r 1d20]]` into buttons
     context.enrichedNote = await TextEditor.enrichHTML(
       this.actor.system.note,
@@ -108,8 +109,6 @@ export class ShinzoActorSheet extends ActorSheet {
       // as well as any items
       this.actor.allApplicableEffects()
     );
-
-    console.log(context.system.gds_stats);
 
     return context;
   }
@@ -549,163 +548,21 @@ export class ShinzoActorSheet extends ActorSheet {
     }).render(true)
   }
 
+
   async _onDropItem(event){
 
     event.preventDefault();
 
+    const data = TextEditor.getDragEventData(event);
 
-    const data =
-      TextEditor.getDragEventData(event);
+    if(data.type !== "Item") return;
 
+    await ContainerSystem.handleDrop({
 
+      data,
+      actor:this.actor
 
-    if(data.type !== "Item")
-      return;
-
-
-
-    let itemData;
-
-
-
-    /*
-    * Cas 1 :
-    * Objet provenant d'un sac Shinzo
-    */
-    if(data.data && data.fromContainer){
-
-
-      itemData =
-        foundry.utils.deepClone(
-          data.data
-        );
-
-
-    }
-
-
-    /*
-    * Cas 2 :
-    * Objet classique Foundry
-    */
-    else if(data.uuid){
-
-
-      const item =
-        await fromUuid(data.uuid);
-
-
-
-      if(!item)
-        return;
-
-
-
-      itemData =
-        item.toObject();
-
-
-    }
-
-
-    else {
-
-      console.warn(
-        "Drop Item invalide",
-        data
-      );
-
-      return;
-
-    }
-
-
-
-    /*
-    * Nouveau ID pour éviter
-    * les conflits
-    */
-    itemData._id =
-      foundry.utils.randomID();
-
-
-
-    /*
-    * Création dans l'inventaire
-    */
-    await this.actor.createEmbeddedDocuments(
-      "Item",
-      [
-        itemData
-      ]
-    );
-
-
-
-
-    /*
-    * Si l'objet vient d'un sac,
-    * suppression du sac
-    */
-    if(data.fromContainer){
-
-
-      const container =
-        await fromUuid(
-          data.containerUuid
-        );
-
-
-
-      if(container){
-
-
-        const content =
-          foundry.utils.deepClone(
-            container.system.content ?? []
-          );
-
-
-
-        const index =
-          content.findIndex(
-            i =>
-              i._id === data.data._id
-          );
-
-
-
-        if(index !== -1){
-
-
-          content.splice(
-            index,
-            1
-          );
-
-
-
-          await container.update({
-
-            "system.content":
-              content
-
-          });
-
-
-        }
-
-
-      }
-
-
-    }
-
-
-
-    ui.notifications.info(
-      `${itemData.name} ajouté`
-    );
+    });
 
 
   }
