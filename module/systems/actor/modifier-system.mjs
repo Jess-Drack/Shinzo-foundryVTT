@@ -8,36 +8,25 @@
  *
  * Ils alimentent les valeurs calculées.
  */
-
-
 export class ModifierSystem {
-
-
 
   /**
    * Récupère tous les modifiers actifs
    */
   static collect(actor){
 
-
     const modifiers = [];
-
 
     if(!actor)
       return modifiers;
-
-
 
     /*
      * Items
      */
     for(const item of actor.items ?? []){
 
-
       if(!item.system)
         continue;
-
-
 
       /*
        * Gestion équipement
@@ -52,8 +41,6 @@ export class ModifierSystem {
 
       }
 
-
-
       if(
         !Array.isArray(
           item.system.modifiers
@@ -61,17 +48,12 @@ export class ModifierSystem {
       )
         continue;
 
-
-
       for(const modifier of item.system.modifiers){
-
 
         if(
           modifier.enabled === false
         )
           continue;
-
-
 
         modifiers.push({
 
@@ -85,38 +67,24 @@ export class ModifierSystem {
 
         });
 
-
       }
 
-
     }
-
-
-
 
     /*
      * Active Effects
      */
     for(const effect of actor.effects ?? []){
 
-
-      const effects =
-        effect.flags?.shinzo?.modifiers;
-
-
+      const effects = effect.flags?.shinzo?.modifiers;
 
       if(!Array.isArray(effects))
         continue;
 
-
-
       for(const modifier of effects){
-
 
         if(modifier.enabled === false)
           continue;
-
-
 
         modifiers.push({
 
@@ -130,21 +98,13 @@ export class ModifierSystem {
 
         });
 
-
       }
 
-
     }
-
-
 
     return modifiers;
 
   }
-
-
-
-
 
 
   /**
@@ -158,11 +118,8 @@ export class ModifierSystem {
     modifiers=[]
   ){
 
-
     if(!data)
       return;
-
-
 
     const ordered =
       [...modifiers]
@@ -173,26 +130,16 @@ export class ModifierSystem {
         (b.priority ?? 0)
       );
 
-
-
     for(const modifier of ordered){
-
 
       this.applyOne(
         data,
         modifier
       );
 
-
     }
 
-
   }
-
-
-
-
-
 
 
   static applyOne(
@@ -200,11 +147,8 @@ export class ModifierSystem {
     modifier
   ){
 
-
     if(!modifier?.target)
       return;
-
-
 
     let current =
       foundry.utils.getProperty(
@@ -212,30 +156,22 @@ export class ModifierSystem {
         modifier.target
       );
 
-
     if(current === undefined) {
-
-        console.warn(
-      "TARGET INTROUVABLE",
-      modifier.target
-    );
-
+      
+      console.warn(
+        "TARGET INTROUVABLE",
+        modifier.target
+      );
+      
       return;
+
     }
 
-
-
-    const value =
-      Number(
-        modifier.value ?? 0
-      );
-
-
+    const value = Number(modifier.value ?? 0);
 
     switch(
       modifier.mode ?? "add"
     ){
-
 
       case "add":
 
@@ -243,23 +179,17 @@ export class ModifierSystem {
 
       break;
 
-
-
       case "multiply":
 
         current *= value;
 
       break;
 
-
-
       case "override":
 
         current = value;
 
       break;
-
-
 
       case "min":
 
@@ -270,8 +200,6 @@ export class ModifierSystem {
 
       break;
 
-
-
       case "max":
 
         current = Math.min(
@@ -281,16 +209,13 @@ export class ModifierSystem {
 
       break;
 
-
     }
-
 
     foundry.utils.setProperty(
       data,
       modifier.target,
       current
     );
-
 
   }
 
@@ -303,23 +228,13 @@ export class ModifierSystem {
     modifiers=[]
   ){
 
-
     let value = base;
-
-
 
     for(const modifier of modifiers){
 
-
-      const amount =
-        Number(
-          modifier.value ?? 0
-        );
-
-
+      const amount = Number(modifier.value ?? 0);
 
       switch(modifier.mode){
-
 
         case "multiply":
 
@@ -327,13 +242,11 @@ export class ModifierSystem {
 
         break;
 
-
         case "override":
 
           value = amount;
 
         break;
-
 
         default:
 
@@ -341,21 +254,14 @@ export class ModifierSystem {
 
       }
 
-
     }
-
-
 
     return value;
 
   }
 
 
-
-
-
   static debug(modifiers=[]){
-
 
     console.table(
 
@@ -363,13 +269,9 @@ export class ModifierSystem {
         m=>({
 
           cible:m.target,
-
           valeur:m.value,
-
           mode:m.mode,
-
           priorité:m.priority ?? 0,
-
           source:m.source?.name
 
         })
@@ -377,31 +279,22 @@ export class ModifierSystem {
 
     );
 
-
   }
 
-
 }
-
-
-
 
 
 export const collectModifiers =
 ModifierSystem.collect.bind(ModifierSystem);
 
-
 export const applyModifiers =
 ModifierSystem.apply.bind(ModifierSystem);
-
 
 export const applyModifier =
 ModifierSystem.applyOne.bind(ModifierSystem);
 
-
 export const calculateModifiedValue =
 ModifierSystem.calculate.bind(ModifierSystem);
-
 
 export const debugModifiers =
 ModifierSystem.debug.bind(ModifierSystem);

@@ -478,63 +478,47 @@ export class ShinzoActorSheet extends ActorSheet {
         desavantage: {
           label: "Desavantage",
           callback: (html) => {
-              RollSystem.rollStat({
+            RollSystem.rollStat({
 
-                  actor: this.actor,
+              actor: this.actor,
+              stat: statKey,
+              label: `${statName} : Désavantage`,
+              modifier: Number(html.find("#modifierValue").val()),
+              formula: "2d100k",
+              prepared
 
-                  stat: statKey,
-
-                  label: `${statName} : Désavantage`,
-
-                  modifier: Number(html.find("#modifierValue").val()),
-
-                  formula: "2d100k",
-
-                  prepared
-
-              });
+            });
           }
         },
         normal: {
           label: "Neutre",
           callback: (html) => {
-              RollSystem.rollStat({
+            RollSystem.rollStat({
 
-                  actor: this.actor,
+              actor: this.actor,
+              stat: statKey,
+              label: statName,
+              modifier: Number(html.find("#modifierValue").val()),
+              formula: "1d100",
+              prepared
 
-                  stat: statKey,
-
-                  label: statName,
-
-                  modifier: Number(html.find("#modifierValue").val()),
-
-                  formula: "1d100",
-
-                  prepared
-
-              });
+            });
           }
         },
         avantage: {
           label: "Avantage",
           callback: (html) => {
+            
+            RollSystem.rollStat({
 
-              RollSystem.rollStat({
+              actor: this.actor,
+              stat: statKey,
+              label: `${statName} : Avantage`,
+              modifier: Number(html.find("#modifierValue").val()),
+              formula: "2d100kl",
+              prepared
 
-                  actor: this.actor,
-
-                  stat: statKey,
-
-                  label: `${statName} : Avantage`,
-
-                  modifier: Number(html.find("#modifierValue").val()),
-
-                  formula: "2d100kl",
-
-                  prepared
-
-              });
-
+            });
           }
         }
       },
@@ -563,7 +547,6 @@ export class ShinzoActorSheet extends ActorSheet {
       actor:this.actor
 
     });
-
 
   }
 

@@ -6,8 +6,6 @@ import { prepareItemData } from "../systems/item/item-system.mjs";
  */
 export class ShinzoItem extends Item {
 
-
-
   /**
    * Préparation des données de base
    */
@@ -18,17 +16,12 @@ export class ShinzoItem extends Item {
   }
 
 
-
   /**
    * Préparation des données calculées
    */
   prepareDerivedData() {
 
-
-    prepareItemData(
-      this
-    );
-
+    prepareItemData(this);
 
   }
 
@@ -49,21 +42,9 @@ export class ShinzoItem extends Item {
 
   }
 
+  _onCreateEmbeddedDocuments(embeddedName, documents, result, options){
 
-  _onCreateEmbeddedDocuments(
-  embeddedName,
-  documents,
-  result,
-  options
-  ){
-
-  super._onCreateEmbeddedDocuments(
-  embeddedName,
-  documents,
-  result,
-  options
-  );
-
+  super._onCreateEmbeddedDocuments(embeddedName, documents, result, options);
 
   }
 
@@ -73,29 +54,17 @@ export class ShinzoItem extends Item {
    */
   getRollData() {
 
-
-    const rollData =
-      foundry.utils.deepClone(
-        this.system
-      );
-
-
+    const rollData = foundry.utils.deepClone(this.system);
 
     if(this.actor){
 
-      rollData.actor =
-        this.actor.getRollData();
+      rollData.actor = this.actor.getRollData();
 
     }
-
-
 
     return rollData;
 
   }
-
-
-
 
 
   /**
@@ -103,41 +72,19 @@ export class ShinzoItem extends Item {
    */
   async roll(){
 
-
     const item = this;
 
+    const speaker = ChatMessage.getSpeaker({actor: this.actor ?? null});
 
+    const rollMode = game.settings.get("core", "rollMode");
 
-    const speaker =
-      ChatMessage.getSpeaker({
-        actor: this.actor ?? null
-      });
-
-
-
-    const rollMode =
-      game.settings.get(
-        "core",
-        "rollMode"
-      );
-
-
-
-    const label =
-      `[${item.type}] ${item.name}`;
-
-
+    const label = `[${item.type}] ${item.name}`;
 
     let content = "";
 
-
-
     switch(item.type){
 
-
-
       case "trait":
-
 
         content =
           `
@@ -145,15 +92,9 @@ export class ShinzoItem extends Item {
           <i>${item.system.description ?? ""}</i>
           `;
 
-
         break;
 
-
-
-
-
       case "competence":
-
 
         content =
           `
@@ -166,15 +107,9 @@ export class ShinzoItem extends Item {
           <i>${item.system.description ?? ""}</i>
           `;
 
-
         break;
 
-
-
-
-
       case "arme":
-
 
         content =
           `
@@ -194,15 +129,9 @@ export class ShinzoItem extends Item {
           <i>${item.system.description ?? ""}</i>
           `;
 
-
         break;
 
-
-
-
-
       case "armure":
-
 
         content =
           `
@@ -223,15 +152,9 @@ export class ShinzoItem extends Item {
           <i>${item.system.description ?? ""}</i>
           `;
 
-
         break;
 
-
-
-
-
       case "sac":
-
 
         content =
           `
@@ -247,15 +170,9 @@ export class ShinzoItem extends Item {
           <i>${item.system.description ?? ""}</i>
           `;
 
-
         break;
 
-
-
-
-
       case "objet":
-
 
         content =
           `
@@ -266,20 +183,14 @@ export class ShinzoItem extends Item {
           <i>${item.system.description ?? ""}</i>
           `;
 
-
         break;
 
-
-
     }
-
-
 
     /**
      * Si l'objet possède une présentation
      */
     if(content){
-
 
       await ChatMessage.create({
 
@@ -293,35 +204,18 @@ export class ShinzoItem extends Item {
 
       });
 
-
       return;
 
     }
 
-
-
-
-
     /**
      * Sinon tentative de jet classique
      */
-    const rollData =
-      this.getRollData();
+    const rollData = this.getRollData();
 
+    if(!rollData.formula) return;
 
-
-    if(!rollData.formula)
-      return;
-
-
-
-    const roll =
-      new Roll(
-        rollData.formula,
-        rollData
-      );
-
-
+    const roll = new Roll(rollData.formula, rollData);
 
     await roll.toMessage({
 
@@ -333,12 +227,8 @@ export class ShinzoItem extends Item {
 
     });
 
-
-
     return roll;
 
-
   }
-
 
 }

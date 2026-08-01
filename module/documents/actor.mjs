@@ -7,8 +7,6 @@ import { prepareNpcData } from "../systems/actor/npc-system.mjs";
  */
 export class ShinzoActor extends Actor {
 
-
-
   /**
    * Configuration des DataModels
    */
@@ -23,9 +21,6 @@ export class ShinzoActor extends Actor {
   }
 
 
-
-
-
   /**
    * Préparation des données de base
    */
@@ -36,11 +31,6 @@ export class ShinzoActor extends Actor {
   }
 
 
-
-
-
-
-
   /**
    * Calcul des données dérivées
    *
@@ -48,20 +38,15 @@ export class ShinzoActor extends Actor {
    */
   prepareDerivedData() {
 
-
     super.prepareDerivedData();
 
-
     switch (this.type) {
-
 
       case "character":
 
         prepareCharacterData(this);
 
       break;
-
-
 
       case "npc":
 
@@ -82,26 +67,14 @@ export class ShinzoActor extends Actor {
    */
   getRollData() {
 
-
-    const data =
-      foundry.utils.deepClone(
-        this.system
-      );
-
-
+    const data = foundry.utils.deepClone(this.system);
 
     /*
      * Ajout des valeurs finales
      */
-    data.derived =
-      foundry.utils.deepClone(
-        this.system.derived ?? {}
-      );
-
-
+    data.derived = foundry.utils.deepClone(this.system.derived ?? {});
 
     switch(this.type){
-
 
       case "character":
 
@@ -109,28 +82,17 @@ export class ShinzoActor extends Actor {
 
       break;
 
-
-
       case "npc":
 
         this._prepareNpcRollData(data);
 
       break;
 
-
     }
-
-
 
     return data;
 
   }
-
-
-
-
-
-
 
 
   /**
@@ -138,11 +100,7 @@ export class ShinzoActor extends Actor {
    */
   _prepareCharacterRollData(data){
 
-
-    if(!data.derived?.gds_stats)
-      return;
-
-
+    if(!data.derived?.gds_stats) return;
 
     /*
      * Rend les stats accessibles directement
@@ -150,23 +108,11 @@ export class ShinzoActor extends Actor {
      * Exemple :
      * @agi.value
      */
-    for(
-      const [key,value]
-      of Object.entries(
-        data.derived.gds_stats
-      )
-    ){
+    for(const [key,value] of Object.entries(data.derived.gds_stats)){
 
-
-      data[key] =
-        foundry.utils.deepClone(
-          value
-        );
-
+      data[key] = foundry.utils.deepClone(value);
 
     }
-
-
 
   }
 
@@ -176,31 +122,14 @@ export class ShinzoActor extends Actor {
    */
   _prepareNpcRollData(data){
 
+    if(!data.derived?.gds_stats) return;
 
-    if(!data.derived?.gds_stats)
-      return;
+    for(const [key,value] of Object.entries(data.derived.gds_stats)){
 
-
-
-    for(
-      const [key,value]
-      of Object.entries(
-        data.derived.gds_stats
-      )
-    ){
-
-
-      data[key] =
-        foundry.utils.deepClone(
-          value
-        );
-
+      data[key] = foundry.utils.deepClone(value);
 
     }
 
-
   }
-
-
 
 }

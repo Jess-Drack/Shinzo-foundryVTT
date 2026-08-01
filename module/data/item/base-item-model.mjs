@@ -6,20 +6,12 @@ const fields = foundry.data.fields;
  */
 export class BaseItemModel extends foundry.abstract.TypeDataModel {
 
-
+  
   static defineSchema(){
-
 
     return {
 
-
-      description:new fields.HTMLField({
-
-        initial:""
-
-      }),
-
-
+      description:new fields.HTMLField({initial:""}),
 
       /**
        * Item actif
@@ -29,14 +21,7 @@ export class BaseItemModel extends foundry.abstract.TypeDataModel {
        * - compétences
        * - objets consommables
        */
-      enabled:new fields.BooleanField({
-
-        initial:true
-
-      }),
-
-
-
+      enabled:new fields.BooleanField({initial:true}),
 
       /**
        * Objet équipé
@@ -46,77 +31,29 @@ export class BaseItemModel extends foundry.abstract.TypeDataModel {
        * - armures
        * - sacs
        */
-      equipped:new fields.BooleanField({
-
-        initial:false
-
-      }),
-
-
-
-
+      equipped:new fields.BooleanField({initial:false}),
 
       modifiers:new fields.ArrayField(
 
         new fields.SchemaField({
 
+          enabled:new fields.BooleanField({initial:true}),
 
-          enabled:new fields.BooleanField({
+          target:new fields.StringField({initial:""}),
 
-            initial:true
+          value:new fields.NumberField({initial:0}),
 
-          }),
+          mode:new fields.StringField({initial:"add"}),
 
+          priority:new fields.NumberField({initial:0}),
 
-
-          target:new fields.StringField({
-
-            initial:""
-
-          }),
-
-
-
-          value:new fields.NumberField({
-
-            initial:0
-
-          }),
-
-
-
-          mode:new fields.StringField({
-
-            initial:"add"
-
-          }),
-
-
-
-          priority:new fields.NumberField({
-
-            initial:0
-
-          }),
-
-          type:new fields.StringField({
-
-            initial:"bonus"
-
-        })
-
+          type:new fields.StringField({initial:"bonus"})
 
         }),
 
-
-        {
-
-          initial:[]
-
-        }
+        {initial:[]}
 
       )
-
 
     };
 

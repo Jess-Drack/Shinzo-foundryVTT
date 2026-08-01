@@ -7,7 +7,6 @@
  * Ils fournissent uniquement des données.
  */
 
-
 /**
  * Retourne les équipements actifs
  *
@@ -15,11 +14,8 @@
  */
 export function getEquippedItems(actor){
 
-
   if(!actor)
     return [];
-
-
 
   return actor.items?.filter(
     item =>
@@ -27,9 +23,7 @@ export function getEquippedItems(actor){
   )
   ?? [];
 
-
 }
-
 
 
 /**
@@ -37,16 +31,13 @@ export function getEquippedItems(actor){
  */
 export function getEquippedWeapons(actor){
 
-
   return getEquippedItems(actor)
     .filter(
       item =>
         item.type === "arme"
     );
 
-
 }
-
 
 
 /**
@@ -54,12 +45,10 @@ export function getEquippedWeapons(actor){
  */
 export function getEquippedArmor(actor){
 
-
   return getEquippedItems(actor)
     .filter(
       item =>
         item.type === "armure"
     );
-
 
 }

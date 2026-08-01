@@ -6,47 +6,20 @@ const fields = foundry.data.fields;
 export class TraitModel extends BaseItemModel {
 
 
-static defineSchema(){
+  static defineSchema(){
 
+    return {
 
-return {
+      ...super.defineSchema(),
 
+      effect:new fields.ArrayField(new fields.StringField(),{initial:[]}),
 
-...super.defineSchema(),
+      note:new fields.StringField({initial:""}),
 
+      unit:new fields.StringField({initial:""})
 
+    };
 
-effect:new fields.ArrayField(
-
-    new fields.StringField(),
-
-    {
-      initial:[]
-    }
-
-),
-
-
-
-note:new fields.StringField({
-
-initial:""
-
-}),
-
-
-
-unit:new fields.StringField({
-
-initial:""
-
-})
-
-
-};
-
-
-}
-
+  }
 
 }

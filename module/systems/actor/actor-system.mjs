@@ -9,40 +9,24 @@ import { ModifierSystem } from "./modifier-system.mjs";
 
 export function prepareActorData(actor){
 
-
 const system = actor.system;
-
 
 if(!system)
 return;
-
 
 /*
  Ressources
 */
 prepareResources(system);
 
-
 /*
  Calcul des stats natives
 */
-calculatePrimaryStats(
-system.gds_stats
-);
+calculatePrimaryStats(system.gds_stats);
 
+calculateMasteries(system.gds_stats, system.maitrises);
 
-calculateMasteries(
-system.gds_stats,
-system.maitrises
-);
-
-
-calculateResistance(
-system,
-system.gds_stats
-);
-
-
+calculateResistance(system, system.gds_stats);
 
 if(system.gds_statsTotal){
 
@@ -53,21 +37,15 @@ system.gds_stats
 
 }
 
-
 /*
  =============================
  MODIFIERS
  =============================
 */
 
+const modifiers = ModifierSystem.collect(actor);
 
-const modifiers =
-ModifierSystem.collect(actor);
-
-
-system.modifiers =
-modifiers;
-
+system.modifiers = modifiers;
 
 /*
  Reset derived
@@ -75,20 +53,15 @@ modifiers;
 
 system.derived = foundry.utils.deepClone({
 
-gds_stats:
-system.gds_stats,
+gds_stats: system.gds_stats,
 
-ss_stats:
-system.ss_stats,
+ss_stats: system.ss_stats,
 
-rdp:
-system.rdp,
+rdp: system.rdp,
 
-rdm:
-system.rdm
+rdm: system.rdm
 
 });
-
 
 /*
  Application des bonus
@@ -99,8 +72,6 @@ system.derived,
 modifiers
 );
 
-
 return system;
-
 
 }

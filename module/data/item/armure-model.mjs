@@ -6,59 +6,24 @@ const fields = foundry.data.fields;
 export class ArmureModel extends BaseItemModel {
 
 
-static defineSchema(){
+    static defineSchema(){
 
+        return {
 
-return {
+            ...super.defineSchema(),
 
+            poids:new fields.StringField({initial: "Négligeable"}),
 
-...super.defineSchema(),
+            resPhysique:new fields.NumberField({initial:0}),
 
+            resMagique:new fields.NumberField({initial:0}),
 
+            effect:new fields.StringField({initial:""}),
 
-poids:new fields.StringField({
+            quality:new fields.StringField({initial:""})
 
-initial: "Négligeable"
+        };
 
-}),
-
-
-
-resPhysique:new fields.NumberField({
-
-initial:0
-
-}),
-
-
-
-resMagique:new fields.NumberField({
-
-initial:0
-
-}),
-
-
-
-effect:new fields.StringField({
-
-initial:""
-
-}),
-
-
-
-quality:new fields.StringField({
-
-initial:""
-
-})
-
-
-};
-
-
-}
-
+    }
 
 }

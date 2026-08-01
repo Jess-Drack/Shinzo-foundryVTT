@@ -6,53 +6,25 @@ const fields = foundry.data.fields;
 export class SacModel extends BaseItemModel {
 
 
-static defineSchema(){
+    static defineSchema(){
 
+        return {
 
-return {
+            ...super.defineSchema(),
 
-...super.defineSchema(),
+            poidsMax:new fields.NumberField({initial:1}),
 
+            effect:new fields.StringField({initial:""}),
 
-poidsMax:new fields.NumberField({
+            quality:new fields.StringField({initial:""}),
 
-initial:1
+            /**
+             * UUID des objets contenus
+             */
+            content:new fields.ArrayField(new fields.ObjectField(), {initial:[]})
 
-}),
+        };
 
-
-effect:new fields.StringField({
-
-initial:""
-
-}),
-
-
-quality:new fields.StringField({
-
-initial:""
-
-}),
-
-
-/**
- * UUID des objets contenus
- */
-content:new fields.ArrayField(
-
-new fields.ObjectField(),
-
-{
-initial:[]
-}
-
-)
-
-
-};
-
-
-}
-
+    }
 
 }

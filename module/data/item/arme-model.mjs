@@ -5,60 +5,24 @@ const fields = foundry.data.fields;
 
 export class ArmeModel extends BaseItemModel {
 
+    static defineSchema(){
 
-static defineSchema(){
+        return {
 
+            ...super.defineSchema(),
 
-return {
+            type:new fields.StringField({initial:""}),
 
+            polyvalence:new fields.StringField({initial:""}),
 
-...super.defineSchema(),
+            damage:new fields.StringField({initial:""}),
 
+            effect:new fields.StringField({initial:""}),
 
+            quality:new fields.StringField({initial:""})
 
-type:new fields.StringField({
+        };
 
-initial:""
-
-}),
-
-
-
-polyvalence:new fields.StringField({
-
-initial:""
-
-}),
-
-
-
-damage:new fields.StringField({
-
-initial:""
-
-}),
-
-
-
-effect:new fields.StringField({
-
-initial:""
-
-}),
-
-
-
-quality:new fields.StringField({
-
-initial:""
-
-})
-
-
-};
-
-
-}
-
+    }
 
 }

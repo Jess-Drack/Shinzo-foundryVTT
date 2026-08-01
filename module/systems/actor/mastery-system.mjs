@@ -4,11 +4,7 @@
  * @param {object} gdsStats
  * @param {object} masteries
  */
-export function calculateMasteries(
-  gdsStats,
-  masteries
-){
-
+export function calculateMasteries(gdsStats, masteries){
 
   /**
    * Corps
@@ -25,7 +21,6 @@ export function calculateMasteries(
     );
 
 
-
   /**
    * Esprit
    */
@@ -39,7 +34,6 @@ export function calculateMasteries(
       +
       masteries.esp.b_m
     );
-
 
 
   /**

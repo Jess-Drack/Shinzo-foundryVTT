@@ -6,35 +6,18 @@ const fields = foundry.data.fields;
 export class ObjetModel extends BaseItemModel {
 
 
-static defineSchema(){
+    static defineSchema(){
 
+        return {
 
-return {
+            ...super.defineSchema(),
 
+            quality:new fields.StringField({initial:""}),
 
-...super.defineSchema(),
+            effect:new fields.StringField({initial:""})
 
+        };
 
-
-quality:new fields.StringField({
-
-initial:""
-
-}),
-
-
-
-effect:new fields.StringField({
-
-initial:""
-
-})
-
-
-};
-
-
-}
-
+    }
 
 }

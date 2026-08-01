@@ -73,7 +73,6 @@ export class RollSystem {
     statName
   ) {
 
-
     let stat =
       actor.system.gds_stats?.[statName]
       ??
@@ -81,23 +80,15 @@ export class RollSystem {
       ??
       actor.system.ss_stats?.ss_stats2?.[statName];
 
-
-
-    if (!stat)
-      return null;
-
-
+    if (!stat) return null;
 
     return this.prepareStat(
 
       stat.value,
-
       statName,
-
       stat.addCrit ?? 0
 
     );
-
 
   }
 
@@ -123,14 +114,11 @@ export class RollSystem {
     )
     :prepared;
 
-    const successCrit =
-      5 + Math.max(finalStat.crit, 0);
+    const successCrit = 5 + Math.max(finalStat.crit, 0);
 
-    const failureCrit =
-      96 - Math.max(-finalStat.crit, 0);
+    const failureCrit = 96 - Math.max(-finalStat.crit, 0);
 
-    const roll =
-      await new Roll(formula).evaluate();
+    const roll = await new Roll(formula).evaluate();
 
     let flavor;
 
@@ -161,8 +149,7 @@ export class RollSystem {
         ].includes(stat)
       ) {
 
-        const diff =
-          finalStat.value - roll.total;
+        const diff = finalStat.value - roll.total;
 
         flavor =
           `[<span class="reussite">${label}</span>] C'est une réussite. La différence est de ${diff}.`;
@@ -199,6 +186,7 @@ export class RollSystem {
     return roll;
 
   }
+  
 
   /**
    * Calcule le malus automatique /2
@@ -209,11 +197,9 @@ export class RollSystem {
    */
   static getHalfPenalty(statValue) {
 
-
     return Math.floor(
       -Number(statValue) / 2
     );
-
 
   }
 

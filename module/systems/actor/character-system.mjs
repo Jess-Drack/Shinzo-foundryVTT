@@ -4,69 +4,42 @@ import { calculateSecondaryStats, calculateTotalModifiers } from "./secondary-st
 import { calculateValuation } from "./valuation-system.mjs";
 
 
-
 /**
  * Préparation des données personnage
  */
 export function prepareCharacterData(actor) {
     
-
   const system = prepareActorData(actor);
-
 
   if (!system) return;
 
-
-
-  const {
-    ss_stats: ssStats,
-    valuation,
-    gds_stats: gdsStats,
-    maitrises
-  } = system;
-
-
+  const {ss_stats: ssStats, valuation, gds_stats: gdsStats, maitrises} = system;
 
   /**
    * Sous statistiques
    */
-  if (
-    ssStats &&
-    gdsStats &&
-    maitrises
-  ) {
+  if (ssStats && gdsStats && maitrises){
 
-    calculateSecondaryStats(
-      gdsStats,
-      maitrises,
-      ssStats
-    );
+    calculateSecondaryStats(gdsStats, maitrises, ssStats);
 
   }
-
-
 
   /**
    * Valeur globale personnage
    */
   if (valuation && ssStats) {
 
-    valuation.value =
-      calculateValuation(ssStats);
+    valuation.value = calculateValuation(ssStats);
 
   }
-
-
 
   /**
    * Total des modificateurs
    */
   if (ssStats?.totalmod) {
 
-    ssStats.totalmod.value =
-      calculateTotalModifiers(ssStats);
+    ssStats.totalmod.value = calculateTotalModifiers(ssStats);
 
   }
-
 
 }

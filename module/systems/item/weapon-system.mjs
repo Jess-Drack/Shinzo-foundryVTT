@@ -2,14 +2,10 @@
  * Préparation des armes
  */
 
-
 export function prepareWeaponData(system){
-
 
   if(!system)
     return;
-
-
 
   /**
    * Conversion dégâts
@@ -20,21 +16,15 @@ export function prepareWeaponData(system){
    * pourra être utilisé directement
    * par Roll()
    */
-
-  system.damageFormula =
-    system.damage ?? "";
-
-
+  system.damageFormula = system.damage ?? "";
 
   /**
    * Etat équipement
    */
-
   if(system.equipped === undefined){
 
     system.equipped = true;
 
   }
-
 
 }

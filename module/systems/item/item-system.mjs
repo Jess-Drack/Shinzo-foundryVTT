@@ -10,51 +10,33 @@ import { prepareArmorData } from "./armor-system.mjs";
 import { prepareEffectData } from "./effect-system.mjs";
 
 
-
 export function prepareItemData(item){
 
-
   const system = item.system;
-
 
   if(!system)
     return;
 
-
-
   /**
    * Préparation des effets communs
    */
-  prepareEffectData(
-    system
-  );
-
-
+  prepareEffectData(system);
 
   switch(item.type){
 
-
     case "arme":
 
-      prepareWeaponData(
-        system
-      );
+      prepareWeaponData(system);
 
       break;
-
-
 
     case "armure":
 
-      prepareArmorData(
-        system
-      );
+      prepareArmorData(system);
 
       break;
 
-
   }
-
 
   return system;
 

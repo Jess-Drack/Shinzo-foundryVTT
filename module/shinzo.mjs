@@ -55,7 +55,6 @@ Hooks.once('init', function () {
   CONFIG.Actor.dataModels = {
 
     character: CharacterModel,
-
     npc: NPCModel
 
   };
@@ -376,4 +375,3 @@ Hooks.on("updateCombat", async (combat, update) => {
       await effect.update(updates);
   }
 });
-
