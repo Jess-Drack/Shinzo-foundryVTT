@@ -137,9 +137,10 @@ export class ShinzoItemSheet extends ItemSheet {
      * system.content contient maintenant
      * des objets Item complets.
      */
-    this._contents = [];
 
     if (this.item.type === "sac") {
+
+      this._contents = [];
 
         context.contents = this._contents;
 
@@ -148,9 +149,14 @@ export class ShinzoItemSheet extends ItemSheet {
             const tempItem = new CONFIG.Item.documentClass(
                 foundry.utils.deepClone(data),
                 {
-                    parent: null
+                    parent: null,
+                    temporary: true
                 }
             );
+
+            tempItem.testUserPermission = (user, level)=>{
+                return this.item.testUserPermission(user, level);
+            };
 
             this._contents.push(tempItem);
         }
