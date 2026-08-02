@@ -23,10 +23,14 @@ export async function onManageActiveEffect(event, owner) {
         img: "icons/svg/aura.svg",
         origin: owner.uuid,
         disabled: li?.dataset.effectType === "inactive",
-        duration: {
-          rounds: li?.dataset.effectType === "temporary" ? 1 : undefined
+        flags: {
+          shinzo: {
+            remainingTurns: li?.dataset.effectType === "temporary"
+              ? 1
+              : null
+          }
         }
-      }]);
+    }]);
 
 
     case "edit":
@@ -40,7 +44,7 @@ export async function onManageActiveEffect(event, owner) {
 
       if(!effect) return;
 
-      await Dialog.confirm({
+      return Dialog.confirm({
           title: "Confirmation",
           content: `<p>Êtes-vous sûr de vouloir supprimer ${effect.name} ?</p>`,
           yes: async () => {
@@ -89,24 +93,31 @@ export function prepareActiveEffectCategories(effects){
  };
 
 
- for(const effect of effects){
+  for(const effect of effects){
 
-   if(effect.disabled){
-     categories.inactive.effects.push(effect);
-   }
-   else if(
+    const remainingTurns = effect.getFlag("shinzo", "remainingTurns");
+
+    effect.displayDuration = remainingTurns != null
+    ? `${remainingTurns} tour(s)`
+    : null;
+
+    if(effect.disabled){
+      categories.inactive.effects.push(effect);
+    }
+    else if (
+      remainingTurns != null ||
       effect.duration?.rounds ||
       effect.duration?.turns ||
       effect.duration?.seconds ||
       effect.duration?.startTime
-   ){
-     categories.temporary.effects.push(effect);
-   }
-   else{
-     categories.passive.effects.push(effect);
-   }
+    ) {
+      categories.temporary.effects.push(effect);
+    }
+    else {
+      categories.passive.effects.push(effect);
+    }
 
- }
+  }
 
  return categories;
 
@@ -137,6 +148,11 @@ export function registerCustomEffects(){
       name: "Aux portes de la mort",
       img: "systems/shinzo/assets/icons/alteration/nefaste/aux-portes-de-la-mort.png",
       statuses:["porteDeLaMort"],
+      flags: {
+        shinzo: {
+          remainingTurns: 1
+        }
+      },
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -20},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -20},
@@ -165,9 +181,6 @@ export function registerCustomEffects(){
         { key: "system.ss_stats.ss_stats2.reg.b_m", mode: 2, value: -20},
         { key: "system.ss_stats.ss_stats2.rec.b_m", mode: 2, value: -20},
       ],
-      duration: {
-        turns: 1,
-      },
     },
     {
       id: "aveugle",
@@ -330,6 +343,11 @@ export function registerCustomEffects(){
       name: "Etourdis",
       img: "systems/shinzo/assets/icons/alteration/nefaste/etourdis.svg",
       statuses:["etourdis"],
+      flags: {
+        shinzo: {
+          remainingTurns: 1
+        }
+      },
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -15},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -15},
@@ -357,10 +375,7 @@ export function registerCustomEffects(){
         { key: "system.ss_stats.ss_stats2.s_f.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats2.reg.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats2.rec.b_m", mode: 2, value: -15},
-      ],
-      duration: {
-        turns: 1,
-      },
+      ]
     },
     {
       id: "faible",
@@ -400,6 +415,11 @@ export function registerCustomEffects(){
       name: "Hébété",
       img: "systems/shinzo/assets/icons/alteration/nefaste/hebete.svg",
       statuses:["hebete"],
+      flags: {
+        shinzo: {
+          remainingTurns: 1
+        }
+      },
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -30},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -30},
@@ -427,10 +447,7 @@ export function registerCustomEffects(){
         { key: "system.ss_stats.ss_stats2.s_f.b_m", mode: 2, value: -30},
         { key: "system.ss_stats.ss_stats2.reg.b_m", mode: 2, value: -30},
         { key: "system.ss_stats.ss_stats2.rec.b_m", mode: 2, value: -30},
-      ],
-      duration: {
-        turns: 1,
-      },
+      ]
     },
     {
       id: "hemorragie",
@@ -503,13 +520,11 @@ export function registerCustomEffects(){
               type: "chat",
               message: "{name} saigne et subit {damage} points de dégâts !"
             }
-          ]
+          ],
+          remainingTurns: 3
         }
       },
-      statuses:["saignement"],
-      duration: {
-        turns: 3,
-      },
+      statuses:["saignement"]
     },
     {
       id: "saignement2",
@@ -527,11 +542,9 @@ export function registerCustomEffects(){
               type: "chat",
               message: "{name} saigne un peu plus et subit {damage} points de dégâts supplémentaires !"
             }
-          ]
+          ],
+          remainingTurns: 3
         }
-      },
-      duration: {
-        turns: 3,
       },
     },
     {
@@ -539,6 +552,11 @@ export function registerCustomEffects(){
       name: "Adrénaline",
       img: "systems/shinzo/assets/icons/alteration/benefique/adrenaline.svg",
       statuses:["adrenaline"],
+      flags: {
+        shinzo: {
+          remainingTurns: 1
+        }
+      },
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: 20},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: 20},
@@ -566,10 +584,7 @@ export function registerCustomEffects(){
         { key: "system.ss_stats.ss_stats2.s_f.b_m", mode: 2, value: 20},
         { key: "system.ss_stats.ss_stats2.reg.b_m", mode: 2, value: 20},
         { key: "system.ss_stats.ss_stats2.rec.b_m", mode: 2, value: 20},
-      ],
-      duration: {
-        turns: 1,
-      },
+      ]
     },
     {
       id: "apaise",

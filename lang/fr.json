@@ -66,10 +66,11 @@
     },
     "Effect": {
       "Source": "Source",
-      "Toggle": "Toggle Effect",
-      "Temporary": "Temporary Effects",
-      "Passive": "Passive Effects",
-      "Inactive": "Inactive Effects"
+      "Duration": "Durée",
+      "Toggle": "Retirer l'effet",
+      "Temporary": "Effets temporaires",
+      "Passive": "Effets passifs",
+      "Inactive": "Effets inactifs"
     }
   },
 

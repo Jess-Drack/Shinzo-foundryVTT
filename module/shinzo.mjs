@@ -261,6 +261,9 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 });
 
 Hooks.on("updateCombat", async (combat, updateData) => {
+
+  if (!game.user.isActiveGM) return;
+
   if (updateData.turn === undefined) return;
 
   const combatant = combat.combatants.get(combat.current.combatantId);
@@ -336,42 +339,26 @@ Hooks.on("updateCombat", async (combat, updateData) => {
 });
 
 Hooks.on("updateCombat", async (combat, update) => {
+  if (!game.user.isActiveGM) return;
   if (update.turn === undefined) return;
 
   const previous = combat.combatants.get(combat.previous?.combatantId);
   const actor = previous?.actor;
-
   if (!actor) return;
 
   for (const effect of actor.effects) {
 
-    const updates = {};
+    let remainingTurns = effect.getFlag("shinzo", "remainingTurns");
 
-    const turns = effect.duration.turns;
-    const rounds = effect.duration.rounds;
+    // L'effet n'utilise pas ce système
+    if (remainingTurns == null) continue;
 
-    if (turns > 0)
-      updates["duration.turns"] = turns - 1;
+    remainingTurns--;
 
-    if (
-      update.round !== undefined &&
-      rounds > 0
-    ) {
-      updates["duration.rounds"] = rounds - 1;
-    }
-
-    const newTurns = updates["duration.turns"] ?? turns;
-    const newRounds = updates["duration.rounds"] ?? rounds;
-
-    if (
-      (newTurns !== undefined && newTurns <= 0) &&
-      (newRounds === undefined || newRounds <= 0)
-    ) {
+    if (remainingTurns <= 0) {
       await effect.delete();
-      continue;
+    } else {
+      await effect.setFlag("shinzo", "remainingTurns", remainingTurns);
     }
-
-    if (Object.keys(updates).length)
-      await effect.update(updates);
   }
 });
