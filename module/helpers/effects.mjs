@@ -1,9 +1,51 @@
-import { ShinzoActiveEffectConfig } from '../sheets/activeEffectConfig-sheet.mjs';
+import { ShinzoActiveEffectConfig } from '../sheets/active-effect-config-sheet.mjs';
 /**
  * Manage Active Effect instances through an Actor or Item Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
  * @param {Actor|Item} owner      The owning document which manages this effect
  */
+Hooks.on("renderActiveEffectConfig", (app, html)=>{
+
+    const selector = html.querySelector(".shinzo-effect-selector");
+    const button = html.querySelector(".add-shinzo-change");
+
+
+    if (!selector || !button)
+        return;
+
+
+    button.addEventListener("click", ()=>{
+
+
+        const key = selector.value;
+
+
+        if(!key)
+            return;
+
+
+        app.object.updateSource({
+
+            changes:[
+                ...app.object.changes,
+                {
+                    key:key,
+                    mode:CONST.ACTIVE_EFFECT_MODES.ADD,
+                    value:0
+                }
+            ]
+
+        });
+
+
+        app.render(false);
+
+
+    });
+
+});
+
+
 export async function onManageActiveEffect(event, owner) {
   event.preventDefault();
 
@@ -35,7 +77,9 @@ export async function onManageActiveEffect(event, owner) {
 
     case "edit":
       if(effect) {
-        return new ShinzoActiveEffectConfig(effect).render(true);
+        return new ShinzoActiveEffectConfig({
+          document: effect
+        }).render(true);
       }
       break;
 

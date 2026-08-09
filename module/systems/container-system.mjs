@@ -60,7 +60,19 @@ export class ContainerSystem {
 
     copy._id = foundry.utils.randomID();
 
-    content.push(copy);
+    const stack = this.findStack(content, copy);
+
+    if (stack) {
+
+        stack.system.quantity += copy.system.quantity ?? 1;
+
+    } else {
+
+        copy._id = foundry.utils.randomID();
+
+        content.push(copy);
+
+    }
 
     await this.saveContent(container, content);
 
@@ -99,7 +111,20 @@ export class ContainerSystem {
 
     copy._id = foundry.utils.randomID();
 
-    await actor.createEmbeddedDocuments("Item", [copy]);
+    const existing = actor.items.find(i =>this.canStack(i, copy));
+
+    if (existing) {
+
+        await existing.update({
+            "system.quantity":
+                existing.system.quantity + copy.system.quantity
+        });
+
+    } else {
+
+        await actor.createEmbeddedDocuments("Item", [copy]);
+
+    }
 
     if(sourceContainer){
 
@@ -287,5 +312,29 @@ export class ContainerSystem {
         });
         
     }
+
+    //Détermine si deux objets peuvent fusionner (ex: stack potion)
+    static canStack(itemA, itemB) {
+
+    if (!itemA.system.stackable || !itemB.system.stackable)
+        return false;
+
+    if (itemA.type !== itemB.type)
+        return false;
+
+    return (
+        itemA.name === itemB.name &&
+        itemA.system.quality === itemB.system.quality
+    );
+
+  }
+
+
+  //Chercher une pile existante
+  static findStack(content, itemData) {
+
+    return content.find(i => this.canStack(i, itemData));
+
+  }
 
 }

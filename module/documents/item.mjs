@@ -154,6 +154,25 @@ export class ShinzoItem extends Item {
 
         break;
 
+      case "consommable":
+
+        content =
+          `
+          Quantité :
+          ${item.quantity ?? 0}
+
+          <br>
+
+          Charges :
+          ${item.charges ?? 0}
+
+          <br>
+
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
       case "sac":
 
         content =
@@ -228,6 +247,109 @@ export class ShinzoItem extends Item {
     });
 
     return roll;
+
+  }
+
+  /**
+ * Utilisation d'un consommable
+ */
+async consume(){
+
+    if(this.type !== "consommable")
+        return;
+
+
+    const system = this.system;
+
+
+    /*
+     * Consommation par quantité
+     */
+    if(system.consumeType === "quantity"){
+
+
+        const quantity =
+            Math.max(
+                0,
+                system.quantity - 1
+            );
+
+
+        /*
+         * Plus rien en stock
+         */
+        if(quantity <= 0){
+
+            await this.delete();
+
+            ui.notifications.info(
+                `${this.name} a été consommé.`
+            );
+
+            return;
+
+        }
+
+
+        await this.update({
+
+            "system.quantity":
+                quantity
+
+        });
+
+
+    }
+
+
+
+    /*
+     * Consommation par charges
+     */
+    if(system.consumeType === "charges"){
+
+
+        const charges =
+            Math.max(
+                0,
+                system.charges - 1
+            );
+
+
+        await this.update({
+
+            "system.charges":
+                charges
+
+        });
+
+
+        if(charges === 0){
+
+            ui.notifications.warn(
+                `${this.name} n'a plus de charges.`
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Message chat
+     */
+    await ChatMessage.create({
+
+        speaker:
+            ChatMessage.getSpeaker({
+                actor:this.actor
+            }),
+
+        content:
+            `<b>${this.name}</b> a été utilisé.`
+
+    });
+
 
   }
 

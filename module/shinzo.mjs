@@ -9,6 +9,7 @@ import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { SHINZO } from './helpers/config.mjs';
 
 import { registerCustomEffects } from './helpers/effects.mjs';
+import { ShinzoActiveEffectConfig } from "./sheets/active-effect-config-sheet.mjs";
 
 import { CharacterModel } from "./data/actor/character-model.mjs";
 import { NPCModel } from "./data/actor/npc-model.mjs";
@@ -19,6 +20,7 @@ import { ObjetModel } from "./data/item/objet-model.mjs";
 import { SacModel } from "./data/item/sac-model.mjs";
 import { CompetenceModel } from "./data/item/competence-model.mjs";
 import { TraitModel } from "./data/item/trait-model.mjs";
+import { ConsommableModel } from "./data/item/consommable-model.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -66,14 +68,25 @@ Hooks.once('init', function () {
     objet: ObjetModel,
     sac: SacModel,
     competence: CompetenceModel,
-    trait: TraitModel
+    trait: TraitModel,
+    consommable: ConsommableModel
 
   };
+
+  DocumentSheetConfig.registerSheet(
+    ActiveEffect,
+    "shinzo",
+    ShinzoActiveEffectConfig,
+    {
+        makeDefault: true,
+        label: "SHINZO.SheetLabels.ActiveEffectConfig"
+    }
+  );
 
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
   // if the transfer property on the Active Effect is true.
-  CONFIG.ActiveEffect.legacyTransferral = false;
+  //CONFIG.ActiveEffect.legacyTransferral = false;
 
   // Register sheet application classes
   Actors.unregisterSheet('core', ActorSheet);

@@ -82,9 +82,17 @@ export class RollSystem {
 
     if (!stat) return null;
 
+    // Les grandes caractéristiques utilisent leur valeur brute
+    // pour les jets directs.
+    const isPrimaryStat = !!actor.system.gds_stats?.[statName];
+
+    const rollValue = isPrimaryStat
+        ? stat.brut
+        : stat.value;
+
     return this.prepareStat(
 
-      stat.value,
+      rollValue,
       statName,
       stat.addCrit ?? 0
 

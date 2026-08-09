@@ -133,6 +133,7 @@ export class ShinzoActorSheet extends ActorSheet {
     const objets = [];
     const armes = [];
     const armures = [];
+    const consommables = [];
     const sacs = [];
     const traits = [];
     const competences = [];
@@ -151,10 +152,11 @@ export class ShinzoActorSheet extends ActorSheet {
         armures.push(i);
       }
       else if (i.type === 'sac') {
-
         i.content = i.system.content ?? [];
-
         sacs.push(i);
+      }
+      else if (i.type === 'consommable') {
+        consommables.push(i);
       }
       // Append to features.
       else if (i.type === 'trait') {
@@ -171,6 +173,7 @@ export class ShinzoActorSheet extends ActorSheet {
     context.arme = armes;
     context.armure = armures;
     context.sac = sacs;
+    context.consommable = consommables;
     context.trait = traits;
     context.competence = competences;
   }
@@ -195,6 +198,7 @@ export class ShinzoActorSheet extends ActorSheet {
     // Add Inventory Item
     html.on('click', '.item-create', this._onItemCreate.bind(this));
 
+    html.on("click", ".item-consume", this._onConsumeItem.bind(this));
 
     // Active Effect management
     html.on('click', '.effect-control', (ev) => {
@@ -271,6 +275,20 @@ export class ShinzoActorSheet extends ActorSheet {
                 currentTarget: {
                   dataset: {
                     type: 'armure'
+                  }
+                }
+              };
+              this._onItemCreate(fakeEvent); 
+            }
+          },
+          consommable: {
+            label: "Consommable",
+            callback: () => {
+              const fakeEvent = {
+                preventDefault: () => {},
+                currentTarget: {
+                  dataset: {
+                    type: 'consommable'
                   }
                 }
               };
@@ -550,27 +568,52 @@ export class ShinzoActorSheet extends ActorSheet {
 
   }
 
+  
+  async _onConsumeItem(event) {
+
+    event.preventDefault();
+
+    const li = event.currentTarget.closest(".item");
+
+    const item = this.actor.items.get(li.dataset.itemId);
+
+    if (!item) return;
+
+    await item.consume();
+
+    this.render(false);
+
+  }
+
+
   _prepareDisplayStats(system) {
 
-      const prepareGroup = (group) => {
+    const prepareGroup = (group, useBrut = false) => {
 
-          for (const [key, stat] of Object.entries(group ?? {})) {
+        for (const [key, stat] of Object.entries(group ?? {})) {
 
-              const prepared = RollSystem.prepareStat(
-                  stat.value,
-                  key,
-                  stat.addCrit ?? 0
-              );
+            const rollValue = useBrut
+                ? stat.brut
+                : stat.value;
 
-              stat.brut = prepared.brut;
-              stat.displayValue = prepared.value;
-              stat.addCrit = prepared.crit;
-          }
-      };
+            const prepared = RollSystem.prepareStat(
+                rollValue,
+                key,
+                stat.addCrit ?? 0
+            );
 
-      prepareGroup(system.gds_stats);
-      prepareGroup(system.ss_stats?.ss_stats1);
-      prepareGroup(system.ss_stats?.ss_stats2);
+            stat.displayValue = prepared.value;
+            stat.addCrit = prepared.crit;
+        }
+    };
+
+    // Grandes statistiques
+    prepareGroup(system.gds_stats, true);
+
+    // Sous-statistiques
+    prepareGroup(system.ss_stats?.ss_stats1);
+    prepareGroup(system.ss_stats?.ss_stats2);
+
   }
 
 }

@@ -210,6 +210,9 @@ export class ShinzoItemSheet extends ItemSheet {
 
       }
     );
+
+    html.find(".consume-item").click(this._onConsumeItem.bind(this));
+
   }
 
     /**
@@ -394,6 +397,52 @@ export class ShinzoItemSheet extends ItemSheet {
       "text/plain",
       JSON.stringify(dragData)
     );
+
+  }
+
+
+  async _onConsumeItem(event){
+
+    switch (this.system.consumeType) {
+
+        case "quantity":
+            return this.consumeQuantity();
+
+        case "charges":
+            return this.consumeCharge();
+
+    }
+
+  }
+
+
+  async consumeQuantity() {
+
+    if (this.system.quantity <= 0)
+        return false;
+
+    await this.update({
+        "system.quantity": this.system.quantity - 1
+    });
+
+    if (this.system.quantity - 1 <= 0)
+        await this.delete();
+
+    return true;
+
+  }
+  
+
+  async consumeCharge() {
+
+    if (this.system.charges <= 0)
+        return false;
+
+    await this.update({
+        "system.charges": this.system.charges - 1
+    });
+
+    return true;
 
   }
 

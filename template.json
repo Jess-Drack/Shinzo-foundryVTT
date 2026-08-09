@@ -551,10 +551,10 @@
     }
   },
   "Item": {
-    "types": ["arme", "armure", "objet", "sac", "competence", "trait"],
+    "types": ["arme", "armure", "objet", "sac", "competence", "trait", "consommable"],
     "templates": {
       "base": {
-        "enable": true,
+        "enabled": true,
         "description": "",
         "modifiers": []
       }
@@ -603,6 +603,20 @@
       "effect": ["-"],
       "note": "",
       "unit": ""
+    },
+    "consommable": {
+      "templates": ["base"],
+
+      "quantity": 1,
+      "maxQuantity": 99,
+      "stackable": true,
+
+      "charges": 1,
+      "maxCharges": 1,
+
+      "consumeType": "quantity",
+
+      "effect": ""
     }
   }
 }
