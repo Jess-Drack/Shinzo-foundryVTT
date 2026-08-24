@@ -23,8 +23,9 @@
               <div class="effect-source">
                   {{#each effect.changes as |change i|}}
                     <ol class="effect-change flexrow" data-index="{{i}}" style="padding: 0;">
-                        <span name="system.effect">{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}</span>
-                        <input type="hidden" name="system.effect" value="{{change.value}} {{localize (lookup @root.config.activeEffectChanges change.key)}}"></input>
+                      {{log change.key}}
+                        <span name="system.effect">{{change.value}} {{localize (lookup (lookup @root.config.activeEffectChanges change.key) "abbreviation")}}</span>
+                        <input type="hidden" name="system.effect" value="{{change.value}} {{localize (lookup (lookup @root.config.activeEffectChanges change.key) "abbreviation")}}"></input>
                     </ol>
                   {{/each}}
               </div>

@@ -3,18 +3,16 @@
   <li class='item flexrow items-header'>
       <div class='item-name'>{{localize 'Name'}}</div>
     </li>
-    {{#each system.content as |item id|}}
+    {{#each contents as |item|}}
       <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
         <div class='item-name'>
           <div class='item-image'>
-            <a class='rollable' data-roll-type='item'>
-              <img
-                src='{{item.img}}'
-                title='{{item.name}}'
-                width='24'
-                height='24'
-              />
-            </a>
+            <img
+              src='{{item.img}}'
+              title='{{item.name}}'
+              width='24'
+              height='24'
+            />
           </div>
           <a class='item-control item-edit' data-item-id='{{item._id}}' title='{{localize "DOCUMENT.Update" type='Item'}}'>
             <h4>{{item.name}}</h4>

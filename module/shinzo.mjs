@@ -9,6 +9,18 @@ import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { SHINZO } from './helpers/config.mjs';
 
 import { registerCustomEffects } from './helpers/effects.mjs';
+import { ShinzoActiveEffectConfig } from "./sheets/active-effect-config-sheet.mjs";
+
+import { CharacterModel } from "./data/actor/character-model.mjs";
+import { NPCModel } from "./data/actor/npc-model.mjs";
+
+import { ArmeModel } from "./data/item/arme-model.mjs";
+import { ArmureModel } from "./data/item/armure-model.mjs";
+import { ObjetModel } from "./data/item/objet-model.mjs";
+import { SacModel } from "./data/item/sac-model.mjs";
+import { CompetenceModel } from "./data/item/competence-model.mjs";
+import { TraitModel } from "./data/item/trait-model.mjs";
+import { ConsommableModel } from "./data/item/consommable-model.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -39,10 +51,42 @@ Hooks.once('init', function () {
   CONFIG.Actor.documentClass = ShinzoActor;
   CONFIG.Item.documentClass = ShinzoItem;
 
+  /**
+  * DataModels V13
+  */
+  CONFIG.Actor.dataModels = {
+
+    character: CharacterModel,
+    npc: NPCModel
+
+  };
+
+  CONFIG.Item.dataModels = {
+
+    arme: ArmeModel,
+    armure: ArmureModel,
+    objet: ObjetModel,
+    sac: SacModel,
+    competence: CompetenceModel,
+    trait: TraitModel,
+    consommable: ConsommableModel
+
+  };
+
+  DocumentSheetConfig.registerSheet(
+    ActiveEffect,
+    "shinzo",
+    ShinzoActiveEffectConfig,
+    {
+        makeDefault: true,
+        label: "SHINZO.SheetLabels.ActiveEffectConfig"
+    }
+  );
+
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
   // if the transfer property on the Active Effect is true.
-  CONFIG.ActiveEffect.legacyTransferral = false;
+  //CONFIG.ActiveEffect.legacyTransferral = false;
 
   // Register sheet application classes
   Actors.unregisterSheet('core', ActorSheet);
@@ -73,11 +117,63 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once('ready', function () {
+Hooks.once("ready", async function () {
+
+  // Migration des anciennes données
+  //await migrateWorld();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+
   registerCustomEffects();
 });
+
+
+/**
+ * Migration des données du monde
+ */
+/*async function migrateWorld() {
+
+  console.log("SHINZO | Vérification des données du monde...");
+
+  for (const actor of game.actors) {
+
+    for (const item of actor.items) {
+
+      const update = {};
+
+      switch (item.type) {
+
+        case "armure":
+
+          if (typeof item.system.poids !== "number")
+            update["system.poids"] = Number(item.system.poids) || 0;
+
+          if (typeof item.system.resPhysique !== "number")
+            update["system.resPhysique"] = Number(item.system.resPhysique) || 0;
+
+          if (typeof item.system.resMagique !== "number")
+            update["system.resMagique"] = Number(item.system.resMagique) || 0;
+
+          break;
+
+        case "sac":
+
+          if (typeof item.system.poidsMax !== "number")
+            update["system.poidsMax"] = Number(item.system.poidsMax) || 0;
+
+          break;
+      }
+
+      if (Object.keys(update).length) {
+        console.log(`SHINZO | Migration de ${item.name}`);
+        await item.update(update, { diff: false, noHook: true });
+      }
+    }
+  }
+
+  console.log("SHINZO | Migration terminée.");
+}*/
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
@@ -178,155 +274,104 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 });
 
 Hooks.on("updateCombat", async (combat, updateData) => {
-  if (game.user.isGM && updateData.turn !== undefined) {
-    const currentCombatant = combat.combatants.get(combat.current.combatantId);
-    const actor = currentCombatant.actor;
 
-    const isElectrise = actor.effects.find(effet => effet.name === "Electrisé");
-    const isEnflamme = actor.effects.find(effet => effet.name === "Enflammé");
-    const isGele = actor.effects.find(effet => effet.name === "Gelure");
-    const isHemorragie = actor.effects.find(effet => effet.name === "Hémorragie");
-    const isBleeding = actor.effects.find(effet => effet.name === "Saignement");
-    const isBeaucoupBleeding = actor.effects.find(effet => effet.name === "Saignement : 2nd stack")
+  if (!game.user.isActiveGM) return;
 
-    if (isElectrise) {
-      const damageRoll = new Roll("1d2");
-      await damageRoll.evaluate();
-      const damage = damageRoll.total;
+  if (updateData.turn === undefined) return;
 
-      let actualHealth = actor.system.health.value;
+  const combatant = combat.combatants.get(combat.current.combatantId);
+  const actor = combatant?.actor;
+  if (!actor) return;
 
-      await actor.update({ "system.health.value": actualHealth - damage });
+  for (const effect of actor.effects) {
 
-      ChatMessage.create({
-        speaker: ChatMessage.getSpeaker({ actor }),
-        content: `${actor.name} subit ${damage} dégâts à cause de l'altération Electrisé !`
-      });
+    const actions = effect.flags?.shinzo?.onTurnStart;
+    if (!Array.isArray(actions) || !actions.length) continue;
+
+    // Variables accessibles aux actions suivantes
+    const context = {
+      actor,
+      effect,
+      damage: 0
+    };
+
+    for (const action of actions) {
+
+      switch (action.type) {
+
+        case "damage": {
+
+          const roll = await (new Roll(action.formula)).evaluate();
+
+          context.damage = roll.total;
+
+          await actor.update({
+            "system.health.value": Math.max(
+              0,
+              actor.system.health.value - context.damage
+            )
+          });
+
+          break;
+        }
+
+        case "heal": {
+
+          const roll = await (new Roll(action.formula)).evaluate();
+
+          context.heal = roll.total;
+
+          await actor.update({
+            "system.health.value": Math.min(
+              actor.system.health.max,
+              actor.system.health.value + context.heal
+            )
+          });
+
+          break;
+        }
+
+        case "chat": {
+
+          const content = action.message
+            .replaceAll("{name}", actor.name)
+            .replaceAll("{damage}", context.damage)
+            .replaceAll("{heal}", context.heal ?? 0);
+
+          await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            content
+          });
+
+          break;
+        }
+
+      }
     }
-    if (isEnflamme) {
-      const damageRoll = new Roll("1d4");
-      await damageRoll.evaluate();
-      const damage = damageRoll.total;
+  }
+});
 
-      let actualHealth = actor.system.health.value;
+Hooks.on("updateCombat", async (combat, update) => {
+  if (!game.user.isActiveGM) return;
+  if (update.turn === undefined) return;
 
-      await actor.update({ "system.health.value": actualHealth - damage });
+  const previous = combat.combatants.get(combat.previous?.combatantId);
+  const actor = previous?.actor;
+  if (!actor) return;
 
-      ChatMessage.create({
-        speaker: ChatMessage.getSpeaker({ actor }),
-        content: `${actor.name} subit ${damage} dégâts à cause de l'altération Enflammé !`
-      });
-    } 
-    if (isGele) {
-      const damageRoll = new Roll("1d4");
-      await damageRoll.evaluate();
-      const damage = damageRoll.total;
+  for (const effect of actor.effects) {
 
-      let actualHealth = actor.system.health.value;
+    let remainingTurns = effect.getFlag("shinzo", "remainingTurns");
 
-      await actor.update({ "system.health.value": actualHealth - damage });
+    // L'effet n'utilise pas ce système
+    if (remainingTurns == null) continue;
 
-      ChatMessage.create({
-        speaker: ChatMessage.getSpeaker({ actor }),
-        content: `${actor.name} subit ${damage} dégâts à cause de l'altération Gelure !`
-      });
-    } 
-    if (isBleeding) {
-      const damageRoll = new Roll("1d2");
-      await damageRoll.evaluate();
-      const damage = damageRoll.total;
+    remainingTurns--;
 
-      let actualHealth = actor.system.health.value;
-
-      await actor.update({ "system.health.value": actualHealth - damage });
-
-      ChatMessage.create({
-        speaker: ChatMessage.getSpeaker({ actor }),
-        content: `${actor.name} saigne et subit ${damage} points de dégâts !`
-      })
-    } 
-    if (isBeaucoupBleeding) {
-      const damageRoll = new Roll("1d2");
-      await damageRoll.evaluate();
-      const damage = damageRoll.total;
-
-      let actualHealth = actor.system.health.value;
-
-      await actor.update({ "system.health.value": actualHealth - damage });
-
-      ChatMessage.create({
-        speaker: ChatMessage.getSpeaker({ actor }),
-        content: `${actor.name} saigne un peu plus et subit ${damage} points de dégâts supplémentaires !`
-      })
-    } 
-    if (isHemorragie) {
-      const damageRoll = new Roll("1d4");
-      await damageRoll.evaluate();
-      const damage = damageRoll.total;
-
-      let actualHealth = actor.system.health.value;
-
-      await actor.update({ "system.health.value": actualHealth - damage });
-
-      ChatMessage.create({
-        speaker: ChatMessage.getSpeaker({ actor }),
-        content: `${actor.name} saigne abondamment et subit ${damage} points de dégâts !`
-      })
+    if (remainingTurns <= 0) {
+      await effect.delete();
     } else {
-      null;
+      await effect.setFlag("shinzo", "remainingTurns", remainingTurns);
     }
   }
 });
-
-Hooks.on('updateCombat', async (combat, update, diff) => {
-  if (update.turn !== undefined) {
-    const previousCombatant = combat.combatants.get(combat.previous?.combatantId);
-    const actor = previousCombatant?.actor;
-
-    if (actor && actor.effects) {
-      for (let effect of actor.effects) {
-        let duration = effect.duration;
-        
-        if (duration.turns > 0) {
-          await effect.update({ "duration.turns": duration.turns - 1 });
-          
-          if (duration.turns - 1 === 0) {
-            await effect.delete();
-          }
-        }
-
-        if (duration.rounds > 0 && update.round !== undefined) {
-          await effect.update({ "duration.rounds": duration.rounds - 1 });
-
-          if (duration.rounds - 1 === 0 && duration.turns === 0) {
-            await effect.delete();
-          }
-        }
-      }
-    }
-  }
-  if (update.round !== undefined) {
-    for (let combatant of combat.combatants) {
-      const actor = combatant.actor;
-
-      // Vérifie si l'acteur a des effets actifs
-      if (actor && actor.effects) {
-        for (let effect of actor.effects) {
-          let duration = effect.duration;
-
-          // Vérifie si l'effet a une durée en rounds spécifiée
-          if (duration.rounds > 0) {
-            // Réduit la durée en rounds de l'effet
-            await effect.update({ "duration.rounds": duration.rounds - 1 });
-
-            // Supprime l'effet si la durée en rounds est écoulée
-            if (duration.rounds - 1 === 0 && duration.turns === 0) {
-              await effect.delete();
-            }
-          }
-        }
-      }
-    }
-  }
-});
-

@@ -1,21 +1,7 @@
 {
   "Actor": {
     "types": ["character", "npc"],
-    "templates": {
-      "base": {
-        "health": {
-          "value": 0,
-          "min": -30,
-          "max": 30
-        },
-        "power": {
-          "value": 0,
-          "min": -30,
-          "max": 30
-        },
-        "biography": ""
-      }
-    },
+    "templates": {},
     "character": {
       "templates": ["base"],
       "description1": {
@@ -303,7 +289,6 @@
       }
     },
     "npc": {
-      "templates": ["base"],
       "valuation": {
         "value": 0
       },
@@ -333,42 +318,48 @@
           "brut": 0,
           "b_m": 0,
           "spe": false,
-          "spe_check": false
+          "spe_check": false,
+          "addCrit":0
         },
         "agi": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
           "spe": false,
-          "spe_check": false
+          "spe_check": false,
+          "addCrit":0
         },
         "men": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
           "spe": false,
-          "spe_check": false
+          "spe_check": false,
+          "addCrit":0
         },
         "mag": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
           "spe": false,
-          "spe_check": false
+          "spe_check": false,
+          "addCrit":0
         },
         "cha": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
           "spe": false,
-          "spe_check": false
+          "spe_check": false,
+          "addCrit":0
         },
         "sav": {
           "value": 50,
           "brut": 0,
           "b_m": 0,
           "spe": false,
-          "spe_check": false
+          "spe_check": false,
+          "addCrit":0
         }
       },
       "gds_statsTotal": {
@@ -395,70 +386,80 @@
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "cac": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "pre": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "esq": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "par": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "dis": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "obs": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "per": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "psy": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "int": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           }
         },
         "ss_stats2": {
@@ -467,70 +468,80 @@
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "aut": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "med": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "pil": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "art": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "vit": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "ins": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "s_f": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "reg": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           },
           "rec": {
             "value": 0,
             "mod": 0,
             "b_m": 0,
             "spe": false,
-            "spe_check": false
+            "spe_check": false,
+            "addCrit":0
           }
         },
         "totalmod": {
@@ -540,20 +551,22 @@
     }
   },
   "Item": {
-    "types": ["arme", "armure", "objet", "sac", "competence", "trait"],
+    "types": ["arme", "armure", "objet", "sac", "competence", "trait", "consommable"],
     "templates": {
       "base": {
-        "description": ""
+        "enabled": true,
+        "description": "",
+        "modifiers": []
       }
     },
     "armure": {
       "templates": ["base"],
-      "poids": "",
-      "resPhysique": "0",
-      "resMagique": "0",
+      "poids": 0,
+      "resPhysique": 0,
+      "resMagique": 0,
       "effect": "",
       "quality": "",
-      "equiped" : true
+      "equipped" : false
     },
     "arme": {
       "templates": ["base"],
@@ -562,7 +575,7 @@
       "damage": "",
       "effect": "",
       "quality": "",
-      "equiped" : true
+      "equipped" : false
     },
     "objet": {
       "templates": ["base"],
@@ -571,11 +584,11 @@
     },
     "sac":{
       "templates": ["base"],
-      "poidsMax" : "",
+      "poidsMax" : 0,
       "effect": "",
       "content": [],
       "quality": "",
-      "equiped" : true
+      "equipped" : false
     },
     "competence": {
       "templates": ["base"],
@@ -590,6 +603,20 @@
       "effect": ["-"],
       "note": "",
       "unit": ""
+    },
+    "consommable": {
+      "templates": ["base"],
+
+      "quantity": 1,
+      "maxQuantity": 99,
+      "stackable": true,
+
+      "charges": 1,
+      "maxCharges": 1,
+
+      "consumeType": "quantity",
+
+      "effect": ""
     }
   }
 }

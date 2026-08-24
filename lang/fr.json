@@ -1,47 +1,47 @@
 {
   "SHINZO": {
     "Caracteristique": {
-      "Con": { "long": "Constitution", "abbr": "con" },
-      "Agi": { "long": "Agilité", "abbr": "agi" },
-      "Cha": { "long": "Charisme", "abbr": "cha" },
-      "Sav": { "long": "Savoir", "abbr": "sav" },
-      "Mag": { "long": "Magie", "abbr": "mag" },
-      "Men": { "long": "Mental", "abbr": "men" },
-      "ConB": { "long": "Constitution Brute", "abbr": "con B" },
-      "AgiB": { "long": "Agilité Brute", "abbr": "agi B" },
-      "ChaB": { "long": "Charisme Brute", "abbr": "cha B" },
-      "SavB": { "long": "Savoir Brute", "abbr": "sav B" },
-      "MagB": { "long": "Magie Brute", "abbr": "mag B" },
-      "MenB": { "long": "Mental Brute", "abbr": "men B" },
+      "Con": { "long": "Constitution", "abbr": "Con" },
+      "Agi": { "long": "Agilité", "abbr": "Agi" },
+      "Cha": { "long": "Charisme", "abbr": "Cha" },
+      "Sav": { "long": "Savoir", "abbr": "Sav" },
+      "Mag": { "long": "Magie", "abbr": "Mag" },
+      "Men": { "long": "Mental", "abbr": "Men" },
+      "ConB": { "long": "Constitution Brute", "abbr": "Con B" },
+      "AgiB": { "long": "Agilité Brute", "abbr": "Agi B" },
+      "ChaB": { "long": "Charisme Brute", "abbr": "Cha B" },
+      "SavB": { "long": "Savoir Brute", "abbr": "Sav B" },
+      "MagB": { "long": "Magie Brute", "abbr": "Mag B" },
+      "MenB": { "long": "Mental Brute", "abbr": "Men B" },
       
-      "Cor": { "long": "Corps", "abbr": "cor" },
-      "Esp": { "long": "Esprit", "abbr": "esp" },
-      "Soc": { "long": "Social", "abbr": "soc" },
+      "Cor": { "long": "Corps", "abbr": "Cor" },
+      "Esp": { "long": "Esprit", "abbr": "Esp" },
+      "Soc": { "long": "Social", "abbr": "Soc" },
 
-      "Pug": { "long": "Pugilat", "abbr": "pug" },
-      "Cac": { "long": "Arme Cac", "abbr": "cac" },
-      "Pre": { "long": "Précision", "abbr": "pré" },
-      "Esq": { "long": "Esquive", "abbr": "esq" },
-      "Par": { "long": "Parade", "abbr": "par" },
-      "Dis": { "long": "Discrétion", "abbr": "dis" },
-      "Obs": { "long": "Observation", "abbr": "obs" },
-      "Per": { "long": "Perception", "abbr": "per" },
-      "Psy": { "long": "Psyché", "abbr": "psy" },
-      "Int": { "long": "Intimidation", "abbr": "int" },
-      "Com": { "long": "Communication", "abbr": "com" },
-      "Aut": { "long": "Autorité", "abbr": "aut" },
-      "Med": { "long": "Médecine", "abbr": "med" },
-      "Pil": { "long": "Pilotage", "abbr": "pil" },
-      "Art": { "long": "Artisanat", "abbr": "art" },
-      "Vit": { "long": "Vitesse", "abbr": "vit" },
-      "Ins": { "long": "Instinct", "abbr": "ins" },
-      "S_f": { "long": "Sang-Froid", "abbr": "s-f" },
-      "Reg": { "long": "Régénération pv", "abbr": "reg" },
-      "Rec": { "long": "Récupération pe", "abbr": "rec" },
-      "Dep": { "long": "Dégâts physique", "abbr": "dégâts P" },
-      "Rep": { "long": "Résistance physique", "abbr": "res P" },
-      "Dem": { "long": "Dégâts magique", "abbr": "dégâts M" },
-      "Rem": { "long": "Résistance magique", "abbr": "res M" }
+      "Pug": { "long": "Pugilat", "abbr": "Pug" },
+      "Cac": { "long": "Arme Cac", "abbr": "Cac" },
+      "Pre": { "long": "Précision", "abbr": "Pré" },
+      "Esq": { "long": "Esquive", "abbr": "Esq" },
+      "Par": { "long": "Parade", "abbr": "Par" },
+      "Dis": { "long": "Discrétion", "abbr": "Dis" },
+      "Obs": { "long": "Observation", "abbr": "Obs" },
+      "Per": { "long": "Perception", "abbr": "Per" },
+      "Psy": { "long": "Psyché", "abbr": "Psy" },
+      "Int": { "long": "Intimidation", "abbr": "Int" },
+      "Com": { "long": "Communication", "abbr": "Com" },
+      "Aut": { "long": "Autorité", "abbr": "Aut" },
+      "Med": { "long": "Médecine", "abbr": "Med" },
+      "Pil": { "long": "Pilotage", "abbr": "Pil" },
+      "Art": { "long": "Artisanat", "abbr": "Art" },
+      "Vit": { "long": "Vitesse", "abbr": "Vit" },
+      "Ins": { "long": "Instinct", "abbr": "Ins" },
+      "S_f": { "long": "Sang-Froid", "abbr": "S-f" },
+      "Reg": { "long": "Régénération pv", "abbr": "Reg" },
+      "Rec": { "long": "Récupération pe", "abbr": "Rec" },
+      "Dep": { "long": "Dégâts physique", "abbr": "Dégâts P" },
+      "Rep": { "long": "Résistance physique", "abbr": "Res P" },
+      "Dem": { "long": "Dégâts magique", "abbr": "Dégâts M" },
+      "Rem": { "long": "Résistance magique", "abbr": "Res M" }
     },
     "Description": {
       "Age": "Age",
@@ -66,10 +66,37 @@
     },
     "Effect": {
       "Source": "Source",
-      "Toggle": "Toggle Effect",
-      "Temporary": "Temporary Effects",
-      "Passive": "Passive Effects",
-      "Inactive": "Inactive Effects"
+      "Duration": "Durée",
+      "Toggle": "Retirer l'effet",
+      "Temporary": "Effets temporaires",
+      "Passive": "Effets passifs",
+      "Inactive": "Effets inactifs",
+
+      "Health": "PV max",
+      "Power": "PE max",
+
+      "Effect": "Effet",
+      "Target": "Cible",
+      "None": "Aucune",
+      "Value": "Valeur",
+      "Mode": "Mode",
+      "Description": "Description",
+      "Rounds": "Tours",
+      "Disabled": "Désactivé",
+      "Transfer": "Transférable"
+    },
+    "ActiveEffect": {
+
+    "Add": "Ajouter",
+    "Multiply": "Multiplier",
+    "Override": "Remplacer",
+
+    "Duration":
+        "Durée en tours",
+
+    "Permanent":
+        "Permanent"
+
     }
   },
 
@@ -85,7 +112,8 @@
       "sac": "Sac",
       "competence": "Compétence",
       "trait": "Trait",
-      "equipement": "Equipement"
+      "equipement": "Equipement",
+      "consommable": "Consommable"
     }
   }
 }

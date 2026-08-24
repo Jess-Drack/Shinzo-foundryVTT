@@ -1,7 +1,6 @@
-import {
-  onManageActiveEffect,
-  prepareActiveEffectCategories,
-} from '../helpers/effects.mjs';
+import { onManageActiveEffect, prepareActiveEffectCategories } from '../helpers/effects.mjs';
+import { RollSystem } from "../systems/roll-system.mjs";
+import { ContainerSystem } from "../systems/container-system.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -17,17 +16,19 @@ export class ShinzoActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['shinzo', 'sheet', 'actor'],
-      width: 600,
-      height: 600,
-      tabs: [
-        {
-          navSelector: '.sheet-tabs',
-          contentSelector: '.sheet-body',
-          initial: 'stat',
-        },
-      ],
-    });
+        classes: ['shinzo', 'sheet', 'actor'],
+        width: 600,
+        height: 600,
+        tabs: [
+          {
+            navSelector: '.sheet-tabs',
+            contentSelector: '.sheet-body',
+            initial: 'stat',
+          },
+        ],
+      }, 
+      { inplace:false }
+    );
   }
 
   /** @override */
@@ -43,7 +44,7 @@ export class ShinzoActorSheet extends ActorSheet {
     // the context variable to see the structure, but some key properties for
     // sheets are the actor object, the data object, whether or not it's
     // editable, the items array, and the effects array.
-    const context = super.getData();
+    const context = await super.getData();
 
     context.editable = this.editable;
 
@@ -52,7 +53,12 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = actorData.system;
+
+    this._prepareDisplayStats(context.system);
+
     context.flags = actorData.flags;
+
+    context.system.derived = this.actor.system.derived;
 
     // Adding a pointer to CONFIG.SHINZO
     context.config = CONFIG.SHINZO;
@@ -75,8 +81,6 @@ export class ShinzoActorSheet extends ActorSheet {
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.actor.getRollData(),
         // Relative UUID resolution
@@ -84,15 +88,13 @@ export class ShinzoActorSheet extends ActorSheet {
       }
     );
 
-        // Enrich biography info for display
+    // Enrich biography info for display
     // Enrichment turns text like `[[/r 1d20]]` into buttons
     context.enrichedNote = await TextEditor.enrichHTML(
       this.actor.system.note,
       {
         // Whether to show secret blocks in the finished html
         secrets: this.document.isOwner,
-        // Necessary in v11, can be removed in v12
-        async: true,
         // Data to fill in for inline rolls
         rollData: this.actor.getRollData(),
         // Relative UUID resolution
@@ -131,6 +133,7 @@ export class ShinzoActorSheet extends ActorSheet {
     const objets = [];
     const armes = [];
     const armures = [];
+    const consommables = [];
     const sacs = [];
     const traits = [];
     const competences = [];
@@ -149,7 +152,11 @@ export class ShinzoActorSheet extends ActorSheet {
         armures.push(i);
       }
       else if (i.type === 'sac') {
+        i.content = i.system.content ?? [];
         sacs.push(i);
+      }
+      else if (i.type === 'consommable') {
+        consommables.push(i);
       }
       // Append to features.
       else if (i.type === 'trait') {
@@ -166,6 +173,7 @@ export class ShinzoActorSheet extends ActorSheet {
     context.arme = armes;
     context.armure = armures;
     context.sac = sacs;
+    context.consommable = consommables;
     context.trait = traits;
     context.competence = competences;
   }
@@ -190,6 +198,7 @@ export class ShinzoActorSheet extends ActorSheet {
     // Add Inventory Item
     html.on('click', '.item-create', this._onItemCreate.bind(this));
 
+    html.on("click", ".item-consume", this._onConsumeItem.bind(this));
 
     // Active Effect management
     html.on('click', '.effect-control', (ev) => {
@@ -215,7 +224,7 @@ export class ShinzoActorSheet extends ActorSheet {
             label: "Oui",
             callback: async () => {
               // Effectuer la suppression ici
-              item.delete();
+              await item.delete();
               ui.notifications.info(`${item.name} supprimé.`);
             }
           },
@@ -233,7 +242,7 @@ export class ShinzoActorSheet extends ActorSheet {
     html.on('click', '.deStat', this._bonusStats.bind(this));
     html.on('click', '.deArme', this._onRollArmes.bind(this));
     html.on('click', '.deSpe', this._onRollSpe.bind(this));
-    html.on('change', '.equiped-toggle', this._equippedChange.bind(this));
+    html.on('change', '.equipped-toggle', this._equippedChange.bind(this));
 
     html.on('click', '.addBagage', (ev) => {
       const li = $(ev.currentTarget).parents('.item');
@@ -266,6 +275,20 @@ export class ShinzoActorSheet extends ActorSheet {
                 currentTarget: {
                   dataset: {
                     type: 'armure'
+                  }
+                }
+              };
+              this._onItemCreate(fakeEvent); 
+            }
+          },
+          consommable: {
+            label: "Consommable",
+            callback: () => {
+              const fakeEvent = {
+                preventDefault: () => {},
+                currentTarget: {
+                  dataset: {
+                    type: 'consommable'
                   }
                 }
               };
@@ -307,10 +330,19 @@ export class ShinzoActorSheet extends ActorSheet {
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
-      html.find('li.item').each((i, li) => {
-        if (li.classList.contains('inventory-header')) return;
-        li.setAttribute('draggable', true);
-        li.addEventListener('dragstart', handler, false);
+      html.find('li.item[data-item-id]').each((i, li) => {
+
+        li.setAttribute(
+          'draggable',
+          true
+        );
+
+        li.addEventListener(
+          'dragstart',
+          handler,
+          false
+        );
+
       });
     }
 
@@ -346,9 +378,8 @@ export class ShinzoActorSheet extends ActorSheet {
     delete itemData.system['type'];
 
     const createdItem = await Item.create(itemData, { parent: this.actor });
-    console.log("Objet créé : ", createdItem);
 
-    return createdItem;
+    return createdItem[0];
   }
 
   /**
@@ -380,56 +411,6 @@ export class ShinzoActorSheet extends ActorSheet {
         rollMode: game.settings.get('core', 'rollMode'),
       });
       return roll;
-    }
-  }
-
-  async rollStats(valueStat, statName, statNameAbridged, crit, jetFormule){
-
-    let reussiteCrit = 0;
-    let echecCrit = 0;
-
-    if(crit > 0 ){
-      reussiteCrit = crit;
-    } else if (crit < 0) {
-      echecCrit = -(crit);
-    }
-  
-    let roll = new Roll(jetFormule);
-    await roll.evaluate();
-
-    if(roll.total <= 5 + reussiteCrit) {
-      const text = `[<span class="reussite rc">${statName}</span>] C'est une réussite critique !!!!`
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
-    } else if(roll.total >= (96 - echecCrit)) {
-      const text = `[<span class="echec ec">${statName}</span>] C'est un échec critique !!!!`
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
-    } else if( roll.total < valueStat) {
-      if(statNameAbridged === "con" || statNameAbridged === "mag" || statNameAbridged === "pug" || statNameAbridged === "cac" || statNameAbridged === "pre" || statNameAbridged === "esq"){
-        const rollDiff = valueStat - roll.total;
-        const text = `[<span class="reussite">${statName}</span>] C'est une réussite. La différence est de ${rollDiff}.`;
-        roll.toMessage({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          flavor: text,
-        });
-      } else {
-        const text = `[<span class="reussite">${statName}</span>] C'est une réussite.`;
-        roll.toMessage({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          flavor: text,
-        });
-      }
-    } else if( roll.total > valueStat) {
-      const text = `[<span class="echec">${statName}</span>] C'est un echec.`
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
     }
   }
 
@@ -488,21 +469,21 @@ export class ShinzoActorSheet extends ActorSheet {
       return;
     }
   
-    // Inverser l'état 'equiped'
-    const newEquippedState = !item.system.equiped;
+    // Inverser l'état 'equipped'
+    const newEquippedState = !item.system.equipped;
   
     // Mettre à jour l'élément
-    await item.update({ 'system.equiped': newEquippedState });
+    await item.update({ 'system.equipped': newEquippedState });
   
     // Optionnel : Actualiser l'affichage si nécessaire
     this.render(false);
   }
 
   async _bonusStats(event) {
-    const valueStat = event.target.dataset["dice"];
-    const statName = event.target.dataset["label"];
-    const statNameAbridged = event.target.dataset["statname"];
-    let crit = Number(event.target.dataset["crit"]);
+    const statName = event.target.dataset.label;
+    const statKey = event.target.dataset.statname;
+    const prepared = RollSystem.getPreparedStat(this.actor, statKey);
+    const valueStat = prepared.value;
 
     const content = `
     <h1 style="border: none; display: flex; font-size: 1.5em; justify-content: center;">Valeur de base : <nav style="text-decoration: underline; margin-left: 1%">${valueStat}</nav></h1>
@@ -514,67 +495,125 @@ export class ShinzoActorSheet extends ActorSheet {
       buttons: {
         desavantage: {
           label: "Desavantage",
-          callback: (html) => {  
-            const jetFormule = "2d100k";    
-            const newStatName = statName + " : Désavantage";      
-            const modifier = Number(html.find('#modifierValue').val());
-            let newValueStat = Number(valueStat) + modifier;
-            if (newValueStat < 15) {
-              let newCrit = -((15 - newValueStat));
-              crit = crit + newCrit;
-              newValueStat = 15;
-            } else if (newValueStat > 85) {
-              let newCrit = Math.floor((newValueStat - 85) / 2);
-              crit = crit + newCrit;
-              newValueStat = 85;
-            };
-            this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
+          callback: (html) => {
+            RollSystem.rollStat({
+
+              actor: this.actor,
+              stat: statKey,
+              label: `${statName} : Désavantage`,
+              modifier: Number(html.find("#modifierValue").val()),
+              formula: "2d100k",
+              prepared
+
+            });
           }
         },
         normal: {
           label: "Neutre",
           callback: (html) => {
-            const jetFormule = "1d100";
-            const modifier = Number(html.find('#modifierValue').val());
-            let newValueStat = Number(valueStat) + modifier;
-            if (newValueStat < 15) {
-              let newCrit = -((15 - newValueStat));
-              crit = crit + newCrit;
-              newValueStat = 15;
-            } else if (newValueStat > 85) {
-              let newCrit = Math.floor((newValueStat - 85) / 2);
-              crit = crit + newCrit;
-              newValueStat = 85;
-            };
-            this.rollStats(newValueStat, statName, statNameAbridged, crit, jetFormule);
+            RollSystem.rollStat({
+
+              actor: this.actor,
+              stat: statKey,
+              label: statName,
+              modifier: Number(html.find("#modifierValue").val()),
+              formula: "1d100",
+              prepared
+
+            });
           }
         },
         avantage: {
           label: "Avantage",
-          callback: (html) => {         
-            const jetFormule = "2d100kl";   
-            const newStatName = statName + " : Avantage";
-            const modifier = Number(html.find('#modifierValue').val());
-            let newValueStat = Number(valueStat) + modifier;
-            if (newValueStat < 15) {
-              let newCrit = -((15 - newValueStat));
-              crit = crit + newCrit;
-              newValueStat = 15;
-            } else if (newValueStat > 85) {
-              let newCrit = Math.floor((newValueStat - 85) / 2);
-              crit = crit + newCrit;
-              newValueStat = 85;
-            };
-            this.rollStats(newValueStat, newStatName, statNameAbridged, crit, jetFormule);
+          callback: (html) => {
+            
+            RollSystem.rollStat({
+
+              actor: this.actor,
+              stat: statKey,
+              label: `${statName} : Avantage`,
+              modifier: Number(html.find("#modifierValue").val()),
+              formula: "2d100kl",
+              prepared
+
+            });
           }
         }
       },
       render: (html) => {
         html.find('#halveButton').click(() => {
-          const halfMalus = Math.floor(-valueStat / 2);
-          html.find('#modifierValue').val(halfMalus);
+
+          html.find('#modifierValue').val(RollSystem.getHalfPenalty(prepared.brut));
+
         });
       }
     }).render(true)
   }
+
+
+  async _onDropItem(event){
+
+    event.preventDefault();
+
+    const data = TextEditor.getDragEventData(event);
+
+    if(data.type !== "Item") return;
+
+    await ContainerSystem.handleDrop({
+
+      data,
+      actor:this.actor
+
+    });
+
+  }
+
+  
+  async _onConsumeItem(event) {
+
+    event.preventDefault();
+
+    const li = event.currentTarget.closest(".item");
+
+    const item = this.actor.items.get(li.dataset.itemId);
+
+    if (!item) return;
+
+    await item.consume();
+
+    this.render(false);
+
+  }
+
+
+  _prepareDisplayStats(system) {
+
+    const prepareGroup = (group, useBrut = false) => {
+
+        for (const [key, stat] of Object.entries(group ?? {})) {
+
+            const rollValue = useBrut
+                ? stat.brut
+                : stat.value;
+
+            const prepared = RollSystem.prepareStat(
+                rollValue,
+                key,
+                stat.addCrit ?? 0
+            );
+
+            stat.displayValue = prepared.value;
+            stat.addCrit = prepared.crit;
+        }
+    };
+
+    // Grandes statistiques
+    prepareGroup(system.gds_stats, true);
+
+    // Sous-statistiques
+    prepareGroup(system.ss_stats?.ss_stats1);
+    prepareGroup(system.ss_stats?.ss_stats2);
+
+  }
+
 }

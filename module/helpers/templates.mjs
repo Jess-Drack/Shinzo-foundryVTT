@@ -3,7 +3,7 @@
  * Pre-loaded templates are compiled and cached for fast access when rendering
  * @return {Promise}
  */
-export const preloadHandlebarsTemplates = async function () {
+export async function preloadHandlebarsTemplates() {
   return loadTemplates([
     // Actor partials.
     'systems/shinzo/templates/actor/parts/actor-traits.hbs',
@@ -17,7 +17,5 @@ export const preloadHandlebarsTemplates = async function () {
     // Item partials
     'systems/shinzo/templates/item/parts/item-effects.hbs',
     'systems/shinzo/templates/item/parts/item-content.hbs',
-    // ActiveEffectConfig
-    'systems/shinzo/templates/activeEffect-config.hbs'
   ]);
 };

@@ -22,10 +22,10 @@
       "thumbnail": "systems/shinzo/assets/Fond.jpg"
     }
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "compatibility": {
-    "minimum": 11,
-    "verified": "12"
+    "minimum": 13,
+    "verified": "13.351"
   },
   "esmodules": ["module/shinzo.mjs"],
   "styles": ["css/shinzo.css"],
@@ -64,11 +64,13 @@
   "manifest": "Replace this with a link to the /latest release system.json so people can receive updates after they've installed the system",
   "download": "This must link to a .zip file of the current version",
   "background": "systems/shinzo/assets/Fond.jpg",
-  "gridDistance": 5,
-  "gridUnits": "ft",
   "grid": {
       "distance": 5,
       "units": "ft"
+  },
+  "relationships": {
+      "systems": [],
+      "requires": []
   },
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power"

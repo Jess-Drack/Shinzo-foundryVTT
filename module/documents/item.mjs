@@ -1,116 +1,356 @@
+import { prepareItemData } from "../systems/item/item-system.mjs";
+
+
 /**
- * Extend the basic Item with some very simple modifications.
- * @extends {Item}
+ * Shinzo Item Document
  */
 export class ShinzoItem extends Item {
+
   /**
-   * Augment the basic Item data model with additional dynamic data.
+   * Préparation des données de base
    */
   prepareData() {
-    // As with the actor class, items are documents that can have their data
-    // preparation methods overridden (such as prepareBaseData()).
+
     super.prepareData();
+
   }
 
+
   /**
-   * Prepare a data object which defines the data schema used by dice roll commands against this Item
-   * @override
+   * Préparation des données calculées
+   */
+  prepareDerivedData() {
+
+    prepareItemData(this);
+
+  }
+
+
+  static defineSchema(){
+
+  return {
+
+  ...super.defineSchema()
+
+  };
+
+  }
+
+  static get type(){
+
+  return "Item";
+
+  }
+
+  _onCreateEmbeddedDocuments(embeddedName, documents, result, options){
+
+  super._onCreateEmbeddedDocuments(embeddedName, documents, result, options);
+
+  }
+
+
+  /**
+   * Données accessibles aux jets
    */
   getRollData() {
-    // Starts off by populating the roll data with a shallow copy of `this.system`
-    const rollData = { ...this.system };
 
-    // Quit early if there's no parent actor
-    if (!this.actor) return rollData;
+    const rollData = foundry.utils.deepClone(this.system);
 
-    // If present, add the actor's roll data
-    rollData.actor = this.actor.getRollData();
+    if(this.actor){
+
+      rollData.actor = this.actor.getRollData();
+
+    }
 
     return rollData;
+
+  }
+
+
+  /**
+   * Utilisation de l'objet
+   */
+  async roll(){
+
+    const item = this;
+
+    const speaker = ChatMessage.getSpeaker({actor: this.actor ?? null});
+
+    const rollMode = game.settings.get("core", "rollMode");
+
+    const label = `[${item.type}] ${item.name}`;
+
+    let content = "";
+
+    switch(item.type){
+
+      case "trait":
+
+        content =
+          `
+          ${item.system.effect ?? ""}
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+      case "competence":
+
+        content =
+          `
+          Coût :
+          ${item.system.cost ?? ""}
+          ${item.system.unit ?? ""}
+          <br>
+          ${item.system.effect ?? ""}
+          <br>
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+      case "arme":
+
+        content =
+          `
+          Dégâts :
+          ${item.system.damage ?? ""}
+          <br>
+
+          Type :
+          ${item.system.type ?? ""}
+
+          <br>
+
+          ${item.system.effect ?? ""}
+
+          <br>
+
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+      case "armure":
+
+        content =
+          `
+          Résistance physique :
+          ${item.system.resPhysique ?? 0}
+
+          <br>
+
+          Résistance magique :
+          ${item.system.resMagique ?? 0}
+
+          <br>
+
+          ${item.system.effect ?? ""}
+
+          <br>
+
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+      case "consommable":
+
+        content =
+          `
+          Quantité :
+          ${item.quantity ?? 0}
+
+          <br>
+
+          Charges :
+          ${item.charges ?? 0}
+
+          <br>
+
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+      case "sac":
+
+        content =
+          `
+          Capacité :
+          ${item.system.poidsMax ?? ""}
+
+          <br>
+
+          ${item.system.effect ?? ""}
+
+          <br>
+
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+      case "objet":
+
+        content =
+          `
+          ${item.system.effect ?? ""}
+
+          <br>
+
+          <i>${item.system.description ?? ""}</i>
+          `;
+
+        break;
+
+    }
+
+    /**
+     * Si l'objet possède une présentation
+     */
+    if(content){
+
+      await ChatMessage.create({
+
+        speaker,
+
+        rollMode,
+
+        flavor: label,
+
+        content
+
+      });
+
+      return;
+
+    }
+
+    /**
+     * Sinon tentative de jet classique
+     */
+    const rollData = this.getRollData();
+
+    if(!rollData.formula) return;
+
+    const roll = new Roll(rollData.formula, rollData);
+
+    await roll.toMessage({
+
+      speaker,
+
+      rollMode,
+
+      flavor: label
+
+    });
+
+    return roll;
+
   }
 
   /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async roll() {
-    const item = this;
+ * Utilisation d'un consommable
+ */
+async consume(){
 
-    // Initialize chat data.
-    const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-    const rollMode = game.settings.get('core', 'rollMode');
-    const label = `[${item.type}] ${item.name}`;
+    if(this.type !== "consommable")
+        return;
 
-    // If there's no roll data, send a chat message.
-    if (item.type === "trait") {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: `${item.system.effect} <i>${item.system.description}</i>`,
-      });
+
+    const system = this.system;
+
+
+    /*
+     * Consommation par quantité
+     */
+    if(system.consumeType === "quantity"){
+
+
+        const quantity =
+            Math.max(
+                0,
+                system.quantity - 1
+            );
+
+
+        /*
+         * Plus rien en stock
+         */
+        if(quantity <= 0){
+
+            await this.delete();
+
+            ui.notifications.info(
+                `${this.name} a été consommé.`
+            );
+
+            return;
+
+        }
+
+
+        await this.update({
+
+            "system.quantity":
+                quantity
+
+        });
+
+
     }
 
-    else if (item.type === "competence") {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: `Coûts: ${item.system.cost} ${item.system.unit} ${item.system.effect} <i>${item.system.description}</i>`,
-      });
+
+
+    /*
+     * Consommation par charges
+     */
+    if(system.consumeType === "charges"){
+
+
+        const charges =
+            Math.max(
+                0,
+                system.charges - 1
+            );
+
+
+        await this.update({
+
+            "system.charges":
+                charges
+
+        });
+
+
+        if(charges === 0){
+
+            ui.notifications.warn(
+                `${this.name} n'a plus de charges.`
+            );
+
+        }
+
     }
 
-    else if (item.type === "arme") {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: `Dégâts: ${item.system.damage} <i>${item.system.type}</i> ${item.system.effect} <i>${item.system.description}</i>`,
-      });
-    }
 
-    else if (item.type === "armure") {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: `${item.system.effect} <i>${item.system.description}</i>`,
-      });
-    }
+    /*
+     * Message chat
+     */
+    await ChatMessage.create({
 
-    else if (item.type === "sac") {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: `${item.system.effect} <i>${item.system.description}</i>`,
-      });
-    }
+        speaker:
+            ChatMessage.getSpeaker({
+                actor:this.actor
+            }),
 
-    else if (item.type === "objet") {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: `${item.system.effect} <i>${item.system.description}</i>`,
-      });
-    }
-    // Otherwise, create a roll and send a chat message from it.
-    else {
-      // Retrieve roll data.
-      const rollData = this.getRollData();
+        content:
+            `<b>${this.name}</b> a été utilisé.`
 
-      // Invoke the roll and submit it to chat.
-      const roll = new Roll(rollData.formula, rollData);
-      // If you need to store the value first, uncomment the next line.
-      // const result = await roll.evaluate();
-      roll.toMessage({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-      });
-      return roll;
-    }
+    });
+
+
   }
+
 }
