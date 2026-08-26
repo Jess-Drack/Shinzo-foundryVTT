@@ -5,7 +5,7 @@
     <div class="abilities gdsStatsGroup">
         {{#each system.gds_stats as |gd_stat key|}}
             <div class="ability flex-group-center gdsStatsGroupInput">
-              <div>
+              <div class="nameStats">
                 <label for="system.gds_stats.{{key}}.value" 
                 class="resource-label {{#if gd_stat.spe}} deSpe {{else}} rollable deStat {{/if}} flexlarge align-left {{#if gd_stat.addCrit }}underline{{/if}}" {{#if gd_stat.addCrit }}
                 title="Bonus/malus au critique : {{gd_stat.addCrit}}"{{/if}} 
@@ -14,7 +14,7 @@
                 data-label="{{localize (lookup @root.config.caracteristiques key)}}" >{{localize (lookup @root.config.caracteristiques key)}}
                 </label>
               </div>
-              <div class="nbStats">
+              <div class="nbStatsGds">
                 {{#if ../editable}}
                 <input class="inputGDstats" type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
                 {{else}}

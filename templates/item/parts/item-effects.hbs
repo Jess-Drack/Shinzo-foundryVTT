@@ -4,7 +4,7 @@
       <li class="items-header flexrow" data-effect-type="passive" data-parent-id="{{item.actor.id}}" >
         <h3 class="item-name effect-name flexrow">{{localize "EFFECT.Name"}}</h3>
           <div class="effect-source">Effets</div>
-          <div class="effect-duration">{{localize "EFFECT.TabDuration"}}</div>
+          <div class="effect-duration">{{localize "SHINZO.Effect.Duration"}}</div>
           <div class="item-controls effect-controls flexrow">
             <a class="effect-control" data-action="create" title="{{localize "DOCUMENT.New" type="Effect"}}">
               <div class="add">
@@ -31,8 +31,14 @@
               </div>
               <div class="effect-duration">{{effect.duration.rounds}}</div>
               <div class="item-controls effect-controls flexrow">
-                <a class="effect-control" data-action="toggle" title="{{localize 'SHINZO.Effect.Toggle'}}">
-                  <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                <a class="effect-control" data-action="toggle" title="{{localize "SHINZO.Effect.Toggle"}}">
+                  <i class="fa-solid
+                    {{#if effect.disabled}}
+                      fa-toggle-off
+                    {{else}}
+                      fa-toggle-on
+                    {{/if}}"
+                  ></i>
                 </a>
                 <a class="effect-control" data-action="edit" title="{{localize 'DOCUMENT.Update' type="Effect"}}">
                   <i class="fas fa-edit"></i>

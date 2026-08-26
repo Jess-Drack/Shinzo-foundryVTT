@@ -35,8 +35,14 @@
           {{/if}}
         </div>
         <div class="item-controls effect-controls flexrow">
-          <a class="effect-control" data-action="toggle" title="{{localize 'SHINZO.Effect.Toggle'}}">
-            <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+          <a class="effect-control" data-action="toggle" title="{{localize "SHINZO.Effect.Toggle"}}">
+                  <i class="fa-solid
+                    {{#if effect.disabled}}
+                      fa-toggle-off
+                    {{else}}
+                      fa-toggle-on
+                    {{/if}}"
+                  ></i>
           </a>
           {{#if ../../editable}}
             <a class="effect-control" data-action="edit" title="{{localize 'DOCUMENT.Update' type="Effect"}}">
