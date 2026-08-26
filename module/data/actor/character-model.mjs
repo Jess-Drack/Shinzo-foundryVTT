@@ -143,6 +143,8 @@ export class CharacterModel extends BaseActorModel {
 
       note: new fields.StringField(),
 
+      color: new fields.ColorField({initial: "#ffffff"}),
+
       devise: new fields.SchemaField({
 
         or: new fields.SchemaField({

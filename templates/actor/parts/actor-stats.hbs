@@ -16,7 +16,7 @@
               </div>
               <div class="nbStats">
                 {{#if ../editable}}
-                <input class="inputGDstats" type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.displayValue}}" data-dtype="Number"/>
+                <input class="inputGDstats" type="text" name="system.gds_stats.{{key}}.value" value="{{gd_stat.value}}" data-dtype="Number"/>
                 {{else}}
                 <span class="ability-mod rollable deStat" data-dice="{{gd_stat.displayValue}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{gd_stat.displayValue}}</span>
                 {{/if}}

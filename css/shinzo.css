@@ -207,6 +207,7 @@
 .shinzo .item-form {
   font-family: "Roboto", sans-serif;
 }
+
 .shinzo .sheet-header {
   flex: 0 auto;
   overflow: hidden;
@@ -215,6 +216,8 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
 }
 .shinzo .sheet-header .profile-img {
   flex: 0 0 100px;
@@ -223,18 +226,60 @@
 }
 .shinzo .sheet-header .header-fields {
   flex: 1;
+  margin-left: -40px;
+  position: relative;
+  z-index: 4; 
 }
-.shinzo .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
+
+.charname-wrapper {
+  position: relative;
+  width: 100%;
+  height: 60px;
   margin: 5px 0;
-  border-bottom: 0;
 }
-.shinzo .sheet-header h1.charname input {
+
+.charname-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  margin: 0;
+  object-fit: fill;   /* respecte le ratio réel du SVG, pas de déformation */
+  pointer-events: none;   /* laisse les clics traverser jusqu'à l'input */
+  z-index: 0;
 }
+
+.charname-wrapper .charname-bg, .charname-wrapper .charname-bg:hover {
+  border: none !important;
+  border-radius: 0;
+}
+
+.charname-input,
+.charname-input:hover,
+.charname-input:focus,
+.charname-input:active {
+  position: relative;
+  z-index: 1;
+  width: 70%;
+  margin-left: 15%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none !important;
+  background: transparent;
+  box-sizing: border-box;
+  line-height: 50px;
+  text-align: center;
+  font-size: 33px;
+  outline: none !important;   /* le focus ajoute souvent un outline plutôt qu'une border */
+  box-shadow: none !important;
+}
+
+.charname-input,
+.charname-input:hover,
+.charname-input:focus,
+.charname-input:active 
+
 .shinzo .sheet-tabs {
   flex: 0;
 }
@@ -400,63 +445,109 @@
   left: 0px;
 }*/
 
-.header-right{
-  display: flex;
-  flex-direction: column;
+.shinzo.actor .window-content {
+  padding: 0;
 }
 
-.evaluation{
-  display: flex;
-  background-color: #d9d9d975;
-  border: 1px solid #989B3D;
-  border-radius: 5px;
-  width: 115px;
-  height: 20px;
-  justify-content: center;
-  align-items: center;
+/* On réintroduit le padding partout SAUF sur le cadre,
+   pour que le reste du contenu ne vienne pas coller aux bords */
+.shinzo.actor .sheet-header-actor .header-fields,
+.shinzo.actor .sheet-tabs,
+.shinzo.actor .sheet-body {
+  padding: 0 8px;
 }
 
-.eval{
-  margin-right: 5%;
+.shinzo.actor .sheet-tabs {
+  padding-top: 4px;
 }
 
-.profile-img-wrapper {
+.shinzo.actor .sheet-body {
+  padding-bottom: 8px;
+}
+
+/* Le cadre reste en flux NORMAL (plus de position:absolute) :
+   c'est lui qui doit maintenant dicter la hauteur de .sheet-header */
+.header-frame {
   position: relative;
-  width: 125px;
-  height: 125px;
-  margin: 5px 40px 0px 25px;
-  display: inline-block; /* S'assure que le conteneur prenne la taille de l'image */
+  width: 300px; /*Taille fixe à ajuster*/
+  flex: 0 0 auto;  
 }
 
-.profile-img-actor {
-  width: 125px;
-  height: 125px;
+.header-frame-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: none;
   position: relative;
-  /*background-color: #fcf8ed;*/
+  z-index: 2;
+  pointer-events: none;
 }
 
-.profile-img-wrapper::after {
-  content: '';
+/* Le dégradé, calé en dessous de l'image, visible uniquement
+   à travers les zones transparentes du PNG */
+.header-frame-color {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 5px;
-  background-image: url(../img/ProfilePicture/cadre-pp.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  pointer-events: none; /* Pour ne pas interférer avec les interactions de l'image */
+  z-index: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  background: linear-gradient(295deg, var(--triangle-color, #ffffff) 50%, #000000);
 }
 
-img {
-  box-sizing: border-box;
-  border: 1px solid #989b3d;
-  border-radius: 5px;
-  max-width: 100%;
+.header-frame-diamond {
+  position: absolute;
+  top: 5.7px;    /* à ajuster pour tomber pile sur la découpe du PNG */
+  left: -10px;
+  width: 71px;  /* taille du losange, à ajuster selon ton design */
+  height: 40px;
+  z-index: 3;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: linear-gradient(230deg, var(--triangle-color, #ffffff) 50%, #000000);
+  transform: rotate(45deg);
+  transform-origin: center;        
+}
+
+/* Le contenu (portrait, évaluation) passe par-dessus TOUT en absolute,
+   calé par rapport à .sheet-header qui a maintenant la bonne taille */
+.header-right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.evaluation {
+  position: absolute;
+  top: 8px;      
+  left: 100px;
+  z-index: 3;
+}
+
+.profile-img-wrapper {
+  position: absolute;
+  top: 60px;  
+  left: 60px;      
+  width: 180px;   /* les dimensions du CARRÉ dans lequel l'image doit rentrer */
+  height: 180px;
+  overflow: hidden;   /* ← rogne tout ce qui dépasse du carré */
+  margin: 0;
+  z-index: 1;
+  background-color: #ffffff;
+}
+
+.profile-img-actor {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* ← remplit tout le wrapper, recadre au lieu d'étirer */
+  display: block;
+  border: none !important;
 }
 
 .control-edit{
+  padding-top: 8px;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
@@ -595,11 +686,11 @@ img {
 .gdsStatsGroupInput{
   display: flex;
   flex-direction: column;
-  width: 90px;
-  height: 80px;
+  width: 100px;
+  height: 105px;
   padding-top: 5px;
   justify-content: flex-start;
-  background-image: url("../img/ProfilePicture/cadre_grandes_stats.svg");
+  background-image: url("../img/ProfilePicture/cadre_grandes_stats2.svg");
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 10px;
@@ -638,7 +729,6 @@ img {
 .nbStats{
   width: 40px;
   height: 40px;
-  background-image: url(../img/ProfilePicture/cadre.webp);
   background-size: contain;
   background-repeat: no-repeat;
   display: flex;
@@ -728,7 +818,8 @@ img {
 }
 
 .app.window-app.shinzo.sheet.actor{
-  min-width: 550px;
+  min-width: 700px;
+  min-height: 800px;
 }
 
 /* Animation pour clignoter lentement entre deux rouges */

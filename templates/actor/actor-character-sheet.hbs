@@ -1,15 +1,19 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Sheet Header --}}
   <header class="sheet-header-actor">
-    <div id="triangle-code"></div>
     <div class="sheet-header">
-      <div class="header-right">
-        <div class="evaluation">
-          <label for="system.valuation.value" class="resource-label eval">Evaluation :</label>
-          <span name="system.valuation.value" data-dtype="Number">{{system.valuation.value}}</span>
-        </div>
-        <div class="profile-img-wrapper">
-          <img class="profile-img-actor" src="{{actor.img}}" {{#if editable}}data-edit="img"{{/if}} title="{{actor.name}}"/>
+      <div class="header-frame">
+        <div class="header-frame-color" style="--triangle-color: {{system.color}};"></div>
+          <div class="header-frame-diamond" style="--triangle-color: {{system.color}};"></div>
+        <img class="header-frame-img" src="systems/shinzo/img/ProfilePicture/cadrepp.png" alt=""/>
+        <div class="header-right">
+          <div class="evaluation">
+            <label for="system.valuation.value" class="resource-label eval">Evaluation :</label>
+            <span name="system.valuation.value" data-dtype="Number">{{system.valuation.value}}</span>
+          </div>
+          <div class="profile-img-wrapper">
+            <img class="profile-img-actor" src="{{actor.img}}" {{#if editable}}data-edit="img"{{/if}} title="{{actor.name}}"/>
+          </div>
         </div>
       </div>
       <div class="header-fields">
@@ -22,7 +26,15 @@
           <div class="resource-label">Total Attributs : {{system.gds_statsTotal.value}}/300</div>
           {{/if}}
         </div>
-        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}/></h1>
+        <div class="charname-wrapper">
+          <img class="charname-bg" src="systems/shinzo/img/ProfilePicture/characterName.svg" alt=""/>
+          <input class="charname-input" name="name" type="text" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}/>
+        </div> 
+       <div class="charcolor">
+            {{#if editable}}
+              <input type="color" name="system.color" value="{{system.color}}" title="Couleur du personnage"/>
+            {{/if}}
+        </div>
         {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
         use both the "grid" and "grid-Ncol" class where "N" can be any number
         from 1 to 12 and will create that number of columns.  --}}
