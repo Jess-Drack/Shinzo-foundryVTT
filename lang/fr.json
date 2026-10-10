@@ -43,6 +43,12 @@
       "Dem": { "long": "Dégâts magique", "abbr": "Dégâts M" },
       "Rem": { "long": "Résistance magique", "abbr": "Res M" }
     },
+    "Resist": {
+      "deg_physique": "Dégâts Physique",
+      "res_physique": "Résistance Physique",
+      "deg_magique": "Dégâts Magique",
+      "res_magique": "Résistance Magique"
+    },
     "Description": {
       "Age": "Age",
       "Genre": "Genre",

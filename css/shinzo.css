@@ -1,216 +1,129 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-/* Global styles */
-.window-app {
+/* ==========================================================================
+   1. POLICES & CONFIGURATION GLOBALE
+   ========================================================================== */
+@import url("https://googleapis.com");
+
+.window-app,
+.shinzo .item-form {
   font-family: "Roboto", sans-serif;
 }
 
-.rollable:hover, .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
-  cursor: pointer;
+/* Suppression des paddings par défaut sur la fenêtre système */
+.shinzo.actor .window-content {
+  padding: 0;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   2. SYSTÈME DE GRILLE ET ALIGNEMENTS (CLASSES UTILITAIRES)
+   ========================================================================== */
 .grid,
 .grid-2col {
   display: grid;
-  grid-column: span 2/span 2;
+  grid-column: span 2 / span 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin: 10px 0;
   padding: 0;
 }
 
-.grid-3col {
-  grid-column: span 3/span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
+/* Définition des colonnes (Grid-3col à Grid-12col) */
+.grid-3col  { grid-column: span 3 / span 3;   grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4col  { grid-column: span 4 / span 4;   grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-5col  { grid-column: span 5 / span 5;   grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.grid-6col  { grid-column: span 6 / span 6;   grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.grid-7col  { grid-column: span 7 / span 7;   grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.grid-8col  { grid-column: span 8 / span 8;   grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.grid-9col  { grid-column: span 9 / span 9;   grid-template-columns: repeat(9, minmax(0, 1fr)); }
+.grid-10col { grid-column: span 10 / span 10; grid-template-columns: repeat(10, minmax(0, 1fr)); }
+.grid-11col { grid-column: span 11 / span 11; grid-template-columns: repeat(11, minmax(0, 1fr)); }
+.grid-12col { grid-column: span 12 / span 12; grid-template-columns: repeat(12, minmax(0, 1fr)); }
 
-.grid-4col {
-  grid-column: span 4/span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
+/* Départs de Grille (Grid-start) */
+.grid-start-2  { grid-column-start: 2; }
+.grid-start-3  { grid-column-start: 3; }
+.grid-start-4  { grid-column-start: 4; }
+.grid-start-5  { grid-column-start: 5; }
+.grid-start-6  { grid-column-start: 6; }
+.grid-start-7  { grid-column-start: 7; }
+.grid-start-8  { grid-column-start: 8; }
+.grid-start-9  { grid-column-start: 9; }
+.grid-start-10 { grid-column-start: 10; }
+.grid-start-11 { grid-column-start: 11; }
+.grid-start-12 { grid-column-start: 12; }
 
-.grid-5col {
-  grid-column: span 5/span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
+/* Extensions de Grille (Grid-span) */
+.grid-span-2  { grid-column-end: span 2; }
+.grid-span-3  { grid-column-end: span 3; }
+.grid-span-4  { grid-column-end: span 4; }
+.grid-span-5  { grid-column-end: span 5; }
+.grid-span-6  { grid-column-end: span 6; }
+.grid-span-7  { grid-column-end: span 7; }
+.grid-span-8  { grid-column-end: span 8; }
+.grid-span-9  { grid-column-end: span 9; }
+.grid-span-10 { grid-column-end: span 10; }
+.grid-span-11 { grid-column-end: span 11; }
+.grid-span-12 { grid-column-end: span 12; }
 
-.grid-6col {
-  grid-column: span 6/span 6;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.grid-7col {
-  grid-column: span 7/span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-
-.grid-8col {
-  grid-column: span 8/span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-}
-
-.grid-9col {
-  grid-column: span 9/span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-}
-
-.grid-10col {
-  grid-column: span 10/span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-
-.grid-11col {
-  grid-column: span 11/span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
-}
-
-.grid-12col {
-  grid-column: span 12/span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.grid-start-2 {
-  grid-column-start: 2;
-}
-
-.grid-start-3 {
-  grid-column-start: 3;
-}
-
-.grid-start-4 {
-  grid-column-start: 4;
-}
-
-.grid-start-5 {
-  grid-column-start: 5;
-}
-
-.grid-start-6 {
-  grid-column-start: 6;
-}
-
-.grid-start-7 {
-  grid-column-start: 7;
-}
-
-.grid-start-8 {
-  grid-column-start: 8;
-}
-
-.grid-start-9 {
-  grid-column-start: 9;
-}
-
-.grid-start-10 {
-  grid-column-start: 10;
-}
-
-.grid-start-11 {
-  grid-column-start: 11;
-}
-
-.grid-start-12 {
-  grid-column-start: 12;
-}
-
-.grid-span-2 {
-  grid-column-end: span 2;
-}
-
-.grid-span-3 {
-  grid-column-end: span 3;
-}
-
-.grid-span-4 {
-  grid-column-end: span 4;
-}
-
-.grid-span-5 {
-  grid-column-end: span 5;
-}
-
-.grid-span-6 {
-  grid-column-end: span 6;
-}
-
-.grid-span-7 {
-  grid-column-end: span 7;
-}
-
-.grid-span-8 {
-  grid-column-end: span 8;
-}
-
-.grid-span-9 {
-  grid-column-end: span 9;
-}
-
-.grid-span-10 {
-  grid-column-end: span 10;
-}
-
-.grid-span-11 {
-  grid-column-end: span 11;
-}
-
-.grid-span-12 {
-  grid-column-end: span 12;
-}
-
+/* Alignements Flexbox */
 .flex-group-center,
 .flex-group-left,
 .flex-group-right {
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
+.flex-group-left  { justify-content: flex-start; text-align: left; }
+.flex-group-right { justify-content: flex-end;   text-align: right; }
 
-.flex-group-left {
-  justify-content: flex-start;
-  text-align: left;
+.flexshrink   { flex: 0; }
+.flexlarge    { flex: 2; }
+.flex-between { justify-content: space-between; }
+
+.align-left   { justify-content: flex-start; text-align: left; }
+.align-right  { justify-content: flex-end;   text-align: right; }
+.align-center { justify-content: center;     text-align: center; }
+
+/* ==========================================================================
+   3. FENÊTRE PRINCIPALE DU PERSONNAGE (APPLICATION & ACCUEIL)
+   ========================================================================== */
+.app.window-app.shinzo.sheet.actor {
+  min-width: 700px;
+  min-height: 800px;
 }
 
-.flex-group-right {
-  justify-content: flex-end;
-  text-align: right;
+.window-app .window-content {
+  background-image: url(../assets/Fond.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
-.flexshrink {
-  flex: 0;
+/* Ré-introduction sélective des paddings pour le confort de lecture */
+.shinzo.actor .sheet-header-actor .header-fields,
+.shinzo.actor .sheet-tabs,
+.shinzo.actor .sheet-body {
+  padding: 0 8px;
 }
 
-.flex-between {
-  justify-content: space-between;
+.shinzo.actor .sheet-tabs {
+  padding-top: 4px;
 }
 
-.flexlarge {
-  flex: 2;
+.shinzo.actor .sheet-body {
+  padding-bottom: 8px;
 }
 
-.align-left {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.align-right {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.align-center {
-  justify-content: center;
-  text-align: center;
-}
-
-/* Styles limited to shinzo sheets */
-.shinzo .item-form {
-  font-family: "Roboto", sans-serif;
-}
-
+/* ==========================================================================
+   4. STRUCTURE DE L'EN-TÊTE (SHEET HEADER)
+   ========================================================================== */
 .shinzo .sheet-header {
   flex: 0 auto;
-  overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -219,17 +132,140 @@
   position: relative;
   overflow: hidden;
 }
-.shinzo .sheet-header .profile-img {
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
-}
+
 .shinzo .sheet-header .header-fields {
   flex: 1;
   position: relative;
-  z-index: 4; 
+  z-index: 4;
 }
 
+.right-field {
+  margin-left: -40px;
+}
+
+/* --- Bloc Portrait et Découpes Géométriques (À gauche) --- */
+.header-frame {
+  position: relative;
+  width: 300px;
+  flex: 0 0 auto;
+}
+
+.header-frame-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: none !important;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.header-frame-color {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  background: linear-gradient(295deg, var(--triangle-color, #ffffff) 50%, var(--triangle-color-foncee));
+}
+
+.header-frame-diamond {
+  position: absolute;
+  top: 6px;
+  left: -10px;
+  width: 71px;
+  height: 40px;
+  z-index: 2;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: linear-gradient(100deg, var(--triangle-color, #ffffff) 25%, var(--triangle-color-foncee));
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.header-right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-img-wrapper {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  margin: 0;
+  z-index: 1;
+  background-color: #ffffff;
+}
+
+.profile-img-actor {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: none !important;
+  object-position: 50% 0;
+}
+
+/* --- Section Évaluation & Sélecteur de Couleur --- */
+.control-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+
+.evaluation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  height: 25px;
+  margin: 12px 0;
+  z-index: 2;
+}
+
+.eval {
+  width: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chareval-bg {
+  position: absolute;
+  border: none !important;
+  height: 25px;
+}
+
+.charcolor {
+  position: absolute;
+  top: 4px;
+  right: 35px;
+}
+
+#colorInput {
+  appearance: none;
+  width: 27px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+#colorInput::-webkit-color-swatch { border-radius: 5px; border: 2px solid #989B3D; }
+#colorInput::-moz-color-swatch    { border-radius: 5px; border: 2px solid #989B3D; }
+
+/* --- Bloc Nom du Personnage --- */
 .charname-wrapper {
   position: relative;
   width: 100%;
@@ -242,12 +278,9 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  object-fit: fill;   /* respecte le ratio réel du SVG, pas de déformation */
-  pointer-events: none;   /* laisse les clics traverser jusqu'à l'input */
+  object-fit: fill;
+  pointer-events: none;
   z-index: 0;
-}
-
-.charname-wrapper .charname-bg, .charname-wrapper .charname-bg:hover {
   border: none !important;
   border-radius: 0;
 }
@@ -268,334 +301,12 @@
   line-height: 50px;
   text-align: center;
   font-size: 33px;
-  outline: none !important;   /* le focus ajoute souvent un outline plutôt qu'une border */
+  outline: none !important;
   box-shadow: none !important;
 }
 
-.shinzo .sheet-tabs {
-  flex: 0;
-}
-.shinzo .sheet-body,
-.shinzo .sheet-body .tab,
-.shinzo .sheet-body .tab .editor {
-  height: 100%;
-}
-.shinzo .tox .tox-editor-container {
-  background: #fff;
-}
-.shinzo .tox .tox-edit-area {
-  padding: 0 8px;
-}
-.shinzo .resource-label {
-  font-weight: bold;
-}
-.shinzo .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.shinzo .items-header > * {
-  font-size: 14px;
-  text-align: center;
-}
-.shinzo .items-header .item-name {
-  font-weight: bold;
-  padding-left: 5px;
-  text-align: left;
-  display: flex;
-}
-.shinzo .items-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  color: #444;
-}
-.shinzo .items-list .item-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.shinzo .items-list .item-name {
-  flex: 2;
-  margin: 0;
-  overflow: hidden;
-  font-size: 13px;
-  text-align: left;
-  align-items: center;
-  display: flex;
-}
-.shinzo .items-list .item-name h3, .shinzo .items-list .item-name h4 {
-  margin: 0;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-.shinzo .items-list .item-controls {
-  display: flex;
-  flex: 0 0 100px;
-  justify-content: flex-end;
-  align-items: center;
-}
-.shinzo .items-list .item-controls a {
-  font-size: 12px;
-  text-align: center;
-  margin: 0 6px;
-  display: flex;
-  flex-direction: row-reverse;
-}
-.shinzo .items-list .item {
-  align-items: center;
-  padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
-}
-.shinzo .items-list .item:last-child {
-  border-bottom: none;
-}
-.shinzo .items-list .item .item-name {
-  color: #191813;
-}
-.shinzo .items-list .item .item-name .item-image {
-  flex: 0 0 30px;
-  height: 30px;
-  background-size: 30px;
-  border: none;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-}
-.shinzo .items-list .item-prop {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.shinzo .items-list .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.shinzo .items-list .items-header > * {
-  font-size: 12px;
-  text-align: center;
-}
-.shinzo .items-list .items-header .item-name {
-  padding-left: 5px;
-  text-align: left;
-}
-.shinzo .item-formula {
-  flex: 0 0 200px;
-  padding: 0 8px;
-}
-.shinzo .item-res {
-  flex: 0 0 130px;
-  padding: 0 8px;
-}
-.shinzo .effects .item .effect-source,
-.shinzo .effects .item .effect-duration,
-.shinzo .effects .item .effect-controls {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.shinzo .effects .item .effect-controls {
-  border: none;
-}
-
-
-.spellCost{
-  display: flex;
-  align-items: center;
-}
-
-.labelSpellCost{
-  padding-right: 2%;
-}
-
-/*Truc ajouté*/
-
-/*Header actor*/
-
-/*#triangle-code{
-  display : inline-block;
-  position: absolute;
-  z-index: -1;
-  background-image: linear-gradient(150deg, #27532F, #57B969);
-  clip-path: polygon(100% 0, 0 0, 0 100%);
-  width: 200px;
-  height: 200px;
-  top: 30px;
-  left: 0px;
-}*/
-
-.shinzo.actor .window-content {
-  padding: 0;
-}
-
-/* On réintroduit le padding partout SAUF sur le cadre,
-   pour que le reste du contenu ne vienne pas coller aux bords */
-.shinzo.actor .sheet-header-actor .header-fields,
-.shinzo.actor .sheet-tabs,
-.shinzo.actor .sheet-body {
-  padding: 0 8px;
-}
-
-.shinzo.actor .sheet-tabs {
-  padding-top: 4px;
-}
-
-.shinzo.actor .sheet-body {
-  padding-bottom: 8px;
-}
-
-/* Le cadre reste en flux NORMAL (plus de position:absolute) :
-   c'est lui qui doit maintenant dicter la hauteur de .sheet-header */
-.header-frame {
-  position: relative;
-  width: 300px; /*Taille fixe à ajuster*/
-  flex: 0 0 auto;  
-}
-
-.header-frame-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border: none;
-  position: relative;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Le dégradé, calé en dessous de l'image, visible uniquement
-   à travers les zones transparentes du PNG */
-.header-frame-color {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-  background: linear-gradient(295deg, var(--triangle-color, #ffffff) 50%, var(--triangle-color-foncee));
-}
-
-.header-frame-diamond {
-  position: absolute;
-  top: 6px;    /* à ajuster pour tomber pile sur la découpe du PNG */
-  left: -10px;
-  width: 71px;  /* taille du losange, à ajuster selon ton design */
-  height: 40px;
-  z-index: 2;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  background: linear-gradient(100deg, var(--triangle-color, #ffffff) 25%, var(--triangle-color-foncee));
-  transform: rotate(45deg);
-  transform-origin: center;        
-}
-
-/* Le contenu (portrait, évaluation) passe par-dessus TOUT en absolute,
-   calé par rapport à .sheet-header qui a maintenant la bonne taille */
-.header-right {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.control-left{
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-}
-
-.chareval-bg{
-  position: absolute;
-  border: none;
-  height: 25px;
-}
-
-.evaluation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  height: 25px;
-  margin: 12px 0;
-  z-index: 2;
-}
-
-.eval{
-  width: 95px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.charcolor{
-  position: absolute;
-  top: 4px;
-  right: 35px;
-}
-
-#colorInput{
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 27px;
-  height: 30px;
-  border: none;
-  border-radius: 5px;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-
-#colorInput::-webkit-color-swatch {
-  border-radius: 5px;
-  border: 2px solid #989B3D;
-}
-#colorInput::-moz-color-swatch {
-  border-radius: 5px;
-  border: 2px solid #989B3D;
-}
-
-.profile-img-wrapper {
-  position: absolute;
-  top: 60px;  
-  left: 60px;      
-  width: 180px;   /* les dimensions du CARRÉ dans lequel l'image doit rentrer */
-  height: 180px;
-  overflow: hidden;   /* ← rogne tout ce qui dépasse du carré */
-  margin: 0;
-  z-index: 1;
-  background-color: #ffffff;
-}
-
-.profile-img-actor {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* ← remplit tout le wrapper, recadre au lieu d'étirer */
-  display: block;
-  border: none !important;
-  object-position: 50% 0;
-}
-
-.right-field{
-  margin-left: -40px;
-}
-
-.control-edit{
+/* --- Totaux & Contrôles d'Édition --- */
+.control-edit {
   margin: 12px 0;
   width: 95%;
   gap: 15px;
@@ -607,31 +318,57 @@
   right: -20px;
 }
 
-.toggle-edit{
-  padding: 1% 1% 1% 1%;
+.toggle-edit {
+  padding: 1%;
   display: flex;
   width: 30px;
   background-color: #786d5cba;
   cursor: pointer;
-  transition: all 1s !important;
   border-radius: 5px;
   justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
 .toggle-edit.active {
-  background-color: #ff0000bf; /* Change background to red when active */
+  background-color: #ff0000bf;
 }
 
-.fa-pen, .fa-plus{
+.fa-pen, .fa-plus {
   color: white;
 }
 
-.charressources-wrapper .charressource-bg, .charressources-wrapper .charressources:hover {
-  border: none !important;
-  border-radius: 0;
+.globalBM,
+.globalAttributs {
+  position: relative;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.charressources-wrapper{
+.calStat {
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+  width: 80%;
+  text-align: center;
+}
+
+.nameAttributs {
+  width: 65%;
+}
+
+.resultStat {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 20%;
+}
+
+/* ==========================================================================
+   5. CADRE DES RESSOURCES (PV / PE & RÉSISTANCES)
+   ========================================================================== */
+.charressources-wrapper {
   position: relative;
   display: flex;
   justify-content: center;
@@ -639,7 +376,12 @@
   margin: 5px 0;
 }
 
-.charressource-bg{
+.charressources-wrapper .charressource-bg {
+  border: none !important;
+  border-radius: 0;
+}
+
+.charressource-bg {
   position: absolute;
   width: 90%;
   height: 115px;
@@ -650,7 +392,7 @@
   z-index: 0;
 }
 
-.resources{
+.resources {
   position: relative;
   width: 90%;
   z-index: 2;
@@ -662,137 +404,102 @@
   padding: 0 15px;
 }
 
-.healthpower{
+.healthpower {
   display: flex;
   justify-content: center;
 }
 
-.inputhealthpower{
+.inputhealthpower {
   border-radius: 50% !important;
   height: 60px !important;
   border: none !important;
 }
 
-.health{
-  background-image: url("../img/ProfilePicture/health.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 70px;
-  height: 70px;
-  padding: 5px;
-  display: flex;
-  background-position: center;
-}
-
-.rdpm{
-  width: 70px;
-  margin-left: 5px;
-}
-
-.deg_physiqueicon{
-  background-image: url("../img/ProfilePicture/cadre-sword.svg");
-  background-repeat: no-repeat;
-  height: 35px;
-  background-position: center;
-}
-
-.res_physiqueicon{
-  background-image: url("../img/ProfilePicture/cadre-bphy.svg");
-  background-repeat: no-repeat;
-  height: 35px;
-  background-position: center;
-}
-
-.power{
-  background-image: url("../img/ProfilePicture/power.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 70px;
-  height: 70px;
-  padding: 5px;
-  display: flex;
-  background-position: center;
-}
-
-.deg_magiqueicon{
-  background-image: url("../img/ProfilePicture/cadre-staff.svg");
-  background-repeat: no-repeat;
-  height: 35px;
-  background-position: center;
-}
-
-.res_magiqueicon{
-  background-image: url("../img/ProfilePicture/cadre-bmag.svg");
-  background-repeat: no-repeat;
-  height: 35px;
-  background-position: center;
-}
-
-.abilityCbt{
-  position: relative;
-  width: 100%;
-}
-
-.abilityCbt span{
-  position: absolute;
-  right: 15px;
-}
-
-.hpvalue{
+.hpvalue {
   width: 60px;
   text-align: center;
 }
 
-.items-and-money{
-  display: flex;
-  justify-content: space-between;
-  gap: 5%;
-}
-
-.bagageList{
-  flex: 1 1;
-}
-
-.devises{
-  height: 100px;
-}
-
-.globalBM{
-  position: relative;
-  width: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.globalAttributs{
-  position: relative;
-  width: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.calStat{
+.resource-label {
   font-weight: bold;
+}
+
+/* --- Blocs Spécifiques (Vie vs Énergie) --- */
+.health,
+.power {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 70px;
+  height: 70px;
+  padding: 5px;
+  display: flex;
+}
+
+.health { 
+  background-image: url("../img/ProfilePicture/health.svg"); 
+}
+
+.power { 
+  background-image: url("../img/ProfilePicture/power.svg"); 
+}
+
+/* --- Icônes de Résistances --- */
+.rdpm {
+  width: 70px;
+  margin-left: 5px;
+}
+
+.abilityCbt {
   position: relative;
-  z-index: 2;
-  width: 80%;
-  text-align: center;
+  width: 100%;
 }
 
-.nameAttributs{
-  width: 65%;
+.abilityCbt span {
+  position: absolute;
+  right: 15px;
 }
 
-.resultStat{
+.deg_physiqueicon,
+.res_physiqueicon,
+.deg_magiqueicon,
+.res_magiqueicon {
+  background-repeat: no-repeat;
+  height: 35px;
+  background-position: center;
+}
+
+.deg_physiqueicon { background-image: url("../img/ProfilePicture/cadre-sword.svg"); }
+.res_physiqueicon { background-image: url("../img/ProfilePicture/cadre-bphy.svg"); }
+.deg_magiqueicon  { background-image: url("../img/ProfilePicture/cadre-staff.svg"); }
+.res_magiqueicon  { background-image: url("../img/ProfilePicture/cadre-bmag.svg"); }
+
+
+/* ==========================================================================
+   6. ONGLETS DE NAVIGATION (TABS) & CONTENU
+   ========================================================================== */
+.shinzo .sheet-tabs {
+  flex: 0;
+}
+
+.tabCharacter {
   position: relative;
-  z-index: 2;
-  text-align: center;
-  width: 20%;
+  top: -50px;
+  z-index: 5;
 }
 
-.titleActorPages{
+.bodyCharacter {
+  position: relative;
+  top: -50px;
+}
+
+.shinzo .sheet-body,
+.shinzo .sheet-body .tab,
+.shinzo .sheet-body .tab .editor {
+  height: 100%;
+}
+
+.titleActorPages {
   display: flex;
   justify-content: center;
   border: none;
@@ -801,13 +508,27 @@
   text-decoration: underline;
 }
 
-.gdsStatsGroup{
+/* Configuration Éditeurs Rich Text (ProseMirror / TinyMCE) */
+.shinzo .tox .tox-editor-container { 
+  background: #fff; 
+}
+
+.shinzo .tox .tox-edit-area { 
+  padding: 0 8px; 
+}
+
+
+/* ==========================================================================
+   7. BLOC DE STATISTIQUES (PARTIAL STATS ACCUEIL)
+   ========================================================================== */
+/* Grandes Statistiques */
+.gdsStatsGroup {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.gdsStatsGroupInput{
+.gdsStatsGroupInput {
   display: flex;
   flex-direction: column;
   width: 100px;
@@ -819,44 +540,19 @@
   margin-top: 10px;
 }
 
-.inputGDstats{
+.inputGDstats {
   border-radius: 50% !important;
   height: 35px !important;
 }
 
-.maitriseGroupInput{
-  display: flex;
-  flex-direction: column;
-  width: 90px;
-  height: 80px;
-  padding-bottom: 5px;
-  justify-content: flex-end;
-  background-image: url("../img/ProfilePicture/cadre_maitrises.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.tabmaitrise{
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.maitrise{
-  gap: 5px;
-  top: -15px;
-  position: relative;
-  margin-bottom: -10px;
-}
-
-.nameStats{
+.nameStats {
   height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.nbStatsGds{
+.nbStatsGds {
   width: 40px;
   height: 40px;
   font-size: 22px;
@@ -870,7 +566,33 @@
   margin-left: 3px;
 }
 
-.nbStats{
+/* Maîtrises intermédiaires */
+.tabmaitrise {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.maitrise {
+  gap: 5px;
+  top: -15px;
+  position: relative;
+  margin-bottom: -10px;
+}
+
+.maitriseGroupInput {
+  display: flex;
+  flex-direction: column;
+  width: 90px;
+  height: 80px;
+  padding-bottom: 5px;
+  justify-content: flex-end;
+  background-image: url("../img/ProfilePicture/cadre_maitrises.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.nbStats {
   width: 40px;
   height: 40px;
   background-size: contain;
@@ -880,50 +602,187 @@
   justify-content: center;
 }
 
-.ss_statsFond{
+/* Sous-Statistiques (Tableaux du bas) */
+.ss_statsFond {
   background-color: #D9D9D975;
   border-radius: 10px;
   border: 2px solid #989B3D;
-
 }
 
-.ss_statsGroup{
+.ss_statsGroup {
   min-width: 115px;
   text-align: left;
   padding: 5px 0;
   margin-left: 10%;
 }
 
-.descGroup{
+
+/* ==========================================================================
+   8. LISTES D'ITEMS, CAPACITÉS & EFFETS ACTIFS
+   ========================================================================== */
+.shinzo .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+
+.shinzo .items-header > * {
+  font-size: 14px;
+  text-align: center;
+}
+
+.shinzo .items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
   display: flex;
 }
 
-.effectStatChoice{
-  padding-right: 40%;
+.shinzo .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: #444;
 }
 
-/*PJ-Sheet*/
-.window-app .window-content{
-  background-image: url(../assets/Fond.jpg);
-  background-size: cover; /* L'image couvre toute la div, en remplissant l'espace sans distorsion */
-  background-position: center; /* Centre l'image dans la div */
-  background-repeat: no-repeat; /* Empêche la répétition de l'image */
-  z-index: 0;
+.shinzo .items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.underline{
-  text-decoration: underline;
+.shinzo .items-list .item {
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid #c9c7b8;
 }
 
-.checkspe, .item-equipped{
-  width: 50px;
-  height: 15px;
+.shinzo .items-list .item:last-child {
+  border-bottom: none;
 }
 
-.item-equipped{
-  width: 20px;
+.shinzo .items-list .item .item-name {
+  color: #191813;
 }
 
+.shinzo .items-list .item-name {
+  flex: 2;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  align-items: center;
+  display: flex;
+}
+
+.shinzo .items-list .item-name h3, 
+.shinzo .items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.shinzo .items-list .item-name .item-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.shinzo .items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+
+/* En-têtes secondaires imbriquées */
+.shinzo .items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+
+.shinzo .items-list .items-header > * {
+  font-size: 12px;
+  text-align: center;
+}
+
+.shinzo .items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
+}
+
+/* Alignements des boutons de contrôle */
+.shinzo .items-list .item-controls {
+  display: flex;
+  flex: 0 0 100px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.shinzo .items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/* Dimensions spécifiques de colonnes d'items */
+.shinzo .item-formula { flex: 0 0 200px; padding: 0 8px; }
+.shinzo .item-res     { flex: 0 0 140px; padding: 0 8px; }
+
+.spellCost        { display: flex; align-items: center; }
+.labelSpellCost   { padding-right: 2%; }
+
+/* Inventaire & Portefeuilles (Devises) */
+.items-and-money { display: flex; justify-content: space-between; gap: 5%; }
+.bagageList      { flex: 1 1; }
+.devises         { height: 100px; }
+
+/* Gestion de l'ajout d'objets rapides */
+.displayAddBagage { display: flex; justify-content: space-between; align-items: center; }
+.addBagage, .add  { width: 20px; height: 20px; background-color: #786d5cba; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 5px; }
+
+/* Gestion des Effets Actifs (Active Effects) */
+.shinzo .effects .item .effect-source,
+.shinzo .effects .item .effect-duration,
+.shinzo .effects .item .effect-controls {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+
+.shinzo .effects .item .effect-controls {
+  border: none;
+}
+
+
+/* ==========================================================================
+   9. LOGIQUE FORMULAIRES (CHECKBOXES, RADIOS, ET ÉTATS)
+   ========================================================================== */
+.descGroup          { display: flex; }
+.effectStatChoice   { padding-right: 40%; }
+.value-non-editable { display: flex; justify-content: center; }
+.checkspe           { width: 50px; height: 15px; }
+
+/* Personnalisation des boutons radio de Spécialisation */
 .radio-style {
   margin: 0 !important;
   appearance: none;
@@ -941,6 +800,11 @@
   background-clip: content-box;
   padding: 2px;
   border-color: #989B3D;
+}
+
+/* Personnalisation des cases d'équipement actif (Equipped) */
+.item-equipped {
+  width: 20px;
 }
 
 .equipped-style {
@@ -961,109 +825,43 @@
   padding: 2px;
 }
 
-.app.window-app.shinzo.sheet.actor{
-  min-width: 700px;
-  min-height: 800px;
+
+/* ==========================================================================
+   10. EFFETS VISUELS ET ANIMATIONS (JETS & ROLLABLES)
+   ========================================================================== */
+.rollable:hover, 
+.rollable:focus {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
 }
 
-/* Animation pour clignoter lentement entre deux rouges */
-@keyframes clignoter {
-  0% {
-    color: #8b0000; /* Rouge foncé */
-  }
-  50% {
-    color: #ff4d4d; /* Rouge clair */
-  }
-  100% {
-    color: #8b0000; /* Retour au rouge foncé */
-  }
-}
+.reussite { color: green; }
+.echec    { color: red; }
 
-@keyframes clignoterHover {
-  0% {
-    color: #ff4d4d; /* Rouge foncé */
-  }
-  25% {
-    color: yellow; /* Rouge clair */
-  }
-  50% {
-    color: gold; /* Retour au rouge foncé */
-  }
-  75% {
-    color: yellow; /* Rouge clair */
-  }
-  100% {
-    color: #ff4d4d; /* Rouge foncé */
-  }
-}
-
+/* --- Spécialités Clignotantes (Anime RPG Effect) --- */
 .deSpe {
   font-weight: bold;
-  color: #8b0000; /* Rouge foncé */
-  animation: clignoter 3s infinite; /* Animation qui clignote entre rouge foncé et rouge clair */
+  color: #8b0000;
+  animation: clignoter 3s infinite;
   transition: all .2s;
   cursor: pointer;
 }
 
 .deSpe:hover {
   color: red;
-  animation: none; /* Désactiver l'animation de clignotement au hover */
   animation: clignoterHover 1s infinite;
   text-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue, 0 0 20px blue, 0 0 25px blue;
 }
 
-.underline {
-  text-decoration: underline;
+/* --- Keyframes Animations --- */
+@keyframes clignoter {
+  0%, 100% { color: #8b0000; }
+  50%      { color: #ff4d4d; }
 }
 
-.reussite{
-  color: green;
-}
-
-.echec{
-  color: red;
-}
-
-.value-non-editable{
-  display: flex;
-  justify-content: center;
-}
-
-.displayAddBagage{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.addBagage{
-  width: 20px;
-  background-color: #786d5cba;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  height: 20px;
-}
-
-.add{
-  width: 20px;
-  background-color: #786d5cba;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  height: 20px;
-}
-
-.tabCharacter{
-  position: relative;
-  top: -50px;
-  z-index: 5;
-}
-
-.bodyCharacter{
-  position: relative;
-  top: -50px;
+@keyframes clignoterHover {
+  0%, 100% { color: #ff4d4d; }
+  25%, 75% { color: yellow; }
+  50%      { color: gold; }
 }
