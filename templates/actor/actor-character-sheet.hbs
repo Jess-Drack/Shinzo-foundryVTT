@@ -30,8 +30,16 @@
             <i class="fa-solid fa-pen"></i>
           </div>
           {{#if editable}}
-          <div class="resource-label">Total Bonus/Malus : {{system.ss_stats.totalmod.value}}</div>
-          <div class="resource-label">Total Attributs : {{system.gds_statsTotal.value}}/300</div>
+          <div class="globalBM">
+            <img class="chareval-bg" src="systems/shinzo/img/ProfilePicture/cadreBM.svg" alt=""/>
+            <label class="calStat">Total Bonus/Malus</label> 
+            <span class="resultStat">{{system.ss_stats.totalmod.value}}</span>
+          </div>
+          <div class="globalAttributs">
+            <img class="chareval-bg" src="systems/shinzo/img/ProfilePicture/cadreTotalAttributs.svg" alt=""/>
+            <label class="calStat nameAttributs">Total Attributs</label>
+            <span class="resultStat">{{system.gds_statsTotal.value}}</span>
+          </div>
           {{/if}}
         </div>
         <div class="charname-wrapper">
@@ -97,7 +105,7 @@
       </div>
     </div>
     {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
+    <nav class="sheet-tabs tabs tabCharacter" data-group="primary">
       {{!-- Default tab is specified in actor-sheet.mjs --}}
       <a class="item" data-tab="stat">Statistiques</a>
       <a class="item" data-tab="description">Description</a>
@@ -108,7 +116,7 @@
   </header>
 
   {{!-- Sheet Body --}}
-  <section class="sheet-body">
+  <section class="sheet-body bodyCharacter">
 
     <div class="tab features" data-group="primary" data-tab="stat">
       {{> "systems/shinzo/templates/actor/parts/actor-stats.hbs"}}

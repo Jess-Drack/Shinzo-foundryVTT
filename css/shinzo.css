@@ -588,6 +588,7 @@
   object-fit: cover;   /* ← remplit tout le wrapper, recadre au lieu d'étirer */
   display: block;
   border: none !important;
+  object-position: 50% 0;
 }
 
 .right-field{
@@ -596,12 +597,14 @@
 
 .control-edit{
   margin: 12px 0;
-  width: 100%;
-  gap: 25px;
+  width: 95%;
+  gap: 15px;
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
+  right: -20px;
 }
 
 .toggle-edit{
@@ -752,6 +755,41 @@
 
 .devises{
   height: 100px;
+}
+
+.globalBM{
+  position: relative;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.globalAttributs{
+  position: relative;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calStat{
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+  width: 80%;
+  text-align: center;
+}
+
+.nameAttributs{
+  width: 65%;
+}
+
+.resultStat{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 20%;
 }
 
 .titleActorPages{
@@ -1017,4 +1055,15 @@
   justify-content: center;
   border-radius: 5px;
   height: 20px;
+}
+
+.tabCharacter{
+  position: relative;
+  top: -50px;
+  z-index: 5;
+}
+
+.bodyCharacter{
+  position: relative;
+  top: -50px;
 }
