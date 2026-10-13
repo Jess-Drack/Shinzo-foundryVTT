@@ -540,11 +540,6 @@
   margin-top: 10px;
 }
 
-.inputGDstats {
-  border-radius: 50% !important;
-  height: 35px !important;
-}
-
 .nameStats {
   height: 35px;
   display: flex;
@@ -780,7 +775,7 @@
 .descGroup          { display: flex; }
 .effectStatChoice   { padding-right: 40%; }
 .value-non-editable { display: flex; justify-content: center; }
-.checkspe           { width: 50px; height: 15px; }
+.checkspe           { width: 50px; height: 20px; display: flex; justify-content: center; align-items: center; }
 
 /* Personnalisation des boutons radio de Spécialisation */
 .radio-style {
@@ -788,6 +783,7 @@
   appearance: none;
   width: 16px !important;
   height: 16px !important;
+  flex: none;
   border: 2px solid #989B3D;
   border-radius: 50%;
   outline: none;
@@ -800,6 +796,31 @@
   background-clip: content-box;
   padding: 2px;
   border-color: #989B3D;
+}
+
+.spe-toggle-btn {
+  background: #F9F5EA;
+  border: 2px solid #989B3D;
+  color: #4A4A4A;
+  cursor: pointer;
+  width: 35px;
+  height: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+
+.spe-toggle-btn:hover {
+  color: #989B3D; /* Teinte dorée au survol */
+  transform: scale(1.1);
+}
+
+.speIcon{
+  margin: 0;
 }
 
 /* Personnalisation des cases d'équipement actif (Equipped) */
@@ -838,30 +859,3 @@
 
 .reussite { color: green; }
 .echec    { color: red; }
-
-/* --- Spécialités Clignotantes (Anime RPG Effect) --- */
-.deSpe {
-  font-weight: bold;
-  color: #8b0000;
-  animation: clignoter 3s infinite;
-  transition: all .2s;
-  cursor: pointer;
-}
-
-.deSpe:hover {
-  color: red;
-  animation: clignoterHover 1s infinite;
-  text-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue, 0 0 20px blue, 0 0 25px blue;
-}
-
-/* --- Keyframes Animations --- */
-@keyframes clignoter {
-  0%, 100% { color: #8b0000; }
-  50%      { color: #ff4d4d; }
-}
-
-@keyframes clignoterHover {
-  0%, 100% { color: #ff4d4d; }
-  25%, 75% { color: yellow; }
-  50%      { color: gold; }
-}

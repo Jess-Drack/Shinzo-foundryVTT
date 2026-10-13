@@ -3,32 +3,31 @@ import { RollSystem } from "../systems/roll-system.mjs";
 import { ContainerSystem } from "../systems/container-system.mjs";
 
 /**
- * Extend the basic ActorSheet with some very simple modifications
+ * Extension de la feuille d'Acteur Shinzo pour Foundry VTT v13
  * @extends {ActorSheet}
  */
 export class ShinzoActorSheet extends ActorSheet {
   
   constructor(...args) {
     super(...args);
-    this.editable = false; // Initialiser editable à true par défaut
+    /** @type {boolean} Force l'état d'édition par défaut à false */
+    this.editable = false;
   }
 
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-        classes: ['shinzo', 'sheet', 'actor'],
-        width: 600,
-        height: 600,
-        tabs: [
-          {
-            navSelector: '.sheet-tabs',
-            contentSelector: '.sheet-body',
-            initial: 'stat',
-          },
-        ],
-      }, 
-      { inplace:false }
-    );
+      classes: ['shinzo', 'sheet', 'actor'],
+      width: 600,
+      height: 600,
+      tabs: [
+        {
+          navSelector: '.sheet-tabs',
+          contentSelector: '.sheet-body',
+          initial: 'stat',
+        },
+      ],
+    }, { inplace: false });
   }
 
   /** @override */
@@ -36,375 +35,345 @@ export class ShinzoActorSheet extends ActorSheet {
     return `systems/shinzo/templates/actor/actor-${this.actor.type}-sheet.hbs`;
   }
 
-  /* -------------------------------------------- */
-
   /** @override */
   async getData() {
-    // Retrieve the data structure from the base sheet. You can inspect or log
-    // the context variable to see the structure, but some key properties for
-    // sheets are the actor object, the data object, whether or not it's
-    // editable, the items array, and the effects array.
     const context = await super.getData();
-
     context.editable = this.editable;
 
-    // Use a safe clone of the actor data for further operations.
+    // Extraction propre de l'objet pour les mutations de vue
     const actorData = this.document.toObject(false);
-
-    // Add the actor's data to context.data for easier access, as well as flags.
     context.system = actorData.system;
-
-    this._prepareDisplayStats(context.system);
-
     context.flags = actorData.flags;
 
+    // Préparation des statistiques d'affichage
+    this._prepareDisplayStats(context.system);
     context.system.derived = this.actor.system.derived;
 
-    // Adding a pointer to CONFIG.SHINZO
+    // Injection des variables globales de configuration
     context.config = CONFIG.SHINZO;
 
-    // Prepare character data and items.
-    if (actorData.type == 'character') {
-      this._prepareItems(context);
+    // Tri et catégorisation des items de l'inventaire
+    this._prepareItems(context);
+
+    if (actorData.type === 'character') {
       this._prepareCharacterData(context);
     }
 
-    // Prepare NPC data and items.
-    if (actorData.type == 'npc') {
-      this._prepareItems(context);
+    // Enrichissement asynchrone des éditeurs de texte (ProseMirror)
+    const textFields = ['biography', 'note'];
+    for (const field of textFields) {
+      context[`enriched${field.capitalize()}`] = await TextEditor.enrichHTML(
+        this.actor.system[field] ?? "",
+        {
+          secrets: this.document.isOwner,
+          rollData: this.actor.getRollData(),
+          relativeTo: this.actor,
+        }
+      );
     }
 
-    // Enrich biography info for display
-    // Enrichment turns text like `[[/r 1d20]]` into buttons
-    context.enrichedBiography = await TextEditor.enrichHTML(
-      this.actor.system.biography,
-      {
-        // Whether to show secret blocks in the finished html
-        secrets: this.document.isOwner,
-        // Data to fill in for inline rolls
-        rollData: this.actor.getRollData(),
-        // Relative UUID resolution
-        relativeTo: this.actor,
-      }
-    );
-
-    // Enrich biography info for display
-    // Enrichment turns text like `[[/r 1d20]]` into buttons
-    context.enrichedNote = await TextEditor.enrichHTML(
-      this.actor.system.note,
-      {
-        // Whether to show secret blocks in the finished html
-        secrets: this.document.isOwner,
-        // Data to fill in for inline rolls
-        rollData: this.actor.getRollData(),
-        // Relative UUID resolution
-        relativeTo: this.actor,
-      }
-    );
-
-
-    // Prepare active effects
-    context.effects = prepareActiveEffectCategories(
-      // A generator that returns all effects stored on the actor
-      // as well as any items
-      this.actor.allApplicableEffects()
-    );
+    // Récupération globale v13 des effets (actifs, passifs et d'équipements)
+    context.effects = prepareActiveEffectCategories(this.actor.allApplicableEffects());
 
     return context;
   }
 
   /**
-   * Character-specific context modifications
-   *
-   * @param {object} context The context object to mutate
+   * Modifications de contexte spécifiques aux PJ
+   * @private
    */
-  _prepareCharacterData(context) {
-    // This is where you can enrich character-specific editor fields
-    // or setup anything else that's specific to this type
-  }
+  _prepareCharacterData(context) {}
 
   /**
-   * Organize and classify Items for Actor sheets.
-   *
-   * @param {object} context The context object to mutate
+   * Organise et classe les Items dans l'inventaire de l'Acteur
+   * @private
    */
   _prepareItems(context) {
-    // Initialize containers.
-    const objets = [];
-    const armes = [];
-    const armures = [];
-    const consommables = [];
-    const sacs = [];
-    const traits = [];
-    const competences = [];
+    const itemMap = {
+      objet: [], arme: [], armure: [], sac: [],
+      consommable: [], trait: [], competence: []
+    };
 
-    // Iterate through items, allocating to containers
-    for (let i of context.items) {
-      i.img = i.img || Item.DEFAULT_ICON;
-      // Append to objet.
-      if (i.type === 'objet') {
-        objets.push(i);
-      }
-      else if (i.type === 'arme') {
-        armes.push(i);
-      }
-      else if (i.type === 'armure') {
-        armures.push(i);
-      }
-      else if (i.type === 'sac') {
-        i.content = i.system.content ?? [];
-        sacs.push(i);
-      }
-      else if (i.type === 'consommable') {
-        consommables.push(i);
-      }
-      // Append to features.
-      else if (i.type === 'trait') {
-        traits.push(i);
-      }
-      // Append to spells.
-      else if (i.type === 'competence') {
-        competences.push(i);
+    for (const item of context.items) {
+      item.img ||= Item.DEFAULT_ICON;
+      if (item.type in itemMap) {
+        if (item.type === 'sac') {
+          item.content = item.system.content ?? [];
+        }
+        itemMap[item.type].push(item);
       }
     }
 
-    // Assign and return
-    context.objet = objets;
-    context.arme = armes;
-    context.armure = armures;
-    context.sac = sacs;
-    context.consommable = consommables;
-    context.trait = traits;
-    context.competence = competences;
+    // Injection dynamique des listes triées dans le contexte
+    Object.assign(context, itemMap);
   }
 
-  /* -------------------------------------------- */
-
-  /** @override */
+   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Render the item sheet for viewing/editing prior to the editable check.
-    html.on('click', '.item-edit', (ev) => {
-      const li = $(ev.currentTarget).parents('.item');
-      const item = this.actor.items.get(li.data('itemId'));
-      item.sheet.render(true);
-    });
+    // Extraction de la racine DOM native (Garantit la compatibilité v13 natif / jQuery)
+    const root = html[0] ?? html;
 
-    // -------------------------------------------------------------
-    // Everything below here is only needed if the sheet is editable
-    if (!this.isEditable) return;
+    /* ==========================================================================
+       ÉCOUTEURS ACCESSIBLES EN TOUT TEMPS (MÊME SI LA FICHE EST VERROUILLÉE)
+       ========================================================================== */
 
-    // Add Inventory Item
-    html.on('click', '.item-create', this._onItemCreate.bind(this));
+    // Écouteur centralisé réactif aux enfants (Correction du bug de ciblage de l'icône <i>)
+    root.addEventListener('click', async (ev) => {
+      
+      // 1. Gestionnaire du mode édition (Crayon)
+      const btnToggleEdit = ev.target.closest('#toggle-edit');
+      if (btnToggleEdit) {
+        ev.preventDefault();
+        this.editable = !this.editable;
+        this.render();
+        return;
+      }
 
-    html.on("click", ".item-consume", this._onConsumeItem.bind(this));
+      // 2. Bouton Bascule Spécialisation
+      const btnSpe = ev.target.closest('[data-action="toggleSpe"]');
+      if (btnSpe) {
+        ev.preventDefault();
 
-    // Active Effect management
-    html.on('click', '.effect-control', (ev) => {
-      const row = ev.currentTarget.closest('li');
-      const document =
-        row.dataset.parentId === this.actor.id
-          ? this.actor
+        // Si le mode édition (Crayon) est ACTIVÉ, on coche/décoche la spécialisation en BDD
+        if (this.editable) {
+          const dataPath = btnSpe.dataset.target;
+          const currentState = foundry.utils.getProperty(this.actor, dataPath) === true;
+          await this.actor.update({ [dataPath]: !currentState });
+          return;
+        } 
+        
+        // Si le mode édition est DÉSACTIVÉ (Mode Jeu), le bouton lance le 1d150 !
+        return this._onRollSpe(ev, btnSpe);
+      }
+
+      // 3. Édition d'un Item (Ouvrir la feuille d'arme, d'armure, etc.)
+      const btnItemEdit = ev.target.closest('.item-edit');
+      if (btnItemEdit) {
+        ev.preventDefault();
+        const li = btnItemEdit.closest('.item');
+        const item = this.actor.items.get(li?.dataset.itemId);
+        item?.sheet.render(true);
+        return;
+      }
+
+      // 4. Jets de dés classiques (Attributs, compétences)
+      const btnRollable = ev.target.closest('.rollable');
+      if (btnRollable && !ev.target.closest('.deStat')) { // Évite le conflit avec les bonus
+        ev.preventDefault();
+        return this._onRoll(ev, btnRollable);
+      }
+
+      // 5. Fenêtre de modificateurs de caractéristiques (Avantage / Désavantage)
+      const btnDeStat = ev.target.closest('.deStat');
+      if (btnDeStat) {
+        ev.preventDefault();
+        return this._bonusStats(ev, btnDeStat);
+      }
+
+      // 6. Jets de dégâts des armes
+      const btnDeArme = ev.target.closest('.deArme');
+      if (btnDeArme) {
+        ev.preventDefault();
+        return this._onRollArmes(ev, btnDeArme);
+      }
+
+      // 7. Jets de capacités spéciales Spé (1d150 Anime effect)
+      const btnDeSpe = ev.target.closest('.deSpe');
+      if (btnDeSpe) {
+        ev.preventDefault();
+        return this._onRollSpe(ev, btnDeSpe);
+      }
+
+      // --- SÉCURITÉ : TOUTES LES ACTIONS CI-DESSOUS REQUIÈRENT LE MODE ÉDITION ---
+      if (!this.isEditable) return;
+
+      // 8. Suppression d'un Item de l'inventaire ou d'une capacité
+      const btnItemDelete = ev.target.closest('.item-delete');
+      if (btnItemDelete) {
+        ev.preventDefault();
+        const li = btnItemDelete.closest('.item');
+        const item = this.actor.items.get(li?.dataset.itemId);
+        if (!item) return;
+
+        new Dialog({
+          title: "Confirmation de suppression",
+          content: `<p>Êtes-vous sûr de vouloir supprimer <strong>${item.name}</strong> ?</p>`,
+          buttons: {
+            yes: {
+              label: "Supprimer",
+              callback: async () => {
+                await item.delete();
+                ui.notifications.info(`${item.name} supprimé.`);
+              }
+            },
+            no: { label: "Annuler" }
+          },
+          default: "no"
+        }).render(true);
+        return;
+      }
+
+      // 9. Consommation rapide d'un objet consommable
+      const btnItemConsume = ev.target.closest('.item-consume');
+      if (btnItemConsume) {
+        ev.preventDefault();
+        const li = btnItemConsume.closest('.item');
+        const item = this.actor.items.get(li?.dataset.itemId);
+        if (item) {
+          await item.consume();
+          this.render(false);
+        }
+        return;
+      }
+
+      // 10. Bouton d'ajout rapide de Bagages (Ouvre la boîte de choix d'Item)
+      const btnAddBagage = ev.target.closest('.addBagage');
+      if (btnAddBagage) {
+        ev.preventDefault();
+        this._promptBagageCreation();
+        return;
+      }
+
+      // 11. Création classique d'un élément (Traits, Capacités, Compétences dans vos sous-onglets)
+      const btnItemCreate = ev.target.closest('.item-create');
+      if (btnItemCreate) {
+        ev.preventDefault();
+        this._onItemCreate(ev, btnItemCreate);
+        return;
+      }
+
+      // 12. Activation / Désactivation ou Configuration des Effets Actifs (Active Effects)
+      const btnEffectControl = ev.target.closest('.effect-control');
+      if (btnEffectControl) {
+        ev.preventDefault();
+        ev.stopPropagation(); // Empêche Foundry de déclencher son écouteur natif par-derrière
+
+        const row = btnEffectControl.closest('li');
+        if (!row) return;
+
+        const document = row.dataset.parentId === this.actor.id 
+          ? this.actor 
           : this.actor.items.get(row.dataset.parentId);
-      onManageActiveEffect(ev, document);
-    });
 
-    /*Delete Inventory Items*/
-    html.on('click', '.item-delete', (ev) => {
-      const li = $(ev.currentTarget).parents('.item');
-      const item = this.actor.items.get(li.data('itemId'));
+        // CORRECTION DIRECTE V13 :
+        // On redéfinit dynamiquement la propriété 'currentTarget' de l'événement natif
+        // pour qu'elle pointe temporairement sur le bouton <a> au lieu du formulaire.
+        Object.defineProperty(ev, 'currentTarget', { 
+          value: btnEffectControl, 
+          configurable: true 
+        });
 
-      // Afficher une boîte de dialogue de confirmation
-      new Dialog({
-        title: "Confirmation",
-        content: `<p>Êtes-vous sûr de vouloir supprimer ${item.name} ?</p>`,
-        buttons: {
-          yes: {
-            label: "Oui",
-            callback: async () => {
-              // Effectuer la suppression ici
-              await item.delete();
-              ui.notifications.info(`${item.name} supprimé.`);
-            }
-          },
-          no: {
-            label: "Non",
-            callback: () => {}
-          }
-        },
-        default: "no"
-      }).render(true);
-    })
+        // Appel sécurisé au script d'effets natif de Foundry
+        onManageActiveEffect(ev, document);
+        return;
+      }
 
-    // Rollable abilities.
-    html.on('click', '.rollable', this._onRoll.bind(this));
-    html.on('click', '.deStat', this._bonusStats.bind(this));
-    html.on('click', '.deArme', this._onRollArmes.bind(this));
-    html.on('click', '.deSpe', this._onRollSpe.bind(this));
-    html.on('change', '.equipped-toggle', this._equippedChange.bind(this));
+      // Sécurité v13 : Forcer la sauvegarde manuelle des Grandes Statistiques (notamment la Constitution)
+      root.addEventListener('change', async (ev) => {
+        if (ev.target.classList.contains('inputGDstats')) {
+          const input = ev.target;
+          const dataPath = input.name; // Récupère "system.gds_stats.con.value"
+          const newValue = Number(input.value);
 
-    html.on('click', '.addBagage', (ev) => {
-      const li = $(ev.currentTarget).parents('.item');
-      const item = this.actor.items.get(li.data('itemId'));
-
-      // Afficher une boîte de dialogue de confirmation
-      new Dialog({
-        title: "Ajouter Objet",
-        content: `<p>Quel objet voulez vous ajouter ?</p>`,
-        buttons: {
-          arme: {
-            label: "Arme",
-            callback: () => {
-              const fakeEvent = {
-                preventDefault: () => {},
-                currentTarget: {
-                  dataset: {
-                    type: 'arme'
-                  }
-                }
-              };
-              this._onItemCreate(fakeEvent); 
-            }
-          },
-          armure: {
-            label: "Armure",
-            callback: () => {
-              const fakeEvent = {
-                preventDefault: () => {},
-                currentTarget: {
-                  dataset: {
-                    type: 'armure'
-                  }
-                }
-              };
-              this._onItemCreate(fakeEvent); 
-            }
-          },
-          consommable: {
-            label: "Consommable",
-            callback: () => {
-              const fakeEvent = {
-                preventDefault: () => {},
-                currentTarget: {
-                  dataset: {
-                    type: 'consommable'
-                  }
-                }
-              };
-              this._onItemCreate(fakeEvent); 
-            }
-          },
-          sac: {
-            label: "Sac",
-            callback: () => {
-              const fakeEvent = {
-                preventDefault: () => {},
-                currentTarget: {
-                  dataset: {
-                    type: 'sac'
-                  }
-                }
-              };
-              this._onItemCreate(fakeEvent); 
-            }
-          },
-          objet: {
-            label: "Objet",
-            callback: () => {
-              const fakeEvent = {
-                preventDefault: () => {},
-                currentTarget: {
-                  dataset: {
-                    type: 'objet'
-                  }
-                }
-              };
-              this._onItemCreate(fakeEvent); 
-            }
+          if (!isNaN(newValue)) {
+            // On applique directement la mise à jour en base de données
+            await this.actor.update({ [dataPath]: newValue });
           }
         }
-      }).render(true);
-    })
+      });
+    });
 
-    // Drag events for macros.
-    if (this.actor.isOwner) {
-      let handler = (ev) => this._onDragStart(ev);
-      html.find('li.item[data-item-id]').each((i, li) => {
-
-        li.setAttribute(
-          'draggable',
-          true
-        );
-
-        li.addEventListener(
-          'dragstart',
-          handler,
-          false
-        );
-
+    /* ==========================================================================
+       ÉCOUTEURS ÉTATS FORMULAIRES (ÉQUIPEMENT ACTIF / CASES À COCHER)
+       ========================================================================== */
+    if (this.isEditable) {
+      root.addEventListener('change', async (ev) => {
+        const toggleEquipped = ev.target.closest('.equipped-toggle');
+        if (toggleEquipped) {
+          const li = toggleEquipped.closest('.item');
+          const item = this.actor.items.get(li?.dataset.itemId);
+          if (item) {
+            await item.update({ 'system.equipped': !item.system.equipped });
+            this.render(false);
+          }
+        }
       });
     }
 
-    // Gérer le clic sur le bouton d'activation/désactivation
-    html.find("#toggle-edit").click(ev => {
-      this.editable = !this.editable;
-      this.render();
-    });
+    // Gestion du Drag & Drop pour la barre des macros raccourcies
+    if (this.actor.isOwner) {
+      root.querySelectorAll('li.item[data-item-id]').forEach(li => {
+        li.setAttribute('draggable', true);
+        li.addEventListener('dragstart', (ev) => this._onDragStart(ev), false);
+      });
+    }
   }
 
   /**
-   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
+   * Boîte de dialogue interne pour l'ajout rapide de Bagages
    * @private
    */
-  async _onItemCreate(event) {
-    event.preventDefault();
-    const header = event.currentTarget;
-    // Get the type of item to create.
-    const type = header.dataset.type;
-    // Grab any data associated with this control.
-    const data = foundry.utils.duplicate(header.dataset);
-    // Initialize a default name.
-    const name = `New ${type.capitalize()}`;
-    // Prepare the item object.
-    const itemData = {
-      name: name,
-      type: type,
-      system: data,
-    };
-
-    // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.system['type'];
-
-    const createdItem = await Item.create(itemData, { parent: this.actor });
-
-    return createdItem[0];
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-
-    // Handle item rolls.
-    if (dataset.rollType) {
-      if (dataset.rollType == 'item') {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
-        if (item) return item.roll();
-      }
+  _promptBagageCreation() {
+    const types = ['arme', 'armure', 'consommable', 'sac', 'objet'];
+    const buttons = {};
+    
+    for (const type of types) {
+      buttons[type] = {
+        label: type.capitalize(),
+        callback: () => this._createItemDocument(type)
+      };
     }
 
-    // Handle rolls that supply the formula directly.
+    new Dialog({ title: "Ajouter Objet", content: "<p>Quel type d'objet voulez-vous ajouter à vos bagages ?</p>", buttons }).render(true);
+  }
+
+  /**
+   * Création physique d'un document Item dans la base de données
+   * @private
+   */
+  async _createItemDocument(type) {
+    const itemData = {
+      name: `New ${type.capitalize()}`,
+      type: type,
+      system: {}
+    };
+    return Item.create(itemData, { parent: this.actor });
+  }
+
+  /**
+   * Création d'un Item initiée par un clic d'en-tête (Mécanique template)
+   * @private
+   */
+  async _onItemCreate(event, target) {
+    const type = target.dataset.type;
+    const data = foundry.utils.duplicate(target.dataset);
+    delete data['type'];
+
+    return Item.create({
+      name: `New ${type.capitalize()}`,
+      type: type,
+      system: data,
+    }, { parent: this.actor });
+  }
+
+  /**
+   * Gestionnaire des jets de caractéristiques de base
+   * @private
+   */
+  _onRoll(event, target) {
+    const dataset = target.dataset;
+
+    if (dataset.rollType === 'item') {
+      const li = target.closest('.item');
+      const item = this.actor.items.get(li?.dataset.itemId);
+      if (item) return item.roll();
+    }
+
     if (dataset.roll) {
-      let label = dataset.label ? `[Caractéristique] ${dataset.label}` : '';
-      let roll = new Roll(dataset.roll, this.actor.getRollData());
+      const label = dataset.label ? `[Caractéristique] ${dataset.label}` : '';
+      const roll = new Roll(dataset.roll, this.actor.getRollData());
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
@@ -414,206 +383,118 @@ export class ShinzoActorSheet extends ActorSheet {
     }
   }
 
-  async _onRollArmes(event){
-    const jetFormule = event.currentTarget.dataset["formule"];
-    const nomArme = event.currentTarget.dataset["nom"];
-    const actor = this.actor;
-    const bonus = actor.system.rdp.deg_physique.value;
-    let roll;
-
-    if(bonus != 0){
-      roll = new Roll(jetFormule + "+" + bonus);
-    } else {
-      roll = new Roll(jetFormule);
-    }
+    /**
+   * Gestionnaire des dégâts des armes avec injection du bonus physique rdp
+   * @private
+   */
+  async _onRollArmes(event, target) {
+    const formula = target.dataset.formule;
+    const weaponName = target.dataset.nom;
+    const bonus = Number(this.actor.system.rdp?.deg_physique?.value ?? 0);
     
-    const text = `${actor.name} inflige ses dégâts avec ${nomArme} :`
+    const finalFormula = bonus !== 0 ? `${formula}+${bonus}` : formula;
+    const roll = new Roll(finalFormula);
+    
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: text,
+      flavor: `${this.actor.name} inflige ses dégâts avec ${weaponName} :`,
     });
   }
 
-  async _onRollSpe(event){
-    const statName = event.target.dataset["label"];
-    const jetFormule = "1d150";
-  
-    let roll = new Roll(jetFormule);
+  /**
+   * Jet d'aptitude spéciale (D150 anime effect)
+   * @private
+   */
+  async _onRollSpe(event, target) {
+    const statName = target.dataset.label;
+    const roll = new Roll("1d150");
     await roll.evaluate();
 
-    if(roll.total <= 100) {
-      const text = `[${statName} Spé] C'est une réussite de spé !!!!`;
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
-    } else if( roll.total > 100) {
-      const text = `[${statName} Spé] C'est un échec de spé...`;
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: text,
-      });
-    }
+    const isSuccess = roll.total <= 100;
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `[${statName} Spé] ${isSuccess ? "C'est une réussite de spé !!!!" : "C'est un échec de spé..."}`,
+    });
   }
 
-  async _equippedChange(event) {
-    // Récupérer l'élément lié à ce changement
-    const checkbox = event.target;
-    const itemId = $(checkbox).closest('.item').data('itemId');
-    
-    // Récupérer l'élément de l'acteur
-    const item = this.actor.items.get(itemId);
-    
-    if (!item) {
-      console.error('Item not found!');
-      return;
-    }
-  
-    // Inverser l'état 'equipped'
-    const newEquippedState = !item.system.equipped;
-  
-    // Mettre à jour l'élément
-    await item.update({ 'system.equipped': newEquippedState });
-  
-    // Optionnel : Actualiser l'affichage si nécessaire
-    this.render(false);
-  }
-
-  async _bonusStats(event) {
-    const statName = event.target.dataset.label;
-    const statKey = event.target.dataset.statname;
+  /**
+   * Ouvre la configuration des modificateurs de dés (Avantage / Désavantage)
+   * @private
+   */
+  async _bonusStats(event, target) {
+    const statName = target.dataset.label;
+    const statKey = target.dataset.statname;
     const prepared = RollSystem.getPreparedStat(this.actor, statKey);
-    const valueStat = prepared.value;
 
     const content = `
-    <h1 style="border: none; display: flex; font-size: 1.5em; justify-content: center;">Valeur de base : <nav style="text-decoration: underline; margin-left: 1%">${valueStat}</nav></h1>
-    <p style=" display: flex; justify-content: space-between; align-items: center;">Bonus/Malus : <input type="number" id="modifierValue" style="width: 60%;"/> <button id="halveButton" style="width: 10%;">/2</button></p>`;
+      <h1 style="border: none; display: flex; font-size: 1.5em; justify-content: center;">Valeur de base : <nav style="text-decoration: underline; margin-left: 1%">${prepared.value}</nav></h1>
+      <p style="display: flex; justify-content: space-between; align-items: center;">Bonus/Malus : <input type="number" id="modifierValue" style="width: 60%;"/> <button id="halveButton" style="width: 10%;">/2</button></p>
+    `;
+
+    const rollConfig = (formula, labelSuffix) => (html) => {
+      RollSystem.rollStat({
+        actor: this.actor,
+        stat: statKey,
+        label: `${statName}${labelSuffix}`,
+        modifier: Number(html.find("#modifierValue").val()),
+        formula,
+        prepared
+      });
+    };
 
     new Dialog({
       title: `Modificateur du jet de ${statName}`,
       content: content,
       buttons: {
-        desavantage: {
-          label: "Desavantage",
-          callback: (html) => {
-            RollSystem.rollStat({
-
-              actor: this.actor,
-              stat: statKey,
-              label: `${statName} : Désavantage`,
-              modifier: Number(html.find("#modifierValue").val()),
-              formula: "2d100k",
-              prepared
-
-            });
-          }
-        },
-        normal: {
-          label: "Neutre",
-          callback: (html) => {
-            RollSystem.rollStat({
-
-              actor: this.actor,
-              stat: statKey,
-              label: statName,
-              modifier: Number(html.find("#modifierValue").val()),
-              formula: "1d100",
-              prepared
-
-            });
-          }
-        },
-        avantage: {
-          label: "Avantage",
-          callback: (html) => {
-            
-            RollSystem.rollStat({
-
-              actor: this.actor,
-              stat: statKey,
-              label: `${statName} : Avantage`,
-              modifier: Number(html.find("#modifierValue").val()),
-              formula: "2d100kl",
-              prepared
-
-            });
-          }
-        }
+        desavantage: { label: "Désavantage", callback: rollConfig("2d100k", " : Désavantage") },
+        normal:      { label: "Neutre",      callback: rollConfig("1d100", "") },
+        avantage:    { label: "Avantage",    callback: rollConfig("2d100kl", " : Avantage") }
       },
       render: (html) => {
         html.find('#halveButton').click(() => {
-
           html.find('#modifierValue').val(RollSystem.getHalfPenalty(prepared.brut));
-
         });
       }
-    }).render(true)
+    }).render(true);
   }
 
-
-  async _onDropItem(event){
-
-    event.preventDefault();
-
-    const data = TextEditor.getDragEventData(event);
-
-    if(data.type !== "Item") return;
-
-    await ContainerSystem.handleDrop({
-
-      data,
-      actor:this.actor
-
-    });
-
-  }
-
-  
-  async _onConsumeItem(event) {
-
-    event.preventDefault();
-
-    const li = event.currentTarget.closest(".item");
-
-    const item = this.actor.items.get(li.dataset.itemId);
-
-    if (!item) return;
-
-    await item.consume();
-
-    this.render(false);
-
-  }
-
-
+  /**
+   * Préparation des valeurs finales calculées pour l'affichage graphique
+   * @private
+   */
   _prepareDisplayStats(system) {
-
     const prepareGroup = (group, useBrut = false) => {
-
-        for (const [key, stat] of Object.entries(group ?? {})) {
-
-            const rollValue = useBrut
-                ? stat.brut
-                : stat.value;
-
-            const prepared = RollSystem.prepareStat(
-                rollValue,
-                key,
-                stat.addCrit ?? 0
-            );
-
-            stat.displayValue = prepared.value;
-            stat.addCrit = prepared.crit;
-        }
+      for (const [key, stat] of Object.entries(group ?? {})) {
+        const rollValue = useBrut ? stat.brut : stat.value;
+        const prepared = RollSystem.prepareStat(rollValue, key, stat.addCrit ?? 0);
+        stat.displayValue = prepared.value;
+        stat.addCrit = prepared.crit;
+      }
     };
 
-    // Grandes statistiques
     prepareGroup(system.gds_stats, true);
-
-    // Sous-statistiques
     prepareGroup(system.ss_stats?.ss_stats1);
     prepareGroup(system.ss_stats?.ss_stats2);
-
   }
 
+  /**
+   * Gestion du dépôt (Drop) d'un Item sur la fiche de l'Acteur
+   * Appelé automatiquement par le moteur de Foundry VTT
+   * @override
+   * @protected
+   */
+  async _onDropItem(event) {
+    event.preventDefault();
+
+    // Récupération des données brutes de l'événement de glisser-déposer
+    const data = TextEditor.getDragEventData(event);
+    if (data?.type !== "Item") return;
+
+    // Transmission sécurisée à votre gestionnaire de sacoche/conteneurs
+    await ContainerSystem.handleDrop({
+      data,
+      actor: this.actor
+    });
+  }
+  
 }
