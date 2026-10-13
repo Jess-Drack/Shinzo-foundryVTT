@@ -603,11 +603,11 @@
   top: -50px;
 }
 
-.shinzo .sheet-body,
+/*.shinzo .sheet-body,
 .shinzo .sheet-body .tab,
 .shinzo .sheet-body .tab .editor {
   height: 100%;
-}
+}*/
 
 .titleActorPages {
   display: flex;
@@ -729,6 +729,50 @@
 /* ==========================================================================
    8. LISTES D'ITEMS, CAPACITÉS & EFFETS ACTIFS
    ========================================================================== */
+
+/* Intégration du summary directement sur la ligne d'en-tête items-header */
+.inventory-summary-header {
+  display: block;
+  cursor: pointer;
+  outline: none;
+  list-style: none; /* Supprime la flèche noire native */
+  margin: 0;
+  padding: 0;
+}
+
+.inventory-summary-header::-webkit-details-marker {
+  display: none; /* Supprime la flèche sur Safari */
+}
+
+/* Alignement et comportement de l'icône à l'intérieur du Name d'en-tête */
+.inventory-summary-header .item-name {
+  display: flex;
+  align-items: center;
+}
+
+.inventory-summary-header .folder-icon {
+  font-size: 11px; /* Taille légèrement réduite pour s'intégrer harmonieusement dans l'en-tête */
+  padding: .25rem;
+  margin-right: 6px;
+  transition: transform 0.2s ease;
+}
+
+/* Animation de rotation : flèche vers le bas quand l'accordéon est déployé */
+details[open] .inventory-summary-header .folder-icon {
+  transform: rotate(90deg);
+}
+
+/* Zone de contenu des objets déroulés */
+.folder-content {
+  padding-top: 0;
+  animation: foldReveal 0.2s ease-out;
+}
+
+@keyframes foldReveal {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .shinzo .items-header {
   height: 28px;
   margin: 2px 0;
@@ -867,7 +911,8 @@
 
 /* Gestion de l'ajout d'objets rapides */
 .displayAddBagage { display: flex; justify-content: space-between; align-items: center; }
-.addBagage, .add  { width: 20px; height: 20px; background-color: #786d5cba; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 5px; }
+.addBagage, .add  { width: 20px; height: 20px; background-color: #786d5cba; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 5px; position: absolute; right: 10px;; }
+.Aeffect{position: initial;}
 
 /* Gestion des Effets Actifs (Active Effects) */
 .shinzo .effects .item .effect-source,

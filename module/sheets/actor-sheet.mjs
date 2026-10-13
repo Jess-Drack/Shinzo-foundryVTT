@@ -106,6 +106,15 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Injection dynamique des listes triées dans le contexte
     Object.assign(context, itemMap);
+
+    // DÉTERMINATION DYNAMIQUE DES VISIBILITÉS POUR LE TEMPLATE HBS (v13)
+    context.hasEquippedWeapons = itemMap.arme.some(i => i.system.equipped === true);
+    context.hasEquippedProtection = itemMap.armure.some(i => i.system.equipped === true) || itemMap.sac.some(i => i.system.equipped === true);
+    
+    context.hasBagages = itemMap.objet.length > 0 || 
+                         itemMap.arme.some(i => !i.system.equipped) || 
+                         itemMap.armure.some(i => !i.system.equipped) || 
+                         itemMap.sac.some(i => !i.system.equipped);
   }
 
    /** @override */

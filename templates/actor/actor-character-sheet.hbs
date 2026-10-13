@@ -139,8 +139,22 @@
 
     {{!-- Owned Spells Tab & Owned Features Tab --}}
     <div class="tab spells" data-group="primary" data-tab="spells">
+      {{#if editable}}
+      <a class='item-control item-create' title='{{localize 'DOCUMENT.New' type='trait'}}' data-type='trait'>
+        <div class="add">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </a>
+      {{/if}}
       <h4 class="titleActorPages">Traits</h4>
       {{> "systems/shinzo/templates/actor/parts/actor-traits.hbs"}}
+      {{#if editable}}
+      <a class='item-control item-create' title='{{localize 'DOCUMENT.New' type='competence'}}' data-type='competence'>
+        <div class="add">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </a>
+      {{/if}}
       <h4 class="titleActorPages">Compétences</h4>
       {{> "systems/shinzo/templates/actor/parts/actor-competences.hbs"}}
     </div>
