@@ -176,43 +176,30 @@ export class ShinzoItemSheet extends ItemSheet {
    * Activation des événements
    */
   activateListeners(html){
-
     super.activateListeners(html);
 
-    /*
-     * Drop dans un sac
-     */
-    html.find(".bag-contents").on("drop",this._onDropItem.bind(this));
+    const root = html[0] ?? html;
 
-    /*
-     * Edition d'un objet contenu
-     */
+    // Intercepte le drop sur toute la surface de la feuille d'Item pour éviter les ratés de focus
+    root.addEventListener("dragover", (ev) => ev.preventDefault());
+    root.addEventListener("drop", this._onDropItem.bind(this));
+
+    /* Edition d'un objet contenu */
     html.find(".item-edit").click(this._onEditContainedItem.bind(this));
 
-    /*
-     * Suppression d'un objet contenu
-     */
+    /* Suppression d'un objet contenu */
     html.find(".item-delete").click(this._onRemoveItem.bind(this));
 
-    /*
-     * Drag depuis le sac
-     */
+    /* Drag depuis le sac */
     html.find(".item").on("dragstart", this._onDragStartContainedItem.bind(this));
 
-    /*
-     * Active Effects
-     */
     if(!this.isEditable) return;
 
-    html.on("click", ".effect-control", (event)=>{
-
+    html.on("click", ".effect-control", (event) => {
         onManageActiveEffect(event, this.item);
-
-      }
-    );
+    });
 
     html.find(".consume-item").click(this._onConsumeItem.bind(this));
-
   }
 
     /**
@@ -225,25 +212,23 @@ export class ShinzoItemSheet extends ItemSheet {
    * Destination :
    * - system.content du sac
    */
-  async _onDropItem(event){
+  async _onDropItem(event) {
+    event.preventDefault();
 
-  event.preventDefault();
+    const nativeEvent = event.originalEvent ?? event;
+    const data = TextEditor.getDragEventData(nativeEvent);
 
-  const data = TextEditor.getDragEventData(event.originalEvent);
+    if (!data || (data.type !== "Item" && data.type !== "ContainedItem")) return;
 
-  if(data.type !== "Item") return;
+    // Sécurité : Empêcher de mettre un sac dans lui-même
+    if (data.uuid === this.item.uuid || data.itemId === this.item.id) return;
 
+    await ContainerSystem.handleDrop({
+      data,
+      targetContainer: this.item
+    });
 
-  await ContainerSystem.handleDrop({
-
-    data,
-
-    targetContainer:this.item
-
-  });
-
-  this.render(false);
-
+    this.render(false);
   }
 
 
@@ -370,34 +355,25 @@ export class ShinzoItemSheet extends ItemSheet {
    * Drag & Drop
    */
   _onDragStartContainedItem(event) {
-
     const itemId = event.currentTarget.dataset.itemId;
-
     const item = this._contents.find(i => i.id === itemId);
 
     if (!item) return;
 
     const dragData = {
-
-      type: "Item",
-
+      type: "ContainedItem", // Utilisation d'un type personnalisé pour bloquer la création native
       data: item.toObject(),
-
       itemId: item.id,
-
       fromContainer: true,
-
       containerUuid: this.item.uuid
-
     };
 
-    event.originalEvent.dataTransfer.effectAllowed = "move";
-
-    event.originalEvent.dataTransfer.setData(
+    const nativeEvent = event.originalEvent ?? event;
+    nativeEvent.dataTransfer.effectAllowed = "move";
+    nativeEvent.dataTransfer.setData(
       "text/plain",
       JSON.stringify(dragData)
     );
-
   }
 
 

@@ -20,6 +20,12 @@ export class ShinzoActorSheet extends ActorSheet {
       classes: ['shinzo', 'sheet', 'actor'],
       width: 600,
       height: 600,
+      scrollPositions: [
+        ".sheet-body", 
+        ".items-list", 
+        ".bagageList",
+        ".folder-content"
+      ],
       tabs: [
         {
           navSelector: '.sheet-tabs',
@@ -130,6 +136,27 @@ export class ShinzoActorSheet extends ActorSheet {
 
     // Écouteur centralisé réactif aux enfants (Correction du bug de ciblage de l'icône <i>)
     root.addEventListener('click', async (ev) => {
+
+      if (ev.button !== 0 || ev.dragEnd) return;
+
+      // Gestion du Drag & Drop pour la barre des macros et les conteneurs (Sacs)
+      if (this.actor.isOwner) {
+        const dragDropHandler = this._dragDrop?.[0];
+        
+        if (dragDropHandler) {
+          // Liaison native v13 du gestionnaire de glisse
+          dragDropHandler.bind(root);
+        } else {
+          // Sécurité si le handler natif n'est pas instancié par défaut
+          root.querySelectorAll('li.item[data-item-id]').forEach(li => {
+            li.setAttribute('draggable', true);
+            li.addEventListener('dragstart', (ev) => this._onDragStart(ev), false);
+          });
+
+          // On force la racine de la fiche à écouter notre nouvelle méthode de drop
+          root.addEventListener('drop', (ev) => this._onDrop(ev), false);
+        }
+      }
       
       // 1. Gestionnaire du mode édition (Crayon)
       const btnToggleEdit = ev.target.closest('#toggle-edit');
@@ -536,18 +563,25 @@ export class ShinzoActorSheet extends ActorSheet {
    * @override
    * @protected
    */
-  async _onDropItem(event) {
+  async _onDrop(event) {
     event.preventDefault();
 
-    // Récupération des données brutes de l'événement de glisser-déposer
+    // Récupération sécurisée des données de l'événement
     const data = TextEditor.getDragEventData(event);
-    if (data?.type !== "Item") return;
+    if (!data) return;
 
-    // Transmission sécurisée à votre gestionnaire de sacoche/conteneurs
-    await ContainerSystem.handleDrop({
-      data,
-      actor: this.actor
-    });
+    // SÉCURITÉ V13 : Interception directe du transfert depuis un sac vers l'Acteur
+    if (data.type === "ContainedItem" || data.fromContainer === true) {
+      await ContainerSystem.handleDrop({
+        data,
+        actor: this.actor // Destination : l'inventaire principal du personnage
+      });
+      return;
+    }
+
+    // Si c'est un dépôt classique (Compendium, menu latéral, etc.), 
+    // on redonne la main au comportement standard de Foundry
+    return super._onDrop(event);
   }
   
 }
