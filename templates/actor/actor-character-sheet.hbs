@@ -4,14 +4,14 @@
     <div class="sheet-header">
       <div class="header-frame">
         <div class="header-frame-color" style="--triangle-color: {{system.color}}; --triangle-color-foncee: color-mix(in srgb, var(--triangle-color), black 50%);"></div>
-          <div class="header-frame-diamond" style="--triangle-color: {{system.color}}; --triangle-color-foncee: color-mix(in srgb, var(--triangle-color), black 50%);"></div>
+        <div class="header-frame-diamond" style="--triangle-color: {{system.color}}; --triangle-color-foncee: color-mix(in srgb, var(--triangle-color), black 50%);"></div>
         <img class="header-frame-img" src="systems/shinzo/img/ProfilePicture/cadrepp.png" alt=""/>
         <div class="header-right">
           <div class="control-left">
             <img class="chareval-bg" src="systems/shinzo/img/ProfilePicture/cadre-evaluation.svg" alt=""/>
             <div class="evaluation">
               <label for="system.valuation.value" class="resource-label eval">Evaluation</label>
-              <span name="system.valuation.value" data-dtype="Number">{{system.valuation.value}}</span>
+              <span class="resultStat-value">{{system.valuation.value}}</span>
             </div>
             <div class="charcolor">
               {{#if editable}}
@@ -24,11 +24,16 @@
           </div>
         </div>
       </div>
+      
       <div class="header-fields right-field">
         <div class="control-edit">
-          <div id="toggle-edit" class="toggle-edit {{#if editable}} active {{/if}}">
-            <i class="fa-solid fa-pen"></i>
-          </div>
+          <label id="toggle-edit" class="switch-toggle" title="Basculer le mode édition">
+            <input type="checkbox" class="toggle-edit-checkbox" {{#if editable}}checked{{/if}}/>
+            <div class="slider-toggle">
+              <i class="fa-solid fa-pen switch-icon"></i>
+            </div>
+          </label>
+
           {{#if editable}}
           <div class="globalBM">
             <img class="chareval-bg" src="systems/shinzo/img/ProfilePicture/cadreBM.svg" alt=""/>
@@ -42,71 +47,65 @@
           </div>
           {{/if}}
         </div>
+
         <div class="charname-wrapper">
           <img class="charname-bg" src="systems/shinzo/img/ProfilePicture/characterName.svg" alt=""/>
           <input class="charname-input" name="name" type="text" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}/>
         </div> 
-        {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-        use both the "grid" and "grid-Ncol" class where "N" can be any number
-        from 1 to 12 and will create that number of columns.  --}}
+
         <div class="charressources-wrapper">
-        <img class="charressource-bg" src="systems/shinzo/img/ProfilePicture/cadre-ressources.svg" alt=""/>
+          <img class="charressource-bg" src="systems/shinzo/img/ProfilePicture/cadre-ressources.svg" alt=""/>
           <div class="resources grid grid-2col">
 
-            {{!-- "flex-group-center" is also defined in the _grid.scss file
-            and it will add a small amount of padding, a border, and will
-            center all of its child elements content and text. --}}
+            {{!-- BLOC POINTS DE VIE --}}
             <div class="healthpower">
               <div class="resource flex-group-center health">
                 <div class="resource-content flexrow flex-center flex-between">
-                <input class="inputhealthpower" type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+                  <input class="inputhealthpower" type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
                 </div>
               </div>
-              {{#if editable}}
-              <div class="hpvalue">
-                <span class="resource-label flexlarge"> PV MAX </span>
-                <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" {{#unless editable}}disabled{{/unless}}/>
-              </div>
-              {{/if}}
+
               <div class="abilities flexcol rdpm">
                 {{#each system.derived.rdp as |rd key|}}
                 <div class="abilityCbt flexrow flex-group-center">
-                  <label for="system.rdp.{{key}}.value" class="resource-label flexlarge align-left {{key}}icon" data-label="{{localize (lookup @root.config.caracteristiques key)}}"></label>
-                  <span type="text" name="system.rdp.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
+                  <label for="system.rdp.{{key}}.value" class="resource-label flexlarge align-left {{key}}icon" title="{{localize (concat 'SHINZO.Resist.' key)}}"></label>
+                  <span data-dtype="Number">{{rd.value}}</span>
                 </div>
                 {{/each}}
               </div>
             </div>
 
+            {{!-- BLOC POINTS D'ÉNERGIE --}}
             <div class="healthpower">
               <div class="resource flex-group-center power">
                 <div class="resource-content flexrow flex-center flex-between hpvalue">
-                <input class="inputhealthpower" type="text" name="system.power.value" value="{{system.power.value}}" data-dtype="Number"/>
+                  <input class="inputhealthpower" type="text" name="system.power.value" value="{{system.power.value}}" data-dtype="Number"/>
                 </div>
               </div>
-              {{#if editable}}
-              <div class="hpvalue">
-                <span class="resource-label flexlarge"> PE MAX </span>
-                <input type="text" name="system.power.max" value="{{system.power.max}}" data-dtype="Number" {{#unless editable}}disabled{{/unless}}/>
-              </div>
-              {{/if}}
+
               <div class="abilities flexcol rdpm">
                 {{#each system.derived.rdm as |rd key|}}
                 <div class="abilityCbt flexrow flex-group-center">
-                  <label for="system.rdm.{{key}}.value" class="resource-label flexlarge align-left {{key}}icon" data-label="{{localize (lookup @root.config.caracteristiques key)}}"></label>
-                  <span type="text" name="system.rdm.{{key}}.value" data-dtype="Number">{{rd.value}}</span>
+                  <label for="system.rdm.{{key}}.value" class="resource-label flexlarge align-left {{key}}icon" title="{{localize (concat 'SHINZO.Resist.' key)}}"></label>
+                  <span data-dtype="Number">{{rd.value}}</span>
                 </div>
                 {{/each}}
               </div>
             </div>
+
+            {{#if editable}}
+            <button type="button" class="config-resources-btn" data-action="configResources" title="Configurer les caractéristiques vitales">
+              <i class="margIcon fa-solid fa-gear"></i>
+            </button>
+            {{/if}}
 
           </div>
         </div>
       </div>
     </div>
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs tabCharacter" data-group="primary">
-      {{!-- Default tab is specified in actor-sheet.mjs --}}
       <a class="item" data-tab="stat">Statistiques</a>
       <a class="item" data-tab="description">Description</a>
       <a class="item" data-tab="spells">Capacités</a>

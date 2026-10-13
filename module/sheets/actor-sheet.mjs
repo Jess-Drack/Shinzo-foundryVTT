@@ -270,6 +270,50 @@ export class ShinzoActorSheet extends ActorSheet {
         return;
       }
 
+      // 13. Bouton Engrenage : Configuration avancée des Ressources et Modificateurs de Résistance
+      const btnConfigRes = ev.target.closest('[data-action="configResources"]');
+      if (btnConfigRes) {
+        ev.preventDefault();
+        
+        // Chemin vers votre nouveau fichier de template HBS
+        const templatePath = "systems/shinzo/templates/dialog/dialog-config-ressources.hbs";
+        
+        // Préparation des données requises par le moteur Handlebars
+        const templateData = { system: this.actor.system };
+        
+        // Rendu asynchrone du template par le moteur natif de Foundry
+        const dialogContent = await renderTemplate(templatePath, templateData);
+
+        new Dialog({
+          title: `Configuration vitale : ${this.actor.name}`,
+          content: dialogContent,
+          buttons: {
+            save: {
+              label: "<i class='fas fa-save'></i> Enregistrer",
+              callback: async (html) => {
+                // Collecte propre des données via l'API jQuery/DOM de la boîte de dialogue
+                const updates = {
+                  "system.health.max": Number(html.find("#cfg-hp-max").val()),
+                  "system.power.max": Number(html.find("#cfg-pe-max").val()),
+                  "system.rdp.deg_physique.b_m": Number(html.find("#cfg-rdp-deg").val()),
+                  "system.rdp.res_physique.b_m": Number(html.find("#cfg-rdp-res").val()),
+                  "system.rdm.deg_magique.b_m": Number(html.find("#cfg-rdm-deg").val()),
+                  "system.rdm.res_magique.b_m": Number(html.find("#cfg-rdm-res").val())
+                };
+
+                await this.actor.update(updates);
+                ui.notifications.info("Caractéristiques vitales mises à jour avec succès.");
+              }
+            },
+            cancel: {
+              label: "Annuler"
+            }
+          },
+          default: "save"
+        }).render(true);
+        return;
+      }
+
       // Sécurité v13 : Forcer la sauvegarde manuelle des Grandes Statistiques (notamment la Constitution)
       root.addEventListener('change', async (ev) => {
         if (ev.target.classList.contains('inputGDstats')) {

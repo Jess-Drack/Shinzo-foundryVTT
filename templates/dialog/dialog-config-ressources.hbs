@@ -1,0 +1,37 @@
+<div class="shinzo-dialog-config">
+  <h3 style="border-bottom: 2px solid #989B3D; padding-bottom: 4px; margin-bottom: 10px;">Maximums des Ressources</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+    <p style="display: flex; flex-direction: column;">
+      <label style="font-weight: bold; margin-bottom: 4px;">Points de Vie Max (PV) :</label>
+      <input type="number" id="cfg-hp-max" value="{{system.health.max}}" style="height: 28px;"/>
+    </p>
+    <p style="display: flex; flex-direction: column;">
+      <label style="font-weight: bold; margin-bottom: 4px;">Points d'Énergie Max (PE) :</label>
+      <input type="number" id="cfg-pe-max" value="{{system.power.max}}" style="height: 28px;"/>
+    </p>
+  </div>
+
+  <h3 style="border-bottom: 2px solid #989B3D; padding-bottom: 4px; margin-bottom: 10px;">Dégâts & Résistance Physique</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+    <p style="display: flex; flex-direction: column;">
+      <label style="font-weight: bold; margin-bottom: 4px;">Mod. Dégâts Physique :</label>
+      <input type="number" id="cfg-rdp-deg" value="{{#if system.rdp.deg_physique.b_m}}{{system.rdp.deg_physique.b_m}}{{else}}0{{/if}}" style="height: 28px;"/>
+    </p>
+    <p style="display: flex; flex-direction: column;">
+      <label style="font-weight: bold; margin-bottom: 4px;">Mod. Résistance Physique :</label>
+      <input type="number" id="cfg-rdp-res" value="{{#if system.rdp.res_physique.b_m}}{{system.rdp.res_physique.b_m}}{{else}}0{{/if}}" style="height: 28px;"/>
+    </p>
+  </div>
+
+  <h3 style="border-bottom: 2px solid #989B3D; padding-bottom: 4px; margin-bottom: 10px;">Dégâts & Résistance Magique</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <p style="display: flex; flex-direction: column;">
+      <label style="font-weight: bold; margin-bottom: 4px;">Mod. Dégâts Magique :</label>
+      <input type="number" id="cfg-rdm-deg" value="{{#if system.rdm.deg_magique.b_m}}{{system.rdm.deg_magique.b_m}}{{else}}0{{/if}}" style="height: 28px;"/>
+    </p>
+    <p style="display: flex; flex-direction: column;">
+      <label style="font-weight: bold; margin-bottom: 4px;">Mod. Résistance Magique :</label>
+      <input type="number" id="cfg-rdm-res" value="{{#if system.rdm.res_magique.b_m}}{{system.rdm.res_magique.b_m}}{{else}}0{{/if}}" style="height: 28px;"/>
+    </p>
+  </div>
+</div>

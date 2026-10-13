@@ -17,6 +17,10 @@
   text-decoration: underline;
 }
 
+.margIcon{
+  margin: 0;
+}
+
 /* ==========================================================================
    2. SYSTÈME DE GRILLE ET ALIGNEMENTS (CLASSES UTILITAIRES)
    ========================================================================== */
@@ -156,7 +160,7 @@
   display: block;
   border: none !important;
   position: relative;
-  z-index: 2;
+  z-index: 7;
   pointer-events: none;
 }
 
@@ -166,7 +170,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 6;
   clip-path: polygon(0 0, 100% 0, 0 100%);
   background: linear-gradient(295deg, var(--triangle-color, #ffffff) 50%, var(--triangle-color-foncee));
 }
@@ -177,7 +181,7 @@
   left: -10px;
   width: 71px;
   height: 40px;
-  z-index: 2;
+  z-index: 7;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   background: linear-gradient(100deg, var(--triangle-color, #ffffff) 25%, var(--triangle-color-foncee));
   transform: rotate(45deg);
@@ -200,7 +204,7 @@
   height: 180px;
   overflow: hidden;
   margin: 0;
-  z-index: 1;
+  z-index: 6;
   background-color: #ffffff;
 }
 
@@ -220,6 +224,7 @@
   align-items: center;
   justify-content: center;
   height: 40px;
+  z-index: 8;
 }
 
 .evaluation {
@@ -333,7 +338,83 @@
   background-color: #ff0000bf;
 }
 
-.fa-pen, .fa-plus {
+/* --- Conteneur global du bouton Slide (18px de hauteur) --- */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* On masque la case à cocher native en arrière-plan */
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* --- La glissière (Le fond du switch) --- */
+.slider-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #786d5cba;
+  border-radius: 18px;
+  transition: background-color 0.3s ease;
+}
+
+/* --- Le bouton blanc qui glisse (L'arrière-plan de l'icône) --- */
+.slider-toggle::before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px; /* Centrage vertical exact */
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1; /* Reste sous l'icône */
+}
+
+/* --- L'icône Crayon (Centrée sur le bouton blanc) --- */
+.switch-icon {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
+  font-size: 8px; /* Taille miniature pour rentrer dans les 12px */
+  color: #786d5c; /* Couleur grise par défaut */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* Passe par-dessus le fond blanc */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+  pointer-events: none; /* Laisse le clic traverser */
+}
+
+/* --- ÉTAT ACTIF (Quand le mode édition est activé) --- */
+.switch-toggle input:checked + .slider-toggle {
+  background-color: #989B3D; /* Le fond devient doré */
+  box-shadow: 0 0 6px rgba(152, 155, 61, 0.5);
+}
+
+/* Glissement du rond blanc vers la droite */
+.switch-toggle input:checked + .slider-toggle::before {
+  transform: translateX(20px);
+}
+
+/* Glissement synchronisé du Crayon vers la droite et changement de couleur */
+.switch-toggle input:checked + .slider-toggle .switch-icon {
+  transform: translateX(20px);
+  color: #989B3D; /* Le crayon prend la couleur dorée de votre thème sur fond blanc */
+}
+
+.fa-plus {
   color: white;
 }
 
@@ -474,6 +555,35 @@
 .deg_magiqueicon  { background-image: url("../img/ProfilePicture/cadre-staff.svg"); }
 .res_magiqueicon  { background-image: url("../img/ProfilePicture/cadre-bmag.svg"); }
 
+.config-resources-btn {
+  position: absolute;
+  left: 47%;
+  bottom: 0;
+  display: flex;
+  width: 35px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  
+  background: #F9F5EA;
+  border: 2px solid #989B3D;
+  color: #4A4A4A;
+  outline: none;
+  
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Effet de survol classique pour votre interface */
+.config-resources-btn:hover {
+  color: #989B3D;
+}
+
+.config-resources-btn:hover i {
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
 
 /* ==========================================================================
    6. ONGLETS DE NAVIGATION (TABS) & CONTENU
@@ -533,6 +643,7 @@
   flex-direction: column;
   width: 100px;
   height: 110px;
+  color: #4A4A4A;
   justify-content: flex-start;
   background-image: url("../img/ProfilePicture/cadre_grandes_stats2.svg");
   background-size: cover;
@@ -569,7 +680,7 @@
 }
 
 .maitrise {
-  gap: 5px;
+  gap: 25px;
   top: -15px;
   position: relative;
   margin-bottom: -10px;
@@ -579,17 +690,17 @@
   display: flex;
   flex-direction: column;
   width: 90px;
-  height: 80px;
-  padding-bottom: 5px;
-  justify-content: flex-end;
-  background-image: url("../img/ProfilePicture/cadre_maitrises.svg");
-  background-size: contain;
+  height: 102px;
+  color: #4A4A4A;
+  background-image: url("../img/ProfilePicture/cadre-maitrise.svg");
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
 .nbStats {
   width: 40px;
   height: 40px;
+  font-size: 22px;
   background-size: contain;
   background-repeat: no-repeat;
   display: flex;
@@ -599,9 +710,12 @@
 
 /* Sous-Statistiques (Tableaux du bas) */
 .ss_statsFond {
-  background-color: #D9D9D975;
-  border-radius: 10px;
-  border: 2px solid #989B3D;
+  color: #4A4A4A;
+  background-image: url("../img/ProfilePicture/cadre-ss-stats.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: .5rem 1rem;
+  gap: .5rem;
 }
 
 .ss_statsGroup {
@@ -709,6 +823,7 @@
   align-items: center;
   background: rgba(0, 0, 0, 0.05);
   border: 2px groove #eeede0;
+  border-radius: 5px;
   font-weight: bold;
 }
 
@@ -817,10 +932,6 @@
 .spe-toggle-btn:hover {
   color: #989B3D; /* Teinte dorée au survol */
   transform: scale(1.1);
-}
-
-.speIcon{
-  margin: 0;
 }
 
 /* Personnalisation des cases d'équipement actif (Equipped) */
