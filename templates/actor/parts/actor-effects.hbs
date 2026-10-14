@@ -1,5 +1,6 @@
 <ol class="items-list effects-list">
   {{#each effects as |section sid|}}
+  <section class="items-list">
     <li class="items-header flexrow" data-effect-type="{{section.type}}" data-parent-id="{{@root.actor.id}}" >
       <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
       <div class="effect-source">{{localize "SHINZO.Effect.Source"}}</div>
@@ -56,5 +57,6 @@
       </li>
     {{/each}}
     </ol>
+    </section>
   {{/each}}
 </ol>

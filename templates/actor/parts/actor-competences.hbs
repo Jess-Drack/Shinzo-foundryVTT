@@ -1,5 +1,5 @@
 <ol class='items-list'>
-  <details open>
+  <details data-section="competences" {{#if sectionsOpen.competences}}open{{/if}}>
     <summary class="inventory-summary-header">
       <li class='item flexrow items-header'>
         <div class='item-name'>{{localize 'Name'}}</div>
@@ -11,7 +11,7 @@
     </summary>
     <div class="folder-content">
     {{#each competence as |item id|}}
-      <li class='item flexrow' data-item-id='{{item._id}}'>
+      <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
         <div class='item-name'>
           <div class='item-image'>
             <a class='rollable' data-roll-type='item'>
@@ -20,6 +20,7 @@
                 title='{{item.name}}'
                 width='24'
                 height='24'
+                class="item-image-content"
               />
             </a>
           </div>

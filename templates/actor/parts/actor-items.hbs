@@ -6,7 +6,7 @@
 <ol class='items-list'>
   <h2 class="titleActorPages">Armes</h2>
 
-  <details open>
+  <details data-section="arme" {{#if sectionsOpen.arme}}open{{/if}}>
     <summary class="inventory-summary-header">
       <li class='item flexrow items-header'>
         <div class='item-name'>
@@ -22,11 +22,11 @@
     <div class="folder-content">
       {{#each arme as |item id|}}
         {{#if item.system.equipped }}
-          <li class='item flexrow' data-item-id='{{item._id}}'>
+          <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
             <div class='item-name'>
               <div class='item-image'>
                 <a class='rollable' data-roll-type='item'>
-                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
               <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -59,7 +59,7 @@
 <ol class='items-list'>
   <h2 class="titleActorPages">Armure / Tenue</h2>
   
-  <details open>
+  <details data-section="armure" {{#if sectionsOpen.armure}}open{{/if}}>
     <summary class="inventory-summary-header">
       <li class='item flexrow items-header'>
         <div class='item-name'>
@@ -76,11 +76,11 @@
     <div class="folder-content">
       {{#each armure as |item id|}}
         {{#if item.system.equipped }}
-          <li class='item flexrow' data-item-id='{{item._id}}'>
+          <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
             <div class='item-name'>
               <div class='item-image'>
                 <a class='rollable' data-roll-type='item'>
-                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
               <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -103,11 +103,11 @@
       {{/each}}
       {{#each sac as |item id|}}
         {{#if item.system.equipped }}
-          <li class='item flexrow' data-item-id='{{item._id}}'>
+          <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
             <div class='item-name'>
               <div class='item-image'>
                 <a class='rollable' data-roll-type='item'>
-                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
               <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -137,7 +137,7 @@
 <ol class="items-list">
   <h2 class="titleActorPages">Consommables</h2>
   
-  <details open>
+  <details data-section="consommable" {{#if sectionsOpen.consommable}}open{{/if}}>
     <summary class="inventory-summary-header">
       <li class='item flexrow items-header'>
         <div class='item-name'>
@@ -156,7 +156,7 @@
         <div class='item-name'>
           <div class='item-image'>
             <a class='rollable' data-roll-type='item'>
-              <img src="{{item.img}}" title='{{item.name}}' width="24" height="24">
+              <img src="{{item.img}}" title='{{item.name}}' width="24" height="24" class="item-image-content">
             </a>
           </div>
           <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -191,7 +191,7 @@
   <ol class='items-list bagageList'>
     <h2 class="titleActorPages">Bagages</h2>
     
-    <details open>
+    <details data-section="bagage" {{#if sectionsOpen.bagage}}open{{/if}}>
       {{!-- Le summary enveloppe désormais directement la ligne d'en-tête --}}
       <summary class="inventory-summary-header">
         <li class='item flexrow items-header'>
@@ -208,11 +208,11 @@
       <div class="folder-content">
         {{!-- Objets génériques --}}
         {{#each objet as |item id|}}
-          <li class='item flexrow' data-item-id='{{item._id}}'>
+          <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
             <div class='item-name'>
               <div class='item-image'>
                 <a class='rollable' data-roll-type='item'>
-                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                  <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
               <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -231,11 +231,11 @@
         {{!-- Armes non équipées --}}
         {{#each arme as |item id|}}
           {{#unless item.system.equipped }}
-            <li class='item flexrow' data-item-id='{{item._id}}'>
+            <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
               <div class='item-name'>
                 <div class='item-image'>
                   <a class='rollable' data-roll-type='item'>
-                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                   </a>
                 </div>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -258,11 +258,11 @@
         {{!-- Armures non équipées --}}
         {{#each armure as |item id|}}
           {{#unless item.system.equipped }}
-            <li class='item flexrow' data-item-id='{{item._id}}'>
+            <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
               <div class='item-name'>
                 <div class='item-image'>
                   <a class='rollable' data-roll-type='item'>
-                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                   </a>
                 </div>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
@@ -285,11 +285,11 @@
         {{!-- Sacs non équipés --}}
         {{#each sac as |item id|}}
           {{#unless item.system.equipped }}
-            <li class='item flexrow' data-item-id='{{item._id}}'>
+            <li class='item flexrow' data-item-id='{{item._id}}' draggable="true">
               <div class='item-name'>
                 <div class='item-image'>
                   <a class='rollable' data-roll-type='item'>
-                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24'/>
+                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                   </a>
                 </div>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>

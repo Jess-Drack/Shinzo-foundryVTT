@@ -121,6 +121,7 @@
 
 .shinzo.actor .sheet-body {
   padding-bottom: 8px;
+  padding-top: 1rem;
 }
 
 /* ==========================================================================
@@ -215,6 +216,11 @@
   display: block;
   border: none !important;
   object-position: 50% 0;
+}
+
+.profile-img-item {
+  flex: 0 0 100px;
+  height: 100px;
 }
 
 /* --- Section Évaluation & Sélecteur de Couleur --- */
@@ -596,6 +602,50 @@
   position: relative;
   top: -50px;
   z-index: 5;
+  border: none;
+  gap: 5px;
+  left: 30px;
+  width: 95%;
+  grid-template-columns: repeat(5, 1fr);
+  display: grid;
+  align-items: center;
+}
+
+.tabItem {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #4A4A4A;
+  background-image: url("../img/ProfilePicture/cadre-tab.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: color 0.4s ease, text-shadow 0.4s ease; 
+}
+
+.tabItem::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background-image: url("../img/ProfilePicture/cadre-tab-hover.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.tabItem:hover::before,
+.tabItem.active::before {
+  opacity: 1;
+}
+
+.tabItem:hover,
+.tabItem.active {
+  text-shadow: 0 0 1px rgba(74, 74, 74, 0.5); 
 }
 
 .bodyCharacter {
@@ -614,6 +664,7 @@
   justify-content: center;
   border: none;
   font-size: 16px;
+  color: #4A4A4A;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -648,7 +699,6 @@
   background-image: url("../img/ProfilePicture/cadre_grandes_stats2.svg");
   background-size: cover;
   background-repeat: no-repeat;
-  margin-top: 10px;
 }
 
 .nameStats {
@@ -765,6 +815,12 @@ details[open] .inventory-summary-header .folder-icon {
 /* Zone de contenu des objets déroulés */
 .folder-content {
   padding-top: 0;
+
+  margin: -1px 3px 0 3px;
+  border-top: none !important;
+  border: 1px solid #989B3D;
+  border-radius: 5px;
+  background-color: #f8f4e979;
   
   min-height: 1px;
   contain: layout;
@@ -780,12 +836,10 @@ details[open] .inventory-summary-header .folder-icon {
 }
 
 .shinzo .items-header {
-  height: 28px;
-  margin: 2px 0;
   padding: 0;
   align-items: center;
   background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0 !important;
+  border: 3px solid #989B3D !important;
   font-weight: bold;
 }
 
@@ -808,6 +862,7 @@ details[open] .inventory-summary-header .folder-icon {
   overflow-y: auto;
   scrollbar-width: thin;
   color: #444;
+  margin-bottom: .5rem;
 }
 
 .shinzo .items-list .item-list {
@@ -819,8 +874,9 @@ details[open] .inventory-summary-header .folder-icon {
 .shinzo .items-list .item {
   display: flex;
   align-items: center;
-  padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
+  color: #4A4A4A;
+  padding: 2px 5px;
+  border-bottom: 2px dotted #c9c7b8;
 }
 
 .shinzo .items-list .item:last-child {
@@ -867,14 +923,14 @@ details[open] .inventory-summary-header .folder-icon {
 
 /* En-têtes secondaires imbriquées */
 .shinzo .items-list .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
+  padding: .35rem;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
+  background: #F8F4E9;
   border: 2px groove #eeede0;
   border-radius: 5px;
   font-weight: bold;
+  position: relative;
+  z-index: 1;
 }
 
 .shinzo .items-list .items-header > * {
@@ -932,6 +988,10 @@ details[open] .inventory-summary-header .folder-icon {
 
 .shinzo .effects .item .effect-controls {
   border: none;
+}
+
+.item-image-content{
+  border: 1px solid #989B3D;
 }
 
 

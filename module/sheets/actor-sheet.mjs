@@ -12,6 +12,14 @@ export class ShinzoActorSheet extends ActorSheet {
     super(...args);
     /** @type {boolean} Force l'état d'édition par défaut à false */
     this.editable = false;
+    this._sectionsOpen = {
+      arme: true,
+      armure: true,
+      consommable: true,
+      bagage: true,
+      traits: true,
+      competences: true
+    };
   }
 
   /** @override */
@@ -77,6 +85,8 @@ export class ShinzoActorSheet extends ActorSheet {
         }
       );
     }
+
+    context.sectionsOpen = this._sectionsOpen;
 
     // Récupération globale v13 des effets (actifs, passifs et d'équipements)
     context.effects = prepareActiveEffectCategories(this.actor.allApplicableEffects());
