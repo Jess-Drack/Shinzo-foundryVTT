@@ -157,32 +157,33 @@ export class ShinzoActorSheet extends ActorSheet {
     /* ==========================================================================
        2. ÉCOUTEURS DES CHANGEMENTS DE FORMULAIRES (CASES À COCHER & INPUTS)
        ========================================================================== */
-    if (this.isEditable) {
-      root.addEventListener('change', async (ev) => {
-        // Checkbox d'équipement actif
-        const toggleEquipped = ev.target.closest('.equipped-toggle');
-        if (toggleEquipped) {
-          const li = toggleEquipped.closest('.item');
-          const item = this.actor.items.get(li?.dataset.itemId);
-          if (item) {
-            await item.update({ 'system.equipped': !item.system.equipped });
-            this.render(false);
-          }
-          return;
-        }
+    root.addEventListener('change', async (ev) => {
+      if (!this.editable) return;
 
-        // Sauvegarde manuelle forcée de la Constitution
-        if (ev.target.classList.contains('inputGDstats')) {
-          const input = ev.target;
-          const dataPath = input.name;
-          const newValue = Number(input.value);
-
-          if (!isNaN(newValue)) {
-            await this.actor.update({ [dataPath]: newValue });
-          }
+      // A. Checkbox d'équipement actif
+      const toggleEquipped = ev.target.closest('.equipped-toggle');
+      if (toggleEquipped) {
+        const li = toggleEquipped.closest('.item');
+        const item = this.actor.items.get(li?.dataset.itemId);
+        if (item) {
+          await item.update({ 'system.equipped': !item.system.equipped });
+          this.render(false);
         }
-      });
-    }
+        return;
+      }
+
+      // B. Sécurité v13 : Forcer la sauvegarde manuelle des Grandes Statistiques (notamment la Constitution)
+      if (ev.target.classList.contains('inputGDstats')) {
+        const input = ev.target;
+        const dataPath = input.name; // Récupère "system.gds_stats.con.value"
+        const newValue = Number(input.value);
+
+        if (!isNaN(newValue)) {
+          // On applique directement la mise à jour en base de données
+          await this.actor.update({ [dataPath]: newValue });
+        }
+      }
+    });
 
     /* ==========================================================================
        3. ÉCOUTEUR CENTRALISÉ DÉDIÉ UNIQUEMENT AUX CLICS DE BOUTONS PURS
