@@ -12,8 +12,6 @@ export async function preloadHandlebarsTemplates() {
     'systems/shinzo/templates/actor/parts/actor-effects.hbs',
     'systems/shinzo/templates/actor/parts/actor-stats.hbs',
     'systems/shinzo/templates/actor/parts/actor-description.hbs',
-    // NPC partials
-    'systems/shinzo/templates/actor/parts/actor-npc-items.hbs',
     // Item partials
     'systems/shinzo/templates/item/parts/item-effects.hbs',
     'systems/shinzo/templates/item/parts/item-content.hbs',
