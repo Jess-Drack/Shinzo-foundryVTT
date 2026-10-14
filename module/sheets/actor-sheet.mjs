@@ -158,7 +158,6 @@ export class ShinzoActorSheet extends ActorSheet {
        2. ÉCOUTEURS DES CHANGEMENTS DE FORMULAIRES (CASES À COCHER & INPUTS)
        ========================================================================== */
     root.addEventListener('change', async (ev) => {
-      if (!this.editable) return;
 
       // A. Checkbox d'équipement actif
       const toggleEquipped = ev.target.closest('.equipped-toggle');
@@ -171,6 +170,8 @@ export class ShinzoActorSheet extends ActorSheet {
         }
         return;
       }
+
+      if (!this.editable) return;
 
       // B. Sécurité v13 : Forcer la sauvegarde manuelle des Grandes Statistiques (notamment la Constitution)
       if (ev.target.classList.contains('inputGDstats')) {
