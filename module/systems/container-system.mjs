@@ -38,7 +38,15 @@ export class ContainerSystem {
 
     }
 
-    if(itemData.type === "trait" || "competence"){
+    if(itemData.type === "trait"){
+
+      ui.notifications.warn("Impossible de placer un sac.");
+
+      return false;
+
+    }
+
+    if(itemData.type === "competence"){
 
       ui.notifications.warn("Impossible de placer un sac.");
 
