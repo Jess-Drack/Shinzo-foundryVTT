@@ -34,6 +34,10 @@ export class ShinzoActorSheet extends ActorSheet {
         ".bagageList",
         ".folder-content"
       ],
+      dragDrop: [{ 
+        dragSelector: ".items-list .item, .bagageList .item, .item", 
+        dropSelector: null 
+      }],
       tabs: [
         {
           navSelector: '.sheet-tabs',
@@ -96,13 +100,11 @@ export class ShinzoActorSheet extends ActorSheet {
 
   /**
    * Modifications de contexte spécifiques aux PJ
-   * @private
    */
   _prepareCharacterData(context) {}
 
   /**
    * Organise et classe les Items dans l'inventaire de l'Acteur
-   * @private
    */
   _prepareItems(context) {
     const itemMap = {
@@ -133,113 +135,120 @@ export class ShinzoActorSheet extends ActorSheet {
                          itemMap.sac.some(i => !i.system.equipped);
   }
 
-   /** @override */
+  /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Extraction de la racine DOM native (Garantit la compatibilité v13 natif / jQuery)
     const root = html[0] ?? html;
 
     /* ==========================================================================
-       ÉCOUTEURS ACCESSIBLES EN TOUT TEMPS (MÊME SI LA FICHE EST VERROUILLÉE)
+       1. INITIALISATIONS DES SOUS-SYSTÈMES UNIQUE (HORS CLIC GLOBAL)
        ========================================================================== */
 
-    // Écouteur centralisé réactif aux enfants (Correction du bug de ciblage de l'icône <i>)
-    root.addEventListener('click', async (ev) => {
+    // Mémorisation de l'état des volets pliants (Lié une seule fois à la racine)
+    root.querySelectorAll('.items-list details, .ss_statsFond details').forEach(details => {
+      details.addEventListener('toggle', (ev) => {
+        const sectionType = details.dataset.section;
+        if (!sectionType) return;
+        this._sectionsOpen[sectionType] = details.open;
+      });
+    });
 
-      if (ev.button !== 0 || ev.dragEnd) return;
-
-      // Gestion du Drag & Drop pour la barre des macros et les conteneurs (Sacs)
-      if (this.actor.isOwner) {
-        const dragDropHandler = this._dragDrop?.[0];
-        
-        if (dragDropHandler) {
-          // Liaison native v13 du gestionnaire de glisse
-          dragDropHandler.bind(root);
-        } else {
-          // Sécurité si le handler natif n'est pas instancié par défaut
-          root.querySelectorAll('li.item[data-item-id]').forEach(li => {
-            li.setAttribute('draggable', true);
-            li.addEventListener('dragstart', (ev) => this._onDragStart(ev), false);
-          });
-
-          // On force la racine de la fiche à écouter notre nouvelle méthode de drop
-          root.addEventListener('drop', (ev) => this._onDrop(ev), false);
+    /* ==========================================================================
+       2. ÉCOUTEURS DES CHANGEMENTS DE FORMULAIRES (CASES À COCHER & INPUTS)
+       ========================================================================== */
+    if (this.isEditable) {
+      root.addEventListener('change', async (ev) => {
+        // Checkbox d'équipement actif
+        const toggleEquipped = ev.target.closest('.equipped-toggle');
+        if (toggleEquipped) {
+          const li = toggleEquipped.closest('.item');
+          const item = this.actor.items.get(li?.dataset.itemId);
+          if (item) {
+            await item.update({ 'system.equipped': !item.system.equipped });
+            this.render(false);
+          }
+          return;
         }
-      }
-      
+
+        // Sauvegarde manuelle forcée de la Constitution
+        if (ev.target.classList.contains('inputGDstats')) {
+          const input = ev.target;
+          const dataPath = input.name;
+          const newValue = Number(input.value);
+
+          if (!isNaN(newValue)) {
+            await this.actor.update({ [dataPath]: newValue });
+          }
+        }
+      });
+    }
+
+    /* ==========================================================================
+       3. ÉCOUTEUR CENTRALISÉ DÉDIÉ UNIQUEMENT AUX CLICS DE BOUTONS PURS
+       ========================================================================== */
+    root.addEventListener('click', async (ev) => {
+      // SÉCURITÉ DRAG & DROP : Si l'événement provient d'un glisser-déposer, on coupe tout de suite
+      if (ev.button !== 0 || ev.dragEnd || ev.type === "drag" || ev.type === "drop") return;
+
+      // On cible uniquement les boutons d'action réels
+      const targetButton = ev.target.closest('#toggle-edit, [data-action="toggleSpe"], .item-edit, .rollable, .deStat, .deArme, .deSpe, .item-delete, .item-consume, .addBagage, .item-create, .effect-control, [data-action="configResources"]');
+      if (!targetButton) return;
+
+      ev.preventDefault();
+
       // 1. Gestionnaire du mode édition (Crayon)
-      const btnToggleEdit = ev.target.closest('#toggle-edit');
-      if (btnToggleEdit) {
-        ev.preventDefault();
+      if (targetButton.id === 'toggle-edit') {
         this.editable = !this.editable;
         this.render();
         return;
       }
 
       // 2. Bouton Bascule Spécialisation
-      const btnSpe = ev.target.closest('[data-action="toggleSpe"]');
-      if (btnSpe) {
-        ev.preventDefault();
-
-        // Si le mode édition (Crayon) est ACTIVÉ, on coche/décoche la spécialisation en BDD
+      if (targetButton.matches('[data-action="toggleSpe"]')) {
         if (this.editable) {
-          const dataPath = btnSpe.dataset.target;
+          const dataPath = targetButton.dataset.target;
           const currentState = foundry.utils.getProperty(this.actor, dataPath) === true;
           await this.actor.update({ [dataPath]: !currentState });
           return;
         } 
-        
-        // Si le mode édition est DÉSACTIVÉ (Mode Jeu), le bouton lance le 1d150 !
-        return this._onRollSpe(ev, btnSpe);
+        return this._onRollSpe(ev, targetButton);
       }
 
       // 3. Édition d'un Item (Ouvrir la feuille d'arme, d'armure, etc.)
-      const btnItemEdit = ev.target.closest('.item-edit');
-      if (btnItemEdit) {
-        ev.preventDefault();
-        const li = btnItemEdit.closest('.item');
+      if (targetButton.classList.contains('item-edit')) {
+        const li = targetButton.closest('.item');
         const item = this.actor.items.get(li?.dataset.itemId);
         item?.sheet.render(true);
         return;
       }
 
       // 4. Jets de dés classiques (Attributs, compétences)
-      const btnRollable = ev.target.closest('.rollable');
-      if (btnRollable && !ev.target.closest('.deStat')) { // Évite le conflit avec les bonus
-        ev.preventDefault();
-        return this._onRoll(ev, btnRollable);
+      if (targetButton.classList.contains('rollable') && !targetButton.classList.contains('deStat')) {
+        return this._onRoll(ev, targetButton);
       }
 
       // 5. Fenêtre de modificateurs de caractéristiques (Avantage / Désavantage)
-      const btnDeStat = ev.target.closest('.deStat');
-      if (btnDeStat) {
-        ev.preventDefault();
-        return this._bonusStats(ev, btnDeStat);
+      if (targetButton.classList.contains('deStat')) {
+        return this._bonusStats(ev, targetButton);
       }
 
       // 6. Jets de dégâts des armes
-      const btnDeArme = ev.target.closest('.deArme');
-      if (btnDeArme) {
-        ev.preventDefault();
-        return this._onRollArmes(ev, btnDeArme);
+      if (targetButton.classList.contains('deArme')) {
+        return this._onRollArmes(ev, targetButton);
       }
 
       // 7. Jets de capacités spéciales Spé (1d150 Anime effect)
-      const btnDeSpe = ev.target.closest('.deSpe');
-      if (btnDeSpe) {
-        ev.preventDefault();
-        return this._onRollSpe(ev, btnDeSpe);
+      if (targetButton.classList.contains('deSpe')) {
+        return this._onRollSpe(ev, targetButton);
       }
 
       // --- SÉCURITÉ : TOUTES LES ACTIONS CI-DESSOUS REQUIÈRENT LE MODE ÉDITION ---
       if (!this.isEditable) return;
 
       // 8. Suppression d'un Item de l'inventaire ou d'une capacité
-      const btnItemDelete = ev.target.closest('.item-delete');
-      if (btnItemDelete) {
-        ev.preventDefault();
-        const li = btnItemDelete.closest('.item');
+      if (targetButton.classList.contains('item-delete')) {
+        const li = targetButton.closest('.item');
         const item = this.actor.items.get(li?.dataset.itemId);
         if (!item) return;
 
@@ -262,10 +271,8 @@ export class ShinzoActorSheet extends ActorSheet {
       }
 
       // 9. Consommation rapide d'un objet consommable
-      const btnItemConsume = ev.target.closest('.item-consume');
-      if (btnItemConsume) {
-        ev.preventDefault();
-        const li = btnItemConsume.closest('.item');
+      if (targetButton.classList.contains('item-consume')) {
+        const li = targetButton.closest('.item');
         const item = this.actor.items.get(li?.dataset.itemId);
         if (item) {
           await item.consume();
@@ -275,59 +282,41 @@ export class ShinzoActorSheet extends ActorSheet {
       }
 
       // 10. Bouton d'ajout rapide de Bagages (Ouvre la boîte de choix d'Item)
-      const btnAddBagage = ev.target.closest('.addBagage');
-      if (btnAddBagage) {
-        ev.preventDefault();
+      if (targetButton.classList.contains('addBagage')) {
         this._promptBagageCreation();
         return;
       }
 
       // 11. Création classique d'un élément (Traits, Capacités, Compétences dans vos sous-onglets)
-      const btnItemCreate = ev.target.closest('.item-create');
-      if (btnItemCreate) {
-        ev.preventDefault();
-        this._onItemCreate(ev, btnItemCreate);
+      if (targetButton.classList.contains('item-create')) {
+        this._onItemCreate(ev, targetButton);
         return;
       }
 
       // 12. Activation / Désactivation ou Configuration des Effets Actifs (Active Effects)
-      const btnEffectControl = ev.target.closest('.effect-control');
-      if (btnEffectControl) {
-        ev.preventDefault();
-        ev.stopPropagation(); // Empêche Foundry de déclencher son écouteur natif par-derrière
+      if (targetButton.classList.contains('effect-control')) {
+        ev.stopPropagation();
 
-        const row = btnEffectControl.closest('li');
+        const row = targetButton.closest('li');
         if (!row) return;
 
         const document = row.dataset.parentId === this.actor.id 
           ? this.actor 
           : this.actor.items.get(row.dataset.parentId);
 
-        // CORRECTION DIRECTE V13 :
-        // On redéfinit dynamiquement la propriété 'currentTarget' de l'événement natif
-        // pour qu'elle pointe temporairement sur le bouton <a> au lieu du formulaire.
         Object.defineProperty(ev, 'currentTarget', { 
-          value: btnEffectControl, 
+          value: targetButton, 
           configurable: true 
         });
 
-        // Appel sécurisé au script d'effets natif de Foundry
         onManageActiveEffect(ev, document);
         return;
       }
 
-      // 13. Bouton Engrenage : Configuration avancée des Ressources et Modificateurs de Résistance
-      const btnConfigRes = ev.target.closest('[data-action="configResources"]');
-      if (btnConfigRes) {
-        ev.preventDefault();
-        
-        // Chemin vers votre nouveau fichier de template HBS
+      // 13. Bouton Engrenage : Configuration avancée des Ressources
+      if (targetButton.matches('[data-action="configResources"]')) {
         const templatePath = "systems/shinzo/templates/dialog/dialog-config-ressources.hbs";
-        
-        // Préparation des données requises par le moteur Handlebars
         const templateData = { system: this.actor.system };
-        
-        // Rendu asynchrone du template par le moteur natif de Foundry
         const dialogContent = await renderTemplate(templatePath, templateData);
 
         new Dialog({
@@ -337,7 +326,6 @@ export class ShinzoActorSheet extends ActorSheet {
             save: {
               label: "<i class='fas fa-save'></i> Enregistrer",
               callback: async (html) => {
-                // Collecte propre des données via l'API jQuery/DOM de la boîte de dialogue
                 const updates = {
                   "system.health.max": Number(html.find("#cfg-hp-max").val()),
                   "system.power.max": Number(html.find("#cfg-pe-max").val()),
@@ -351,55 +339,15 @@ export class ShinzoActorSheet extends ActorSheet {
                 ui.notifications.info("Caractéristiques vitales mises à jour avec succès.");
               }
             },
-            cancel: {
-              label: "Annuler"
-            }
+            cancel: { label: "Annuler" }
           },
           default: "save"
         }).render(true);
         return;
       }
-
-      // Sécurité v13 : Forcer la sauvegarde manuelle des Grandes Statistiques (notamment la Constitution)
-      root.addEventListener('change', async (ev) => {
-        if (ev.target.classList.contains('inputGDstats')) {
-          const input = ev.target;
-          const dataPath = input.name; // Récupère "system.gds_stats.con.value"
-          const newValue = Number(input.value);
-
-          if (!isNaN(newValue)) {
-            // On applique directement la mise à jour en base de données
-            await this.actor.update({ [dataPath]: newValue });
-          }
-        }
-      });
     });
-
-    /* ==========================================================================
-       ÉCOUTEURS ÉTATS FORMULAIRES (ÉQUIPEMENT ACTIF / CASES À COCHER)
-       ========================================================================== */
-    if (this.isEditable) {
-      root.addEventListener('change', async (ev) => {
-        const toggleEquipped = ev.target.closest('.equipped-toggle');
-        if (toggleEquipped) {
-          const li = toggleEquipped.closest('.item');
-          const item = this.actor.items.get(li?.dataset.itemId);
-          if (item) {
-            await item.update({ 'system.equipped': !item.system.equipped });
-            this.render(false);
-          }
-        }
-      });
-    }
-
-    // Gestion du Drag & Drop pour la barre des macros raccourcies
-    if (this.actor.isOwner) {
-      root.querySelectorAll('li.item[data-item-id]').forEach(li => {
-        li.setAttribute('draggable', true);
-        li.addEventListener('dragstart', (ev) => this._onDragStart(ev), false);
-      });
-    }
   }
+
 
   /**
    * Boîte de dialogue interne pour l'ajout rapide de Bagages
@@ -449,8 +397,7 @@ export class ShinzoActorSheet extends ActorSheet {
   }
 
   /**
-   * Gestionnaire des jets de caractéristiques de base
-   * @private
+   * Handle clickable rolls.
    */
   _onRoll(event, target) {
     const dataset = target.dataset;
@@ -473,9 +420,8 @@ export class ShinzoActorSheet extends ActorSheet {
     }
   }
 
-    /**
+  /**
    * Gestionnaire des dégâts des armes avec injection du bonus physique rdp
-   * @private
    */
   async _onRollArmes(event, target) {
     const formula = target.dataset.formule;
@@ -493,7 +439,6 @@ export class ShinzoActorSheet extends ActorSheet {
 
   /**
    * Jet d'aptitude spéciale (D150 anime effect)
-   * @private
    */
   async _onRollSpe(event, target) {
     const statName = target.dataset.label;
@@ -509,7 +454,6 @@ export class ShinzoActorSheet extends ActorSheet {
 
   /**
    * Ouvre la configuration des modificateurs de dés (Avantage / Désavantage)
-   * @private
    */
   async _bonusStats(event, target) {
     const statName = target.dataset.label;
@@ -548,10 +492,53 @@ export class ShinzoActorSheet extends ActorSheet {
     }).render(true);
   }
 
-  /**
-   * Préparation des valeurs finales calculées pour l'affichage graphique
-   * @private
+    /**
+   * Gestionnaire principal des dépôts (Drop) sur la fiche de l'Acteur - Version Finale v13
+   * @override
+   * @protected
    */
+  async _onDrop(event) {
+    event.preventDefault();
+
+    // 1. Extraction propre des données du Drag aux normes v13
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+    if (!data) return super._onDrop(event);
+
+    // 2. SÉCURITÉ ENTRÉE DANS UN SAC : 
+    // Si l'objet glissé est lâché au-dessus d'une feuille de sac ouverte,
+    // on coupe l'action de l'Acteur pour laisser la feuille du sac l'aspirer.
+    if (event.target.closest('.sheet.item, .shinzo.item, .bag-contents')) {
+      return false; 
+    }
+
+    // 3. INTERCEPTION CRITIQUE SAC (SORTIE DU SAC) :
+    // Si l'objet provient d'un sac, on délègue IMMÉDIATEMENT au ContainerSystem
+    // et on coupe l'exécution pour empêcher Foundry de lancer son code natif qui plante !
+    if (data.fromContainer === true || data.type === "ContainedItem") {
+      await ContainerSystem.handleDrop({
+        data,
+        actor: this.actor // Destination : l'inventaire principal du personnage
+      });
+      return; // On stoppe tout ici, le TypeError de fromDropData n'arrivera plus jamais !
+    }
+
+    // 4. IMPORTATION COMPENDIUMS & MENU LATÉRAL :
+    // Si c'est un objet normal, on redonne sagement la main au moteur natif de Foundry v13
+    return super._onDrop(event);
+  }
+
+
+
+  async _onConsumeItem(event) {
+    event.preventDefault();
+    const li = event.currentTarget.closest(".item");
+    const item = this.actor.items.get(li?.dataset.itemId);
+    if (item) {
+      await item.consume();
+      this.render(false);
+    }
+  }
+
   _prepareDisplayStats(system) {
     const prepareGroup = (group, useBrut = false) => {
       for (const [key, stat] of Object.entries(group ?? {})) {
@@ -566,32 +553,4 @@ export class ShinzoActorSheet extends ActorSheet {
     prepareGroup(system.ss_stats?.ss_stats1);
     prepareGroup(system.ss_stats?.ss_stats2);
   }
-
-  /**
-   * Gestion du dépôt (Drop) d'un Item sur la fiche de l'Acteur
-   * Appelé automatiquement par le moteur de Foundry VTT
-   * @override
-   * @protected
-   */
-  async _onDrop(event) {
-    event.preventDefault();
-
-    // Récupération sécurisée des données de l'événement
-    const data = TextEditor.getDragEventData(event);
-    if (!data) return;
-
-    // SÉCURITÉ V13 : Interception directe du transfert depuis un sac vers l'Acteur
-    if (data.type === "ContainedItem" || data.fromContainer === true) {
-      await ContainerSystem.handleDrop({
-        data,
-        actor: this.actor // Destination : l'inventaire principal du personnage
-      });
-      return;
-    }
-
-    // Si c'est un dépôt classique (Compendium, menu latéral, etc.), 
-    // on redonne la main au comportement standard de Foundry
-    return super._onDrop(event);
-  }
-  
 }
