@@ -55,14 +55,11 @@ Hooks.once('init', function () {
   * DataModels V13
   */
   CONFIG.Actor.dataModels = {
-
     character: CharacterModel,
     npc: NPCModel
-
   };
 
   CONFIG.Item.dataModels = {
-
     arme: ArmeModel,
     armure: ArmureModel,
     objet: ObjetModel,
@@ -70,7 +67,6 @@ Hooks.once('init', function () {
     competence: CompetenceModel,
     trait: TraitModel,
     consommable: ConsommableModel
-
   };
 
   DocumentSheetConfig.registerSheet(
@@ -82,11 +78,6 @@ Hooks.once('init', function () {
         label: "SHINZO.SheetLabels.ActiveEffectConfig"
     }
   );
-
-  // Active Effects are never copied to the Actor,
-  // but will still apply to the Actor from within the Item
-  // if the transfer property on the Active Effect is true.
-  //CONFIG.ActiveEffect.legacyTransferral = false;
 
   // Register sheet application classes
   Actors.unregisterSheet('core', ActorSheet);
@@ -108,7 +99,6 @@ Hooks.once('init', function () {
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
 
-// If you need to add Handlebars helpers, here is a useful example:
 Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
@@ -118,16 +108,224 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 /* -------------------------------------------- */
 
 Hooks.once("ready", async function () {
-
   // Migration des anciennes données
   //await migrateWorld();
-
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
-
   registerCustomEffects();
 });
 
+/* -------------------------------------------- */
+/*  Hotbar Macros                               */
+/* -------------------------------------------- */
+
+async function createItemMacro(data, slot) {
+  if (data.type !== 'Item') return;
+  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
+    return ui.notifications.warn('You can only create macro buttons for owned Items');
+  }
+  const item = await Item.fromDropData(data);
+
+  const command = `game.shinzo.rollItemMacro("${data.uuid}");`;
+  console.log(command)
+  let macro = game.macros.find((m) => m.name === item.name && m.command === command);
+  if (!macro) {
+    macro = await Macro.create({
+      name: item.name,
+      type: 'script',
+      img: item.img,
+      command: command,
+      flags: { 'shinzo.itemMacro': true },
+    });
+  }
+  game.user.assignHotbarMacro(macro, slot);
+  return false;
+}
+
+function rollItemMacro(itemUuid) {
+  const dropData = { type: 'Item', uuid: itemUuid };
+  Item.fromDropData(dropData).then((item) => {
+    if (!item || !item.parent) {
+      const itemName = item?.name ?? itemUuid;
+      return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
+    }
+    item.roll();
+  });
+}
+
+/* -------------------------------------------- */
+/*  CHAT & IMMERSION MODERNE V13                 */
+/* -------------------------------------------- */
+
+Hooks.on("preCreateChatMessage", (document, data, options, userId) => {
+  const speaker = data.speaker;
+  if (!speaker) return;
+
+  let actor = null;
+  if (speaker.token) {
+    const scene = game.scenes.get(speaker.scene ?? canvas.scene?.id);
+    const tokenDoc = scene?.tokens.get(speaker.token);
+    actor = tokenDoc?.actor;
+  }
+  if (!actor && speaker.actor) {
+    actor = game.actors.get(speaker.actor);
+  }
+
+  if (actor && actor.img) {
+    document.updateSource({ 
+      "avatar": actor.img,
+      "speaker.avatar": actor.img
+    });
+  }
+});
+
+Hooks.on('renderChatMessageHTML', (message, element, data) => {
+  const html = $(element);
+
+  // 1. RECONSTRUCTION DU HEADER EN MODE "STACKED"
+  const speaker = message.speaker;
+  let imgPath = "icons/svg/mystery-man.svg"; // Fallback par défaut
+  let actorUuid = "";
+
+  if (speaker.actor) {
+    const actor = game.actors.get(speaker.actor);
+    if (actor) {
+      imgPath = actor.img;
+      actorUuid = actor.uuid;
+    }
+  }
+
+  // Récupération du sous-titre (Nom du joueur ou Gamemaster)
+  const user = game.users.get(message.user);
+  const subtitleText = user ? (user.isGM ? "Gamemaster" : user.name) : "";
+  const senderName = message.alias ?? "Mystère";
+
+  // Ciblage de l'en-tête du message
+  const header = element.querySelector(".message-header");
+  const senderH4 = header?.querySelector(".message-sender");
+
+  if (senderH4 && !senderH4.querySelector(".avatar")) {
+    // Nettoyage du texte brut d'origine pour injecter la structure imbriquée
+    senderH4.textContent = ""; 
+
+    // Construction de la structure cible exacte
+    const newSenderHTML = `
+      <a class="avatar" data-uuid="${actorUuid}">
+        <img src="${imgPath}" alt="${senderName}">
+      </a>
+      <span class="name-stacked">
+        <span class="title">${senderName}</span>
+        <span class="subtitle">${subtitleText}</span>
+      </span>
+    `;
+    
+    // Insertion propre dans le h4
+    $(senderH4).append(newSenderHTML);
+  }
+
+  // 2. COLORATION ET TRAITEMENT GRAPHIQUE DES DÉS
+  const diceTotal = html.find(".dice-total");
+  const diceRolls = html.find(".d100");
+  const diceEc = html.find(".ec");
+  const diceRc = html.find(".rc");
+
+  if (diceRc.length) {
+    diceTotal.css("color", "green");
+    diceRolls.addClass("max");
+  }
+
+  if (diceEc.length) {
+    diceTotal.css("color", "red");
+    diceRolls.addClass("min");
+  }
+
+  /**
+ * Clic sur l'avatar du chat : Ouvre la fiche de l'acteur lié (Ergonomie v13)
+ */
+  html.on("click", "a.avatar[data-uuid]", async (ev) => {
+    ev.preventDefault();
+    const uuid = ev.currentTarget.dataset.uuid;
+    if (!uuid) return;
+    const actor = await fromUuid(uuid);
+    actor?.sheet.render(true);
+  });
+
+});
+
+/* -------------------------------------------- */
+/*  COMBAT LOOPS                                */
+/* -------------------------------------------- */
+
+Hooks.on("updateCombat", async (combat, updateData) => {
+  if (!game.user.isActiveGM) return;
+  if (updateData.turn === undefined) return;
+
+  const combatant = combat.combatants.get(combat.current.combatantId);
+  const actor = combatant?.actor;
+  if (!actor) return;
+
+  for (const effect of actor.effects) {
+    const actions = effect.flags?.shinzo?.onTurnStart;
+    if (!Array.isArray(actions) || !actions.length) continue;
+
+    const context = { actor, effect, damage: 0 };
+
+    for (const action of actions) {
+      switch (action.type) {
+        case "damage": {
+          const roll = await (new Roll(action.formula)).evaluate();
+          context.damage = roll.total;
+          await actor.update({
+            "system.health.value": Math.max(0, actor.system.health.value - context.damage)
+          });
+          break;
+        }
+        case "heal": {
+          const roll = await (new Roll(action.formula)).evaluate();
+          context.heal = roll.total;
+          await actor.update({
+            "system.health.value": Math.min(actor.system.health.max, actor.system.health.value + context.heal)
+          });
+          break;
+        }
+        case "chat": {
+          const content = action.message
+            .replaceAll("{name}", actor.name)
+            .replaceAll("{damage}", context.damage)
+            .replaceAll("{heal}", context.heal ?? 0);
+
+          await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            content
+          });
+          break;
+        }
+      }
+    }
+  }
+});
+
+Hooks.on("updateCombat", async (combat, update) => {
+  if (!game.user.isActiveGM) return;
+  if (update.turn === undefined) return;
+
+  const previous = combat.combatants.get(combat.previous?.combatantId);
+  const actor = previous?.actor;
+  if (!actor) return;
+
+  for (const effect of actor.effects) {
+    let remainingTurns = effect.getFlag("shinzo", "remainingTurns");
+    if (remainingTurns == null) continue;
+
+    remainingTurns--;
+
+    if (remainingTurns <= 0) {
+      await effect.delete();
+    } else {
+      await effect.setFlag("shinzo", "remainingTurns", remainingTurns);
+    }
+  }
+});
 
 /**
  * Migration des données du monde
@@ -174,204 +372,3 @@ Hooks.once("ready", async function () {
 
   console.log("SHINZO | Migration terminée.");
 }*/
-
-/* -------------------------------------------- */
-/*  Hotbar Macros                               */
-/* -------------------------------------------- */
-
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {Object} data     The dropped data
- * @param {number} slot     The hotbar slot to use
- * @returns {Promise}
- */
-async function createItemMacro(data, slot) {
-  // First, determine if this is a valid owned item.
-  if (data.type !== 'Item') return;
-  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-    return ui.notifications.warn(
-      'You can only create macro buttons for owned Items'
-    );
-  }
-  // If it is, retrieve it based on the uuid.
-  const item = await Item.fromDropData(data);
-
-  // Create the macro command using the uuid.
-  const command = `game.shinzo.rollItemMacro("${data.uuid}");`;
-  let macro = game.macros.find(
-    (m) => m.name === item.name && m.command === command
-  );
-  if (!macro) {
-    macro = await Macro.create({
-      name: item.name,
-      type: 'script',
-      img: item.img,
-      command: command,
-      flags: { 'shinzo.itemMacro': true },
-    });
-  }
-  game.user.assignHotbarMacro(macro, slot);
-  return false;
-}
-
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemUuid
- */
-function rollItemMacro(itemUuid) {
-  // Reconstruct the drop data so that we can load the item.
-  const dropData = {
-    type: 'Item',
-    uuid: itemUuid,
-  };
-  // Load the item from the uuid.
-  Item.fromDropData(dropData).then((item) => {
-    // Determine if the item loaded and if it's an owned item.
-    if (!item || !item.parent) {
-      const itemName = item?.name ?? itemUuid;
-      return ui.notifications.warn(
-        `Could not find item ${itemName}. You may need to delete and recreate this macro.`
-      );
-    }
-
-    // Trigger the item roll
-    item.roll();
-  });
-}
-
-Hooks.on('renderChatMessage', (message, html, data) => {
-  // Recherche les dés affichés dans le message du chat
-  const diceTotal = html.find(".dice-total");
-  const diceRolls = html.find(".d100");
-  const diceEc = html.find(".ec");
-  const diceRc = html.find(".rc");
-
-  diceRc.each(function(){
-    // Pour chaque résultat de dé, on applique la coloration au total
-    diceTotal.each(function() {
-      $(this).css("color", "green");
-    });
-
-    // Pour chaque résultat de dé, on applique la coloration au dé
-    diceRolls.each(function() {
-        $(this).addClass("max");
-    });
-  });
-
-  diceEc.each(function(){
-    // Pour chaque résultat de dé, on applique la coloration au total
-    diceTotal.each(function() {
-      $(this).css("color", "red");
-    });
-
-    // Pour chaque résultat de dé, on applique la coloration au dé
-    diceRolls.each(function() {
-        $(this).addClass("min");
-    });
-  });
-});
-
-Hooks.on("updateCombat", async (combat, updateData) => {
-
-  if (!game.user.isActiveGM) return;
-
-  if (updateData.turn === undefined) return;
-
-  const combatant = combat.combatants.get(combat.current.combatantId);
-  const actor = combatant?.actor;
-  if (!actor) return;
-
-  for (const effect of actor.effects) {
-
-    const actions = effect.flags?.shinzo?.onTurnStart;
-    if (!Array.isArray(actions) || !actions.length) continue;
-
-    // Variables accessibles aux actions suivantes
-    const context = {
-      actor,
-      effect,
-      damage: 0
-    };
-
-    for (const action of actions) {
-
-      switch (action.type) {
-
-        case "damage": {
-
-          const roll = await (new Roll(action.formula)).evaluate();
-
-          context.damage = roll.total;
-
-          await actor.update({
-            "system.health.value": Math.max(
-              0,
-              actor.system.health.value - context.damage
-            )
-          });
-
-          break;
-        }
-
-        case "heal": {
-
-          const roll = await (new Roll(action.formula)).evaluate();
-
-          context.heal = roll.total;
-
-          await actor.update({
-            "system.health.value": Math.min(
-              actor.system.health.max,
-              actor.system.health.value + context.heal
-            )
-          });
-
-          break;
-        }
-
-        case "chat": {
-
-          const content = action.message
-            .replaceAll("{name}", actor.name)
-            .replaceAll("{damage}", context.damage)
-            .replaceAll("{heal}", context.heal ?? 0);
-
-          await ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({ actor }),
-            content
-          });
-
-          break;
-        }
-
-      }
-    }
-  }
-});
-
-Hooks.on("updateCombat", async (combat, update) => {
-  if (!game.user.isActiveGM) return;
-  if (update.turn === undefined) return;
-
-  const previous = combat.combatants.get(combat.previous?.combatantId);
-  const actor = previous?.actor;
-  if (!actor) return;
-
-  for (const effect of actor.effects) {
-
-    let remainingTurns = effect.getFlag("shinzo", "remainingTurns");
-
-    // L'effet n'utilise pas ce système
-    if (remainingTurns == null) continue;
-
-    remainingTurns--;
-
-    if (remainingTurns <= 0) {
-      await effect.delete();
-    } else {
-      await effect.setFlag("shinzo", "remainingTurns", remainingTurns);
-    }
-  }
-});

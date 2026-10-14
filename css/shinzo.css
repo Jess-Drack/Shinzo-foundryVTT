@@ -21,6 +21,73 @@
   margin: 0;
 }
 
+/* --- Style global du Header Stacked Shinzo --- */
+li.chat-message.message .message-header {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  line-height: 1.2 !important;
+  margin-bottom: 6px !important;
+  gap: .75rem;
+}
+
+/* Alignement du bloc interne du H4 (Avatar + Textes) */
+li.chat-message.message .message-header .message-sender {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+/* Le bouton et conteneur de l'avatar cliquable */
+li.chat-message.message .message-header .avatar {
+  display: block !important;
+  width: 34px !important;
+  height: 34px !important;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* L'image de l'avatar parfaitement cerclée */
+li.chat-message.message .message-header .avatar img {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 5px !important; /* Macaron rond style DnD5e */
+  border: 1px solid #989B3D !important; /* Couleur dorée de votre thème Shinzo */
+  object-fit: cover !important;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Le bloc de textes empilés (Nom + Rôle) */
+li.chat-message.message .message-header .name-stacked {
+  display: flex !important;
+  flex-direction: column !important; /* Empile le titre au-dessus du sous-titre */
+  justify-content: center !important;
+}
+
+/* Style du Titre (Nom du personnage) */
+li.chat-message.message .message-header .name-stacked .title {
+  font-weight: bold !important;
+}
+
+/* Style du Sous-titre (Joueur ou Gamemaster) */
+li.chat-message.message .message-header .name-stacked .subtitle {
+  font-size: 10px !important;
+  color: #a0a0a0 !important; /* Teinte grise discrète pour le sous-titre */
+  font-style: italic !important;
+}
+
+/* Alignement des métadonnées (Temps + Poubelle) à droite */
+li.chat-message.message .message-header .message-metadata {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 11px !important;
+}
+
 /* ==========================================================================
    2. SYSTÈME DE GRILLE ET ALIGNEMENTS (CLASSES UTILITAIRES)
    ========================================================================== */
