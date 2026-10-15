@@ -352,6 +352,12 @@ li.chat-message.message .message-header .message-metadata {
   margin-bottom: 15px;
 }
 
+.charname-container {
+  container-type: inline-size; /* Dit au navigateur de mesurer la largeur de cette boîte */
+  position: relative;
+  width: 100%; /* S'adapte à la taille de votre cadre SVG */
+}
+
 .charname-bg {
   position: absolute;
   width: 100%;
@@ -367,18 +373,22 @@ li.chat-message.message .message-header .message-metadata {
 .charname-input:hover,
 .charname-input:focus,
 .charname-input:active {
-  position: relative;
-  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
   width: 70%;
-  height: 100%;
+  height: auto;
   margin: auto;
   border: none !important;
   background: transparent;
   box-sizing: border-box;
-  line-height: 50px;
   text-align: center;
-  font-size: 33px;
+  font-family: 'Lucida Calligraphy', Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   outline: none !important;
   box-shadow: none !important;
 }

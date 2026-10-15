@@ -48,9 +48,9 @@
           {{/if}}
         </div>
 
-        <div class="charname-wrapper">
+        <div class="charname-wrapper charname-container">
           <img class="charname-bg" src="systems/shinzo/img/ProfilePicture/characterName.svg" alt=""/>
-          <input class="charname-input" name="name" type="text" value="{{actor.name}}" placeholder="Name" {{#unless editable}}disabled{{/unless}}/>
+          <input class="charname-input" name="name" type="text" value="{{actor.name}}" placeholder="Name" style="font-size: max(14px, calc(32px - (0.6px * {{stringLength actor.name}}))) !important;" {{#unless editable}}disabled{{/unless}}/>
         </div> 
 
         <div class="charressources-wrapper">

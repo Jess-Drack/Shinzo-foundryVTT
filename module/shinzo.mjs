@@ -103,6 +103,11 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
 
+// Calcule dynamiquement la longueur d'un texte pour ajuster la police
+Handlebars.registerHelper('stringLength', function (str) {
+  return typeof str === "string" ? str.length : 0;
+});
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
