@@ -391,6 +391,7 @@ li.chat-message.message .message-header .message-metadata {
   white-space: nowrap;
   outline: none !important;
   box-shadow: none !important;
+  text-shadow: 1px 2px 1px #0000003b;
 }
 
 /* --- Totaux & Contrôles d'Édition --- */
