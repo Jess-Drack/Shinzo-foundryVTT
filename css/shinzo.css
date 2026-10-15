@@ -273,7 +273,7 @@ li.chat-message.message .message-header .message-metadata {
   overflow: hidden;
   margin: 0;
   z-index: 6;
-  background-color: #ffffff;
+  background-color: #FCF8ED;
 }
 
 .profile-img-actor {
@@ -661,6 +661,7 @@ li.chat-message.message .message-header .message-metadata {
 /* Effet de survol classique pour votre interface */
 .config-resources-btn:hover {
   color: #989B3D;
+  box-shadow: 0 0 5px var(--triangle-color);
 }
 
 .config-resources-btn:hover i {
@@ -722,7 +723,8 @@ li.chat-message.message .message-header .message-metadata {
 
 .tabItem:hover,
 .tabItem.active {
-  text-shadow: 0 0 1px rgba(74, 74, 74, 0.5); 
+  text-shadow: 0 0 5px var(--triangle-color);
+  color: #000;
 }
 
 .bodyCharacter {
@@ -776,6 +778,11 @@ li.chat-message.message .message-header .message-metadata {
   background-image: url("../img/ProfilePicture/cadre_grandes_stats2.svg");
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.inputGDstats:hover,
+.inputGDstats:focus{
+  box-shadow: 0 0 5px var(--triangle-color);
 }
 
 .nameStats {
@@ -852,6 +859,10 @@ li.chat-message.message .message-header .message-metadata {
   margin-left: 10%;
 }
 
+.inputSSstats:hover,
+.inputSSstats:focus{
+  box-shadow: 0 0 5px var(--triangle-color);
+}
 
 /* ==========================================================================
    8. LISTES D'ITEMS, CAPACITÉS & EFFETS ACTIFS
@@ -1052,6 +1063,7 @@ details[open] .inventory-summary-header .folder-icon {
 .displayAddBagage { display: flex; justify-content: space-between; align-items: center; }
 .addBagage, .add  { width: 20px; height: 20px; background-color: #786d5cba; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 5px; position: absolute; right: 10px;; }
 .Aeffect{position: initial;}
+.add:hover{text-shadow: 0 0 5px var(--triangle-color);}
 
 /* Gestion des Effets Actifs (Active Effects) */
 .shinzo .effects .item .effect-source,
@@ -1069,6 +1081,10 @@ details[open] .inventory-summary-header .folder-icon {
 
 .item-image-content{
   border: 1px solid #989B3D;
+}
+
+.itemAnimation:hover{
+  text-shadow: 0 0 8px var(--triangle-color);
 }
 
 
@@ -1120,6 +1136,7 @@ details[open] .inventory-summary-header .folder-icon {
 .spe-toggle-btn:hover {
   color: #989B3D; /* Teinte dorée au survol */
   transform: scale(1.1);
+  box-shadow: 0 0 5px var(--triangle-color) !important;
 }
 
 /* Personnalisation des cases d'équipement actif (Equipped) */
@@ -1152,7 +1169,7 @@ details[open] .inventory-summary-header .folder-icon {
 .rollable:hover, 
 .rollable:focus {
   color: #000;
-  text-shadow: 0 0 10px red;
+  text-shadow: 0 0 10px var(--triangle-color);
   cursor: pointer;
 }
 

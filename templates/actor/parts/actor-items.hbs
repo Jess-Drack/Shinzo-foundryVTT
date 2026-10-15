@@ -29,20 +29,20 @@
                   <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
-              <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+              <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                 <p>{{item.name}}</p>
               </a>
             </div>
             <a class='deArme' data-formule='{{item.system.damage}}' data-nom='{{item.name}}'>
-              <div class='item-formula item-prop'>{{item.system.damage}}</div>
+              <div class='item-formula item-prop itemAnimation'>{{item.system.damage}}</div>
             </a>
             <div class='item-controls'>
               <div class='item-equipped'>
-                <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style" {{checked item.system.equipped}}/>
+                <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style itemAnimation" {{checked item.system.equipped}}/>
               </div>
               {{#if ../editable}}
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
               {{/if}}
             </div>
           </li>
@@ -83,7 +83,7 @@
                   <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
-              <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+              <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                 <p>{{item.name}}</p>
               </a>
             </div>
@@ -91,11 +91,11 @@
             <div class='item-res item-prop'>{{item.system.resMagique}}</div>
             <div class='item-controls'>
               <div class='item-equipped'>
-                <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style" {{checked item.system.equipped}}/>
+                <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style itemAnimation" {{checked item.system.equipped}}/>
               </div>
               {{#if ../editable}}
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
               {{/if}}
             </div>
           </li>
@@ -110,17 +110,17 @@
                   <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
-              <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+              <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                 <p>{{item.name}}</p>
               </a>
             </div>
             <div class='item-controls'>
               <div class='item-equipped'>
-                <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style" {{checked item.system.equipped}}/>
+                <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style itemAnimation" {{checked item.system.equipped}}/>
               </div>
               {{#if ../editable}}
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
               {{/if}}
             </div>
           </li>
@@ -159,7 +159,7 @@
               <img src="{{item.img}}" title='{{item.name}}' width="24" height="24" class="item-image-content">
             </a>
           </div>
-          <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+          <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
             <p>{{item.name}}</p>
           </a>
         </div>
@@ -170,10 +170,10 @@
           {{else}}
             <span>x{{item.system.quantity}}</span>
           {{/if}}
-          <a class="item-consume"><i class="fas fa-flask"></i></a>
+          <a class="item-consume itemAnimation"><i class="fas fa-flask"></i></a>
           {{#if ../editable}}
-            <a class="item-edit"><i class="fas fa-edit"></i></a>
-            <a class="item-delete"><i class="fas fa-trash"></i></a>
+            <a class="item-edit itemAnimation"><i class="fas fa-edit"></i></a>
+            <a class="item-delete itemAnimation"><i class="fas fa-trash"></i></a>
           {{/if}}
         </div>
       </li>
@@ -215,14 +215,14 @@
                   <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                 </a>
               </div>
-              <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+              <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                 <p>{{item.name}}</p>
               </a>
             </div>
             {{#if ../editable}}
               <div class='item-controls'>
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
               </div>
             {{/if}}
           </li>
@@ -238,17 +238,17 @@
                     <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                   </a>
                 </div>
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                   <p>{{item.name}}</p>
                 </a>
               </div>
               <div class='item-controls'>
                 <div class='item-equipped'>
-                  <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style" {{checked item.system.equipped}}/>
+                  <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style itemAnimation" {{checked item.system.equipped}}/>
                 </div>
                 {{#if ../editable}}
-                  <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                  <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                  <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                  <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
                 {{/if}}
               </div>
             </li>
@@ -265,17 +265,17 @@
                     <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                   </a>
                 </div>
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                   <p>{{item.name}}</p>
                 </a>
               </div>
               <div class='item-controls'>
                 <div class='item-equipped'>
-                  <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style" {{checked item.system.equipped}}/>
+                  <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style itemAnimation" {{checked item.system.equipped}}/>
                 </div>
                 {{#if ../editable}}
-                  <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                  <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                  <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                  <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
                 {{/if}}
               </div>
             </li>
@@ -292,17 +292,17 @@
                     <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' class="item-image-content"/>
                   </a>
                 </div>
-                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'>
+                <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'>
                   <p>{{item.name}}</p>
                 </a>
               </div>
               <div class='item-controls'>
                 <div class='item-equipped'>
-                  <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style" {{checked item.system.equipped}}/>
+                  <input type="checkbox" name="system.equipped" title="Équipé" class="equipped-toggle equipped-style itemAnimation" {{checked item.system.equipped}}/>
                 </div>
                 {{#if ../editable}}
-                  <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
-                  <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
+                  <a class='item-control item-edit itemAnimation' title='{{localize "DOCUMENT.Update" type='Item'}}'><i class="fas fa-edit"></i></a>
+                  <a class='item-control item-delete itemAnimation' title='{{localize "DOCUMENT.Delete" type='Item'}}'><i class='fas fa-trash'></i></a>
                 {{/if}}
               </div>
             </li>

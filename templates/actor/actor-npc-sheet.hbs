@@ -1,10 +1,10 @@
-<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off" style="--triangle-color: {{system.color}}; --triangle-color-foncee: color-mix(in srgb, var(--triangle-color), black 50%);">
   {{!-- Sheet Header --}}
   <header class="sheet-header-actor">
     <div class="sheet-header">
       <div class="header-frame">
-        <div class="header-frame-color" style="--triangle-color: {{system.color}}; --triangle-color-foncee: color-mix(in srgb, var(--triangle-color), black 50%);"></div>
-        <div class="header-frame-diamond" style="--triangle-color: {{system.color}}; --triangle-color-foncee: color-mix(in srgb, var(--triangle-color), black 50%);"></div>
+        <div class="header-frame-color"></div>
+        <div class="header-frame-diamond" ></div>
         <img class="header-frame-img" src="systems/shinzo/img/ProfilePicture/cadrepp.png" alt=""/>
         <div class="header-right">
           <div class="control-left">
@@ -27,12 +27,14 @@
       
       <div class="header-fields right-field">
         <div class="control-edit">
+          {{#if document.isOwner}}
           <label id="toggle-edit" class="switch-toggle" title="Basculer le mode édition">
             <input type="checkbox" class="toggle-edit-checkbox" {{#if editable}}checked{{/if}}/>
             <div class="slider-toggle">
               <i class="fa-solid fa-pen switch-icon"></i>
             </div>
           </label>
+          {{/if}}
 
           {{#if editable}}
           <div class="globalBM">

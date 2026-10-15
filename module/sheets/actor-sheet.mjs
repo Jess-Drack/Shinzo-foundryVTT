@@ -201,6 +201,7 @@ export class ShinzoActorSheet extends ActorSheet {
 
       // 1. Gestionnaire du mode édition (Crayon)
       if (targetButton.id === 'toggle-edit') {
+        if (!this.actor.isOwner) return;
         this.editable = !this.editable;
         this.render();
         return;

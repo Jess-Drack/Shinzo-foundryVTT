@@ -64,7 +64,7 @@
               <label for="system.ss_stats.ss_stats1.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if ss_stat.addCrit }}underline{{/if}}" {{#if ss_stat.addCrit }}title="Bonus/malus au critique : {{ss_stat.addCrit}}"{{/if}} data-dice="{{ss_stat.displayValue}}"  data-crit="{{ss_stat.addCrit}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
             </div>
             {{#if ../editable}}
-              <input type="text" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
+              <input type="text" class="inputSSstats" name="system.ss_stats.ss_stats1.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
             {{/if}}
             <span class="ability-mod rollable deStat {{#if (not ../editable) }}value-non-editable{{/if}}" data-dice="{{ss_stat.displayValue}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.displayValue}}</span>
             {{#if ../editable}}
@@ -98,7 +98,7 @@
               <label for="system.ss_stats.ss_stats2.{{key}}.value" class="resource-label rollable deStat flexlarge align-left {{#if ss_stat.addCrit }}underline{{/if}}" {{#if ss_stat.addCrit }}title="Bonus/malus au critique : {{ss_stat.addCrit}}"{{/if}} data-dice="{{ss_stat.displayValue}}"  data-crit="{{ss_stat.addCrit}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{localize (lookup @root.config.caracteristiques key)}}</label>
             </div>
             {{#if ../editable}}
-              <input type="text" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
+              <input type="text" class="inputSSstats" name="system.ss_stats.ss_stats2.{{key}}.mod" value="{{ss_stat.mod}}" data-dtype="Number"/>
             {{/if}}
             <span class="ability-mod rollable deStat {{#if (not ../editable) }}value-non-editable{{/if}}" data-dice="{{ss_stat.displayValue}}" data-statName="{{key}}" data-label="{{localize (lookup @root.config.caracteristiques key)}}">{{ss_stat.displayValue}}</span>
               {{#if ../editable}}
