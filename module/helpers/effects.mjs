@@ -152,8 +152,7 @@ export function prepareActiveEffectCategories(effects){
       remainingTurns != null ||
       effect.duration?.rounds ||
       effect.duration?.turns ||
-      effect.duration?.seconds ||
-      effect.duration?.startTime
+      effect.duration?.seconds
     ) {
       categories.temporary.effects.push(effect);
     }
@@ -236,7 +235,11 @@ export function registerCustomEffects(){
       id: "boiteux",
       name: "Boiteux",
       img: "systems/shinzo/assets/icons/alteration/nefaste/boiteux.svg",
-      statuses:["boiteux"]
+      statuses:["boiteux"],
+      changes: [
+        { key: "system.gds_stats.agi.b_m", mode: 2, value: -30},
+        { key: "system.ss_stats.ss_stats1.esq.b_m", mode: 2, value: -30}
+      ]
     },
     {
       id: "charme",
@@ -260,7 +263,10 @@ export function registerCustomEffects(){
       id: "desequilibre",
       name: "Déséquilibré",
       img: "systems/shinzo/assets/icons/alteration/nefaste/desequilibre.svg",
-      statuses:["desquilibre"]
+      statuses:["desequilibre"],
+      changes: [
+        { key: "system.gds_stats.con.b_m", mode: 2, value: -25}
+      ]
     },
     {
       id: "distrait",
@@ -283,22 +289,7 @@ export function registerCustomEffects(){
       id: "electrise",
       name: "Electrisé",
       img: "systems/shinzo/assets/icons/alteration/nefaste/electrise.svg",
-      statuses:["electrise"],
-      flags: {
-        shinzo: {
-          onTurnStart: [
-            {
-              type: "damage",
-              formula: "1d2",
-              damageType: "electric"
-            },
-            {
-              type: "chat",
-              message: "{name} subit {damage} dégâts à cause de l'altération Electrisé !"
-            }
-          ]
-        }
-      }
+      statuses:["electrise"]
     },
     {
       id: "empoisonne",
@@ -309,13 +300,8 @@ export function registerCustomEffects(){
         shinzo: {
           onTurnStart: [
             {
-              type: "damage",
-              formula: "1d6",
-              damageType: "poison"
-            },
-            {
               type: "chat",
-              message: "{name} subit {damage} dégâts de poison."
+              message: "{name} subit des dégâts de poison."
             }
           ]
         }
@@ -337,7 +323,7 @@ export function registerCustomEffects(){
           onTurnStart: [
             {
               type: "damage",
-              formula: "1d2",
+              formula: "1d4",
               damageType: "feu"
             },
             {
@@ -395,7 +381,7 @@ export function registerCustomEffects(){
       changes: [
         { key: "system.gds_stats.con.b_m", mode: 2, value: -15},
         { key: "system.gds_stats.agi.b_m", mode: 2, value: -15},
-        { key: "system.gds_stats.men.b_m", mode: 2, value: -15},
+        { key: "system.gds_stats.men.b_m", mode: 2, value: -30},
         { key: "system.gds_stats.mag.b_m", mode: 2, value: -15},
         { key: "system.gds_stats.cha.b_m", mode: 2, value: -15},
         { key: "system.gds_stats.sav.b_m", mode: 2, value: -15},
@@ -407,7 +393,7 @@ export function registerCustomEffects(){
         { key: "system.ss_stats.ss_stats1.dis.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats1.obs.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats1.per.b_m", mode: 2, value: -15},
-        { key: "system.ss_stats.ss_stats1.psy.b_m", mode: 2, value: -15},
+        { key: "system.ss_stats.ss_stats1.psy.b_m", mode: 2, value: -30},
         { key: "system.ss_stats.ss_stats1.int.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats2.com.b_m", mode: 2, value: -15},
         { key: "system.ss_stats.ss_stats2.aut.b_m", mode: 2, value: -15},
@@ -443,7 +429,7 @@ export function registerCustomEffects(){
           onTurnStart: [
             {
               type: "damage",
-              formula: "1d2",
+              formula: "1d4",
               damageType: "froid"
             },
             {
@@ -503,7 +489,7 @@ export function registerCustomEffects(){
           onTurnStart: [
             {
               type: "damage",
-              formula: "1d2",
+              formula: "1d6",
             },
             {
               type: "chat",
@@ -558,7 +544,7 @@ export function registerCustomEffects(){
           onTurnStart: [
             {
               type: "damage",
-              formula: "1d2",
+              formula: "1d3",
             },
             {
               type: "chat",
@@ -580,7 +566,7 @@ export function registerCustomEffects(){
           onTurnStart: [
             {
               type: "damage",
-              formula: "1d2",
+              formula: "1d3",
             },
             {
               type: "chat",
@@ -673,6 +659,12 @@ export function registerCustomEffects(){
       statuses:["frenetique"],
       changes: [
         { key: "system.rdp.deg_physique.b_m", mode: 2, value: 2},
+        { key: "system.rdm.deg_magique.b_m", mode: 2, value: 2},
+        { key: "system.gds_stats.con.b_m", mode: 2, value: 5},
+        { key: "system.ss_stats.ss_stats1.pug.b_m", mode: 2, value: 5},
+        { key: "system.ss_stats.ss_stats1.cac.b_m", mode: 2, value: 5},
+        { key: "system.ss_stats.ss_stats1.int.b_m", mode: 2, value: 5},
+        { key: "system.ss_stats.ss_stats2.vit.b_m", mode: 2, value: 5},
       ]
     },
     {
@@ -685,7 +677,10 @@ export function registerCustomEffects(){
       id: "invisible",
       name: "Invisible",
       img: "systems/shinzo/assets/icons/alteration/benefique/invisible.svg",
-      statuses:["invisible"]
+      statuses:["invisible"],
+      changes: [
+        { key: "system.ss_stats.ss_stats1.dis.b_m", mode: 2, value: 30},
+      ]
     },
     {
       id: "levitation",
@@ -735,9 +730,9 @@ export function registerCustomEffects(){
       img: "systems/shinzo/assets/icons/alteration/benefique/sens.svg",
       statuses:["sens"],
       changes: [
-        { key: "system.ss_stats.ss_stats1.obs.b_m", mode: 2, value: -15},
-        { key: "system.ss_stats.ss_stats1.per.b_m", mode: 2, value: -15},
-        { key: "system.ss_stats.ss_stats2.ins.b_m", mode: 2, value: -15}
+        { key: "system.ss_stats.ss_stats1.obs.b_m", mode: 2, value: 30},
+        { key: "system.ss_stats.ss_stats1.per.b_m", mode: 2, value: 30},
+        { key: "system.ss_stats.ss_stats2.ins.b_m", mode: 2, value: 30}
       ]
     },
     {

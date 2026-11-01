@@ -69,6 +69,6 @@
     "systems": [],
     "requires": []
   },
-  "primaryTokenAttribute": "system.health",
-  "secondaryTokenAttribute": "system.power"
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "power"
 }

@@ -59,6 +59,17 @@ Hooks.once('init', function () {
     npc: NPCModel
   };
 
+  CONFIG.Actor.trackableAttributes = {
+    character: {
+      bar: ["health", "power"],
+      value: []
+    },
+    npc: {
+      bar: ["health", "power"],
+      value: []
+    }
+  };
+
   CONFIG.Item.dataModels = {
     arme: ArmeModel,
     armure: ArmureModel,
